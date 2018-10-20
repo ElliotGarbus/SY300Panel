@@ -76,14 +76,15 @@ BoxLayout:
         MyFirstKnob:
             id: primo
             knob_title: "Pulse Width"
+            knob_vals: [str(x) for x in range(0,201)]
         MyFirstKnob:
-            knob_vals: [ 'L2', 'L1', 'C', 'R1', 'R2' ]
+            knob_vals: [str(x) for x in range(-24,25)]
             knob_ndx: 3
             knob_title: 'Balance'
         MyFirstKnob:
-            knob_vals: [ 'L2', 'L1', 'C', 'R1', 'R2' ]
+            knob_vals: ['L'+str(-x) for x in range(-50, 0)] + ['CENTER'] + ['R'+ str(x) for x in range(1, 51)]
             knob_ndx: 1
-            knob_title: 'UnBalance'
+            knob_title: 'Pan'
         MyFirstKnob:
 
    
