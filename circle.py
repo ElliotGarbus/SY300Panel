@@ -82,72 +82,44 @@ BoxLayout:
             knob_title: 'Balance'
             knob_turn_delay: .10
         MyFirstKnob:
-            knob_vals: [ 'L2', 'L1', 'C', 'R1', 'R2' ]
+            knob_vals: ['L'+str(-x) for x in range(-50, 0)] + ['CENTER'] + ['R'+ str(x) for x in range(1, 51)]
             knob_ndx: 1
-            knob_title: 'UnBalance'
+            knob_title: 'Pan'
             knob_turn_delay: .1
         MyFirstKnob:
             knob_turn_delay: .1
 
    
 '''
-active_knob = 0
+
+
 class MyFirstKnob(BoxLayout):
         
     knob_title      = StringProperty()
-    knob_vals       = ListProperty( [ str(i) for i in range(10) ] )
+    knob_vals       = ListProperty([ str(i) for i in range(101)])
     knob_ndx        = NumericProperty( 1 )
-    knob_turn_delay = 0.02
-    _mylast         = 0,0,0
 
-
-    def on_touch_up(self,touch):
-        global active_knob
-        active_knob = 0
-        return super().on_touch_up(touch)
     def on_touch_down(self, touch):
-        global active_knob
-        for this in App.get_running_app().root.walk():
-            if (  'knob_title' in dir(this)
-                  and this.collide_point( touch.pos[0],touch.pos[1] )  
-               ):
-                this._mylast = touch.pos[0], touch.pos[1], time.time()
-                active_knob = this
-        return super().on_touch_down(touch)
+        if self.collide_point(*touch.pos):
+            touch.grab(self)
+            return True
 
     def on_touch_move(self, touch):
+        if touch.grab_current is self:
+            if touch.dy:
+                index = self.knob_ndx
+                self.knob_ndx = sorted((0, int(index + touch.dy), len(self.knob_vals)-1))[1] #sorted(min, val, max)[1]
 
-
-        # Need better way to identify a knob than looking for knob_title in directory!
-        # and i am probably looking at more widgets than I need to....
-
-        global active_knob
-        if active_knob and ( time.time() - active_knob._mylast[2] > active_knob.knob_turn_delay ) :
-                 #   dy = touch.pos[1] - this._mylast[1] 
-                 #   dx = touch.pos[0] - this._mylast[0] 
-                 # if ( fabx(dy) > fabs(dx) ):
-                 #    want the sign of y 
-                 # else
-                 #    want the sign of x
-
-            if   active_knob._mylast[1] > touch.pos[1] or active_knob._mylast[0] > touch.pos[0] :
-               active_knob.knob_ndx = max( active_knob.knob_ndx - 1,  0 )
-            elif active_knob._mylast[1] < touch.pos[1] or active_knob._mylast[0] < touch.pos[0] :
-               active_knob.knob_ndx = min( active_knob.knob_ndx + 1, len (active_knob.knob_vals)-1 )
-            active_knob._mylast = touch.pos[0], touch.pos[1], time.time()
-
-        return super().on_touch_move(touch)
-
+    def on_touch_up(self, touch):
+        if touch.grab_current is self:
+            # I receive my grabbed touch, I must ungrab it!
+            touch.ungrab(self)
 
 class CircleApp(App):
 
 
     def build(self):
         return Builder.load_string(kv)
-
-
-
-
 
 
 if __name__ == '__main__':
