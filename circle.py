@@ -1,23 +1,14 @@
 from kivy.app import App
-from kivy.uix.label import Label
-from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import ListProperty
-from kivy.properties import NumericProperty
-from kivy.properties import StringProperty
-from math import atan2, degrees
+from kivy.properties import ListProperty, NumericProperty, StringProperty
 from kivy.lang import Builder
-from kivy.clock import time
 
 
 kv = '''
 #-------------------------------
 # Knob class
-#  Properties are: knob_title, knob_vals, knob_ndx , knob_turn_delay
+#  Properties are: knob_title, knob_vals, knob_ndx
 #
-# Notes:
-# 1) text size needs to scale with widget size
-# 2) pick between x and y (delta abs thinggy)
 #-------------------------------
 <MyFirstKnob>
     orientation: 'vertical'
@@ -74,46 +65,54 @@ BoxLayout:
         MyFirstKnob:
             id: primo
             knob_title: "Pulse Width"
-            knob_vals:  [ str(x) for x in range(101)]
-            knob_turn_delay: .008
+            knob_vals:  [str(x) for x in range(101)]
         MyFirstKnob:
-            knob_vals: [ 'L2', 'L1', 'C', 'R1', 'R2' ]
+            knob_vals: [str(x) for x in range(-24, 25)]
             knob_ndx: 3
-            knob_title: 'Balance'
-            knob_turn_delay: .10
+            knob_title: 'Pitch'
         MyFirstKnob:
-            knob_vals: ['L'+str(-x) for x in range(-50, 0)] + ['CENTER'] + ['R'+ str(x) for x in range(1, 51)]
+            knob_vals: ['L'+str(-x) for x in range(-50, 0)] + ['CTR'] + ['R'+ str(x) for x in range(1, 51)]
             knob_ndx: 1
             knob_title: 'Pan'
-            knob_turn_delay: .1
         MyFirstKnob:
-            knob_turn_delay: .1
+            title: "Rate"
 
    
 '''
 
 
 class MyFirstKnob(BoxLayout):
-        
     knob_title      = StringProperty()
-    knob_vals       = ListProperty([ str(i) for i in range(101)])
-    knob_ndx        = NumericProperty( 1 )
+    knob_vals       = ListProperty([str(i) for i in range(101)])
+    knob_ndx        = NumericProperty(1)
+    _direction = {'scrollup': 1, 'scrolldown':-1}
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             touch.grab(self)
             return True
+        return False
 
     def on_touch_move(self, touch):
         if touch.grab_current is self:
             if touch.dy:
                 index = self.knob_ndx
-                self.knob_ndx = sorted((0, int(index + touch.dy), len(self.knob_vals)-1))[1] #sorted(min, val, max)[1]
+                #sorted(min, val, max)[1] works to clamp val to floor or ceiling
+                self.knob_ndx = sorted((0, int(index + touch.dy), len(self.knob_vals)-1))[1]
+                return True
+        return False
 
     def on_touch_up(self, touch):
+        if touch.is_mouse_scrolling and self.collide_point(*touch.pos):
+            #move = 1 if touch.button == 'scrolldown' else -1
+            # sorted(min, val, max)[1] works to clamp val to floor or ceiling
+            self.knob_ndx = sorted((0, int(self.knob_ndx + self._direction[touch.button]), len(self.knob_vals) - 1))[1]
+            return True
         if touch.grab_current is self:
             # I receive my grabbed touch, I must ungrab it!
             touch.ungrab(self)
+            return True
+        return False
 
 class CircleApp(App):
 
