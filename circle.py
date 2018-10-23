@@ -82,10 +82,10 @@ BoxLayout:
 
 
 class MyFirstKnob(BoxLayout):
-    knob_title      = StringProperty()
-    knob_vals       = ListProperty([str(i) for i in range(101)])
-    knob_ndx        = NumericProperty(1)
-    _direction = {'scrollup': 1, 'scrolldown':-1}
+    knob_title = StringProperty()
+    knob_vals = ListProperty([str(i) for i in range(101)])
+    knob_ndx = NumericProperty(1)
+    _scroll_direction = {'scrollup': 1, 'scrolldown': -1}
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
@@ -94,28 +94,26 @@ class MyFirstKnob(BoxLayout):
         return False
 
     def on_touch_move(self, touch):
-        if touch.grab_current is self:
-            if touch.dy:
-                index = self.knob_ndx
-                #sorted(min, val, max)[1] works to clamp val to floor or ceiling
-                self.knob_ndx = sorted((0, int(index + touch.dy), len(self.knob_vals)-1))[1]
-                return True
+        if touch.grab_current is self and touch.dy:
+            index = self.knob_ndx
+            #sorted(min, val, max)[1] works to clamp val to floor or ceiling
+            self.knob_ndx = (sorted((0, int(index + touch.dy), len(self.knob_vals)-1))[1])
+            return True
         return False
 
     def on_touch_up(self, touch):
-        if touch.is_mouse_scrolling and self.collide_point(*touch.pos):
-            #move = 1 if touch.button == 'scrolldown' else -1
+        if touch.is_mouse_scrolling and self.collide_point(*touch.pos)and touch.grab_current:
             # sorted(min, val, max)[1] works to clamp val to floor or ceiling
-            self.knob_ndx = sorted((0, int(self.knob_ndx + self._direction[touch.button]), len(self.knob_vals) - 1))[1]
+            self.knob_ndx = (sorted((0, int(self.knob_ndx + self._scroll_direction[touch.button]),
+                                    len(self.knob_vals) - 1))[1])
             return True
-        if touch.grab_current is self:
-            # I receive my grabbed touch, I must ungrab it!
+        elif touch.grab_current is self:
             touch.ungrab(self)
             return True
         return False
 
-class CircleApp(App):
 
+class CircleApp(App):
 
     def build(self):
         return Builder.load_string(kv)
