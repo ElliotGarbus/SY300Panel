@@ -95,16 +95,15 @@ class MyFirstKnob(BoxLayout):
 
     def on_touch_move(self, touch):
         if touch.grab_current is self and touch.dy:
-            index = self.knob_ndx
             #sorted(min, val, max)[1] works to clamp val to floor or ceiling
-            self.knob_ndx = (sorted((0, int(index + touch.dy), len(self.knob_vals)-1))[1])
+            self.knob_ndx = (sorted((0, self.knob_ndx + int(touch.dy), len(self.knob_vals)-1))[1])
             return True
         return False
 
     def on_touch_up(self, touch):
-        if touch.is_mouse_scrolling and self.collide_point(*touch.pos)and touch.grab_current:
+        if touch.is_mouse_scrolling and touch.grab_current is self:
             # sorted(min, val, max)[1] works to clamp val to floor or ceiling
-            self.knob_ndx = (sorted((0, int(self.knob_ndx + self._scroll_direction[touch.button]),
+            self.knob_ndx = (sorted((0, self.knob_ndx + self._scroll_direction[touch.button],
                                     len(self.knob_vals) - 1))[1])
             return True
         elif touch.grab_current is self:
