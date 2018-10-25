@@ -25,7 +25,7 @@ indicating a point on the XY plane.
 
 '''
 
-kv = '''
+xykivystring = '''
 #:kivy 1.10.1
 #
 
@@ -79,6 +79,8 @@ kv = '''
         size: self.size
         size_hint: (None,None)
 #-----------------------
+'''
+kv = '''
 BoxLayout:
     orientation: 'vertical'
     BoxLayout:
@@ -221,6 +223,7 @@ class XY_knobApp(App):
     def build(self):
         return Builder.load_string(kv)
 
+Builder.load_string(xykivystring )
 
 if __name__ == '__main__':
     XY_knobApp().run()
