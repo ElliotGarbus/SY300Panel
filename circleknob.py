@@ -1,9 +1,9 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ListProperty, NumericProperty, StringProperty
+from kivy.lang import Builder
 
-
-kv = '''
+Builder.load_string('''
 #-------------------------------
 # Knob class
 #  Properties are: knob_title, knob_vals, knob_ndx
@@ -41,7 +41,7 @@ kv = '''
         text: root.knob_title
         size_y: self.texture_size[1]
 #-------------------------------
-'''
+''')
 
 class CircleKnob(BoxLayout):
     knob_title = StringProperty()
@@ -74,7 +74,6 @@ class CircleKnob(BoxLayout):
         return False
 
 if __name__ == '__main__':
-    from kivy.lang import Builder
     kv_test = '''
 BoxLayout:
     orientation: 'vertical'
@@ -139,6 +138,6 @@ BoxLayout:
     class CircleKnobApp(App):
 
         def build(self):
-            return Builder.load_string(kv + kv_test)
+            return Builder.load_string(kv_test)
 
     CircleKnobApp().run()

@@ -10,20 +10,20 @@ kv = '''
 #  Properties are: knob_title, knob_vals, knob_ndx
 #
 #-------------------------------
-<MyFirstKnob>
+<CircleKnob>
     orientation: 'vertical'
     padding:10
     Label:
-        font_size: 30
+        font_size: 15
         text: root.knob_vals[ root.knob_ndx ]
     
         canvas:
             Color:
                 rgba: .4, .4 , .4, .5 
             Line:         
-                circle: self.center_x, self.center_y, self.height/2 *.9, -140, 140
+                circle: self.center_x, self.center_y, self.width/2 *.9, -140, 140
                 cap: 'square'
-                width: dp(5)
+                width: dp(3)
         canvas.after:
             Color:
                 rgba: 0, 0 , 1, .9 
@@ -31,57 +31,20 @@ kv = '''
                 circle:
                     (
                     self.center_x, self.center_y,
-                    self.height/2 *.9,
+                    self.width/2 *.9,
                     -140, -140 + root.knob_ndx * 280 / ( len(root.knob_vals) - 1 )
                     )
                 cap: 'square'
-                width: dp(5)
+                width: dp(3)
     Label:
         id: knob_title
-        font_size: '20'
+        font_size: '15'
         text: root.knob_title
-        size_hint_y: .1
+        size_y: self.texture_size[1]
 #-------------------------------
-
-        
-              
-BoxLayout:
-    orientation: 'vertical'
-    BoxLayout:
-        Button:
-            text: "What an I doing here?"
-        Button:
-            text: "good question"
-        Button:
-            text: "knob input is obsolete"
-        TextInput
-            text: '1'
-            on_text: primo.knob_ndx = int( self.text )
-
-    GridLayout:
-        rows: 2
-        cols: 2
-        
-        MyFirstKnob:
-            id: primo
-            knob_title: "Pulse Width"
-            knob_vals:  [str(x) for x in range(101)]
-        MyFirstKnob:
-            knob_vals: [str(x) for x in range(-24, 25)]
-            knob_ndx: 3
-            knob_title: 'Pitch'
-        MyFirstKnob:
-            knob_vals: ['L'+str(-x) for x in range(-50, 0)] + ['CTR'] + ['R'+ str(x) for x in range(1, 51)]
-            knob_ndx: 1
-            knob_title: 'Pan'
-        MyFirstKnob:
-            title: "Rate"
-
-   
 '''
 
-
-class MyFirstKnob(BoxLayout):
+class CircleKnob(BoxLayout):
     knob_title = StringProperty()
     knob_vals = ListProperty([str(i) for i in range(101)])
     knob_ndx = NumericProperty(1)
@@ -111,12 +74,71 @@ class MyFirstKnob(BoxLayout):
             return True
         return False
 
-
-class CircleApp(App):
-
-    def build(self):
-        return Builder.load_string(kv)
-
-
 if __name__ == '__main__':
-    CircleApp().run()
+    kv_test = '''
+BoxLayout:
+    orientation: 'vertical'
+    BoxLayout:
+        size_hint_y: .1
+        Button:
+            text: "What an I doing here?"
+        Button:
+            text: "good question"
+        Button:
+            text: "knob input is obsolete"
+        TextInput
+            text: '1'
+            on_text: primo.knob_ndx =  int(self.text)
+            multiline: False
+
+    GridLayout:
+        rows: 2
+        cols: 6
+
+        CircleKnob:
+            id: primo
+            knob_title: "Pulse\\nWidth"
+            knob_vals:  [str(x) for x in range(101)]
+        CircleKnob:
+            knob_vals: [str(x) for x in range(-24, 25)]
+            knob_ndx: 24
+            knob_title: 'Pitch'
+        CircleKnob:
+            knob_vals: ['L'+str(-x) for x in range(-50, 0)] + ['CTR'] + ['R'+ str(x) for x in range(1, 51)]
+            knob_ndx: 50
+            knob_title: 'Pan'
+        CircleKnob:
+            knob_title: "Rate"
+        CircleKnob:
+            knob_title: "One"
+            knob_vals:  [str(x) for x in range(101)]
+        CircleKnob:
+            knob_vals: [str(x) for x in range(-24, 25)]
+            knob_ndx: 3
+            knob_title: 'Pitch Bend'
+        CircleKnob:
+            knob_vals: ['L'+str(-x) for x in range(-50, 0)] + ['CTR'] + ['R'+ str(x) for x in range(1, 51)]
+            knob_ndx: 1
+            knob_title: 'Pan'
+        CircleKnob:
+            knob_title: "Default"
+        CircleKnob:
+            knob_title: "Pulse Width"
+            knob_vals:  [str(x) for x in range(101)]
+        CircleKnob:
+            knob_vals: [str(x) for x in range(-24, 25)]
+            knob_ndx: 3
+            knob_title: 'Pitch'
+        CircleKnob:
+            knob_vals: ['L'+str(-x) for x in range(-50, 0)] + ['CTR'] + ['R'+ str(x) for x in range(1, 51)]
+            knob_ndx: 1
+            knob_title: 'Pan'
+        CircleKnob:
+            knob_title: "Rate"
+    '''
+    class CircleKnobApp(App):
+
+        def build(self):
+            return Builder.load_string(kv + kv_test)
+
+    CircleKnobApp().run()
