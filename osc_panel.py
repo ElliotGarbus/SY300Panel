@@ -1,9 +1,9 @@
 from kivy.app import App
 from kivy.lang import Builder
-from xy import XY_knob
-from circleknob import CircleKnob
 
 kv = """
+#:import XYKnob xy 
+#:import CircleKnob circleknob
 GridLayout:
     rows: 3
     cols: 4
@@ -27,10 +27,10 @@ GridLayout:
         Label:
             text: 'PLACEHOLDER'
         
-        XY_knob:
+        XYKnob:
             xy_knob_xlab: 'PWM ENV ATTACK'
             xy_knob_ylab: 'PWM ENV DEPTH'
-        XY_knob:
+        XYKnob:
             xy_knob_xlab: 'PITCH ENV ATTACK'
             xy_knob_ylab: 'PITCH ENV DEPTH'
         CircleKnob:
