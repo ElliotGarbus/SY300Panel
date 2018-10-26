@@ -53,16 +53,16 @@ xykivystring = '''
     Label:
         id: x_axis
         size_hint_y: None
-        height: 25
-        text: root.xy_knob_xlab + " val= " + str( root.xy_knob_xmin )
-        font_size: 20
+        height: 40
+        text: root.xy_knob_xlab + "=  " + str( root.xy_knob_xmin )
+        font_size: int( .5 + 1.12 * self.width / (max(len(root.ids.y_axis.text), len(self.text)) ) )
     Label:
         id: y_axis
         size_hint: (None,None)
         height: x_axis.height
         width: x_axis.width - x_axis.height
-        text: root.xy_knob_ylab + " val= " + str( root.xy_knob_ymin )
-        font_size: 20
+        text: root.xy_knob_ylab + "=" + str( root.xy_knob_ymin )
+        font_size: root.ids.x_axis.font_size
         canvas.before:
             PushMatrix
             Rotate
@@ -80,60 +80,16 @@ xykivystring = '''
         size_hint: (None,None)
 #-----------------------
 '''
-kv = '''
-BoxLayout:
-    orientation: 'vertical'
-    BoxLayout:
-        size_hint_y: .1
-        Button:
-            text: "What an I doing here?"
-        Button:
-            text: "good question"
-        Button:
-            text: "different sort of knob"
-
-    GridLayout:
-        rows: 2
-        cols: 2
-        padding: 10
-        spacing: 10
-        
-        XY_knob:
-            id: primo
-            size: 250,250
-            size_hint: (None,None)
-            xy_knob_xlab: 'Cut-off'
-            xy_knob_ylab: "Resonance"
-        XY_knob:
-            id: two
-            size: 250,250
-            size_hint:(None,None)
-            xy_knob_xlab: "Volume to 11"
-            xy_knob_ylab: "Balance(-1 to 1)"
-            xy_knob_xmax: 11
-            xy_knob_ymax: 1
-            xy_knob_ymin: -1
-        XY_knob:
-            id: three
-            size: 250,250
-            size_hint:(None,None)
-        XY_knob:
-            id: four
-            size: 250,250
-            size_hint:(None,None)
-
-'''
-
 
 class XY_knob(RelativeLayout):
     xy_knob_trackx = ListProperty( [] )
     xy_knob_tracky = ListProperty( [] )
     xy_knob_trkval = StringProperty( '' )
     xy_knob_val    = ListProperty([ [0, 0], [0,0] ] )
-    xy_knob_xlab   = StringProperty( 'label x' )
+    xy_knob_xlab   = StringProperty( 'X-axis' )
     xy_knob_xmin   = NumericProperty(   0 )
     xy_knob_xmax   = NumericProperty( 100 )
-    xy_knob_ylab   = StringProperty( 'label y' )
+    xy_knob_ylab   = StringProperty( 'Y-axis' )
     xy_knob_ymin   = NumericProperty(   0 )
     xy_knob_ymax   = NumericProperty( 100 )
   
@@ -217,13 +173,59 @@ class XY_knob(RelativeLayout):
         return super().on_touch_up(touch)
 
 
-
-
-class XY_knobApp(App):
-    def build(self):
-        return Builder.load_string(kv)
-
 Builder.load_string(xykivystring )
 
+
+
+
 if __name__ == '__main__':
+
+    kv = '''
+BoxLayout:
+    orientation: 'vertical'
+    BoxLayout:
+        size_hint_y: .1
+        Button:
+            text: "What an I doing here?"
+        Button:
+            text: "good question"
+        Button:
+            text: "different sort of knob"
+
+    GridLayout:
+        rows: 2
+        cols: 2
+        padding: 10
+        spacing: 10
+        
+        XY_knob:
+            id: primo
+            size: 250,250
+            size_hint: (None,None)
+            xy_knob_xlab: 'Cut-off'
+            xy_knob_ylab: "Res"
+        XY_knob:
+            id: two
+            size: 250,250
+            size_hint:(None,None)
+            xy_knob_xlab: "Volume"
+            xy_knob_ylab: "Bal"
+            xy_knob_xmax: 11
+            xy_knob_ymax: 1
+            xy_knob_ymin: -1
+        XY_knob:
+            id: three
+            size: 250,250
+            size_hint:(None,None)
+        XY_knob:
+            id: four
+            size: 250,250
+            size_hint:(None,None)
+
+'''
+
+    class XY_knobApp(App):
+        def build(self):
+            return Builder.load_string(kv)
+
     XY_knobApp().run()
