@@ -1,21 +1,17 @@
 
 import kivy
 from kivy.app                import App
-from kivy.uix.boxlayout      import BoxLayout
-from kivy.uix.floatlayout    import FloatLayout
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.lang               import Builder
 from kivy.properties         import ListProperty
 from kivy.properties         import StringProperty
 from kivy.properties         import NumericProperty
 
-from math                    import atan2, degrees, fabs
-from random                  import random
 
 kivy.require('1.10.1')
 
 '''
-XY_knob
+XYKnob
 Created by Seth Abraham, October 22, 2018
 
 A 'knob' for setting two values.  Values are on
@@ -30,7 +26,7 @@ xykivystring = '''
 #
 
 # from relative layout
-<XY_knob>
+<XYKnob>
     size: mypad.size
     size_hint: (None,None)
     Label:
@@ -81,7 +77,7 @@ xykivystring = '''
 #-----------------------
 '''
 
-class XY_knob(RelativeLayout):
+class XYKnob(RelativeLayout):
     xy_knob_trackx = ListProperty( [] )
     xy_knob_tracky = ListProperty( [] )
     xy_knob_trkval = StringProperty( '' )
@@ -198,13 +194,13 @@ BoxLayout:
         padding: 10
         spacing: 10
         
-        XY_knob:
+        XYKnob:
             id: primo
             size: 250,250
             size_hint: (None,None)
             xy_knob_xlab: 'Cut-off'
             xy_knob_ylab: "Res"
-        XY_knob:
+        XYKnob:
             id: two
             size: 250,250
             size_hint:(None,None)
@@ -213,19 +209,19 @@ BoxLayout:
             xy_knob_xmax: 11
             xy_knob_ymax: 1
             xy_knob_ymin: -1
-        XY_knob:
+        XYKnob:
             id: three
             size: 250,250
             size_hint:(None,None)
-        XY_knob:
+        XYKnob:
             id: four
             size: 250,250
             size_hint:(None,None)
 
 '''
 
-    class XY_knobApp(App):
+    class XYKnobApp(App):
         def build(self):
             return Builder.load_string(kv)
 
-    XY_knobApp().run()
+    XYKnobApp().run()

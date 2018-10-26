@@ -20,7 +20,7 @@ Builder.load_string('''
             Color:
                 rgba: .4, .4 , .4, .5 
             Line:         
-                circle: self.center_x, self.center_y, self.width/2 *.9, -140, 140
+                circle: self.center_x, self.center_y, self.height/2 *.9, -140, 140
                 cap: 'square'
                 width: dp(3)
         canvas.after:
@@ -39,7 +39,7 @@ Builder.load_string('''
         id: knob_title
         font_size: '15'
         text: root.knob_title
-        size_y: self.texture_size[1]
+        size: self.texture_size
 #-------------------------------
 ''')
 
@@ -135,6 +135,7 @@ BoxLayout:
         CircleKnob:
             knob_title: "Rate"
     '''
+
     class CircleKnobApp(App):
 
         def build(self):
