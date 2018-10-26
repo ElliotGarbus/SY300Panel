@@ -1,4 +1,3 @@
-
 import kivy
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
@@ -20,7 +19,7 @@ Builder.load_string('''
 
 # from float
 <TTest>:
-    XY_knob:
+    XYKnob:
         id: knob
         size_hint: None,None
         size: 600,600

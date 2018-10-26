@@ -51,7 +51,7 @@ xykivystring = '''
         size_hint_y: None
         height: 40
         text: root.xy_knob_xlab + "=  " + str( root.xy_knob_xmin )
-        font_size: int( .5 + 1.12 * self.width / (max(len(root.ids.y_axis.text), len(self.text)) ) )
+        font_size: int(.5 + 1.14 * self.width / (4 + max(root.ids.y_axis.text.find('='), self.text.find('=')) ) )
     Label:
         id: y_axis
         size_hint: (None,None)
