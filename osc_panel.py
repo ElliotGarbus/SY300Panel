@@ -10,10 +10,13 @@ GridLayout:
     GridLayout:
         rows: 2
         cols: 6
-        Spinner:
-            text: 'SAW'
-            values: ['SIN', 'SAW', 'TRI', 'SQR', 'PWM', 'DETUNE SAW', 'NOISE', 'INPUT']
-            size_hint_y: .5
+        BoxLayout:
+            orientation: 'vertical'
+            Spinner:
+                text: 'SAW'
+                values: ['SIN', 'SAW', 'TRI', 'SQR', 'PWM', 'DETUNE SAW', 'NOISE', 'INPUT']
+            Label:
+                text:'checkbox'
         CircleKnob:
             knob_title: 'PITCH'
         CircleKnob:
