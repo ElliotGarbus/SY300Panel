@@ -30,7 +30,7 @@ Builder.load_string('''
                 circle:
                     (
                     self.center_x, self.center_y,
-                    self.width/2 *.9,
+                    self.height/2 *.9,
                     -140, -140 + root.knob_ndx * 280 / ( len(root.knob_vals) - 1 )
                     )
                 cap: 'square'
