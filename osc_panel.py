@@ -15,8 +15,18 @@ GridLayout:
             Spinner:
                 text: 'SAW'
                 values: ['SIN', 'SAW', 'TRI', 'SQR', 'PWM', 'DETUNE SAW', 'NOISE', 'INPUT']
-            Label:
-                text:'checkbox'
+            BoxLayout:
+                CheckBox:
+                    pos_hint: {'right': .9} 
+                Label:
+                    text:'Sync'
+                    pos_hint: {'left': .9}
+            BoxLayout:
+                CheckBox:
+                    pos_hint: {'right': .9}
+                Label:
+                    text:'Ring'
+                    pos_hint: {'left': .9}
         CircleKnob:
             knob_title: 'PITCH'
         CircleKnob:
