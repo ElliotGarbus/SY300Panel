@@ -71,9 +71,10 @@ xykivystring = '''
     Label:
         id: trackinglabel
         text: str( root.xy_knob_trkval )
-        text_size: self.size
-        size: self.size
+        text_size: self.texture_size
         size_hint: (None,None)
+        size: self.texture_size
+        
 #-----------------------
 '''
 
