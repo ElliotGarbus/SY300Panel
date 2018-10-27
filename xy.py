@@ -49,7 +49,7 @@ xykivystring = '''
     Label:
         id: x_axis
         size_hint_y: None
-        height: 80
+        height: 10
         text: root.xy_knob_xlab + "=  " + str( root.xy_knob_xmin )
         font_size: int( .5 + 1.12 * self.width / (max(len(root.ids.y_axis.text), len(self.text)) ) )
     Label:
