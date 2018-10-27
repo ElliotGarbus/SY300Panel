@@ -72,8 +72,9 @@ xykivystring = '''
         id: trackinglabel
         text: str( root.xy_knob_trkval )
         text_size: self.size
-        size: self.size
+        size: self.texture_size
         size_hint: (None,None)
+        pos: mypad.center
 #-----------------------
 '''
 
