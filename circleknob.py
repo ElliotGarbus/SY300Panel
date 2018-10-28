@@ -40,6 +40,7 @@ Builder.load_string('''
         font_size: '15'
         text: root.knob_title
         size: self.texture_size
+        size_hint_y: None
 #-------------------------------
 ''')
 
