@@ -7,6 +7,7 @@ kv = """
 GridLayout:
     rows: 3
     cols: 4
+    padding: 5
     GridLayout:
         rows: 2
         cols: 5
@@ -15,6 +16,8 @@ GridLayout:
             Spinner:
                 text: 'SAW'
                 values: ['SIN', 'SAW', 'TRI', 'SQR', 'PWM', 'DETUNE SAW', 'NOISE', 'INPUT']
+            Label:
+                text:''
         CircleKnob:
             knob_title: 'PITCH'
         CircleKnob:
@@ -35,9 +38,9 @@ GridLayout:
             xy_knob_xlab: 'ATTACK'
             xy_knob_ylab: 'DEPTH'
         CircleKnob:
-            knob_title: 'Pitch Bend Depth'
+            knob_title: 'PBEND DEPTH'
         CircleKnob:
-            knob_title: 'Pitch Bend CTL'
+            knob_title: 'PBEND CTL'
         
     Button:
         text: 'Two'
@@ -51,6 +54,7 @@ GridLayout:
     GridLayout:
         rows: 2
         cols: 5
+        canvas:
         BoxLayout:
             orientation: 'vertical'
             Spinner:
@@ -58,18 +62,18 @@ GridLayout:
                 values: ['SIN', 'SAW', 'TRI', 'SQR', 'PWM', 'DETUNE SAW', 'NOISE', 'INPUT']
             BoxLayout:
                 orientation: 'vertical'
-                BoxLayout:
+                BoxLayout:                            
                     Label:
                         text:'Sync'
-                        pos_hint: {'x': .9}
-                    CheckBox:
-                        pos_hint: {'x': .1}                
+                        text_size: self.size
+                        halign: 'right'
+                    CheckBox:               
                 BoxLayout:
                     Label:
                         text:'Ring'
-                        pos_hint: {'x': .9}
+                        text_size: self.size
+                        halign: 'right'
                     CheckBox:
-                        pos_hint: {'x': .1}
                 
         CircleKnob:
             knob_title: 'PITCH'
@@ -88,9 +92,9 @@ GridLayout:
         CircleKnob:
             knob_title:'PITCH ENV'
         CircleKnob:
-            knob_title: 'Pitch Bend Depth'
+            knob_title: 'PBEND DEPTH'
         CircleKnob:
-            knob_title: 'Pitch Bend CTL'
+            knob_title: 'PBEND CTL'
         
     Button:
         text: 'Six'
