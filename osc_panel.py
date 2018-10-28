@@ -2,7 +2,7 @@ from kivy.app import App
 from kivy.lang import Builder
 
 kv = """
-#:import XYKnob xy 
+#:import XYKnob xyknob
 #:import CircleKnob circleknob
 GridLayout:
     rows: 3
@@ -41,11 +41,13 @@ GridLayout:
             text: 'PLACEHOLDER'
         
         XYKnob:
-            xy_knob_xlab: 'PWM ENV ATTACK'
-            xy_knob_ylab: 'PWM ENV DEPTH'
+            xy_knob_title:' PWM ENV '   # we space pad the title so it is about the same length as other titles
+            xy_knob_xlab: 'ATTACK'
+            xy_knob_ylab: 'DEPTH'
         XYKnob:
-            xy_knob_xlab: 'PITCH ENV ATTACK'
-            xy_knob_ylab: 'PITCH ENV DEPTH'
+            xy_knob_title:'PITCH ENV'
+            xy_knob_xlab: 'ATTACK'
+            xy_knob_ylab: 'DEPTH'
         CircleKnob:
             knob_title: 'Pitch Bend Depth'
         CircleKnob:
