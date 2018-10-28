@@ -9,24 +9,12 @@ GridLayout:
     cols: 4
     GridLayout:
         rows: 2
-        cols: 6
+        cols: 5
         BoxLayout:
             orientation: 'vertical'
             Spinner:
                 text: 'SAW'
                 values: ['SIN', 'SAW', 'TRI', 'SQR', 'PWM', 'DETUNE SAW', 'NOISE', 'INPUT']
-            BoxLayout:
-                CheckBox:
-                    pos_hint: {'right': .9} 
-                Label:
-                    text:'Sync'
-                    pos_hint: {'left': .9}
-            BoxLayout:
-                CheckBox:
-                    pos_hint: {'right': .9}
-                Label:
-                    text:'Ring'
-                    pos_hint: {'left': .9}
         CircleKnob:
             knob_title: 'PITCH'
         CircleKnob:
@@ -37,8 +25,6 @@ GridLayout:
             knob_title: 'DETUNE'
         CircleKnob:
             knob_title: 'SHARPNESS'
-        Label:
-            text: 'PLACEHOLDER'
         
         XYKnob:
             xy_knob_title:' PWM ENV '   # we space pad the title so it is about the same length as other titles
@@ -62,8 +48,50 @@ GridLayout:
     Button:
         text: 'Four'
         size_hint_x: .1
-    Button:
-        text: 'Five'
+    GridLayout:
+        rows: 2
+        cols: 5
+        BoxLayout:
+            orientation: 'vertical'
+            Spinner:
+                text: 'SAW'
+                values: ['SIN', 'SAW', 'TRI', 'SQR', 'PWM', 'DETUNE SAW', 'NOISE', 'INPUT']
+            BoxLayout:
+                orientation: 'vertical'
+                BoxLayout:
+                    Label:
+                        text:'Sync'
+                        pos_hint: {'x': .9}
+                    CheckBox:
+                        pos_hint: {'x': .1}                
+                BoxLayout:
+                    Label:
+                        text:'Ring'
+                        pos_hint: {'x': .9}
+                    CheckBox:
+                        pos_hint: {'x': .1}
+                
+        CircleKnob:
+            knob_title: 'PITCH'
+        CircleKnob:
+            knob_title: 'FINE'
+        CircleKnob:
+            knob_title: 'PULSE WIDTH'
+        CircleKnob:
+            knob_title: 'DETUNE'
+        CircleKnob:
+            knob_title: 'SHARPNESS'
+        
+        CircleKnob:
+            knob_title:' PWM ENV ' 
+            
+        CircleKnob:
+            knob_title:'PITCH ENV'
+        CircleKnob:
+            knob_title: 'Pitch Bend Depth'
+        CircleKnob:
+            knob_title: 'Pitch Bend CTL'
+        
     Button:
         text: 'Six'
         size_hint_x: .1
