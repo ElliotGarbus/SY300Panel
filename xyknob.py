@@ -38,16 +38,17 @@ xykivystring = '''
             id: mybackground 
         Label:
             id: mypad
-            size: ( min(root.width,root.height-xytitle.height),min(root.width,root.height-xytitle.height) )
+            size: ( min(root.width,root.height-xytitle.height),min(root.width,root.height-xytitle.height) ) # use mybackgroud
             size_hint: (None,None)
-            pos: ( mybackground.center_x - .5 * self.width, mybackground.center_y - .5 * self.height )
+            pos: ( mybackground.center_x - .5 * self.width, mybackground.center_y - .5 * self.height )# simplify?
+            # could we put a square in the middle of a box layout... 
             canvas.after:
                 Line:
                     points: root.xy_knob_trackx
                 Line:
                     points: root.xy_knob_tracky
                 Line:
-                    width: 4
+                    width: 2
                     points: root.xy_knob_val
                 Color:
                     rgba: [ 1, 0, 0, .5 ]
@@ -74,7 +75,7 @@ xykivystring = '''
             #pos_hint: { 'center_y':.5, 'center_x':0.08 }
             pos: ( mypad.x - .38*self.width, mypad.center_y )
             text: root.xy_knob_ylab + "=  " + str( root.xy_knob_ymin )
-            font_size: int(.5 + 1.14 * mypad.width / (4 + max(root.ids.y_axis.text.find('='), self.text.find('=')) ) )
+            font_size: int(.5 + 1.14 * mypad.width / (4 + max(root.ids.x_axis.text.find('='), self.text.find('=')) ) )
             size: self.texture_size
             size_hint: (None,None)
             canvas.before:
@@ -85,7 +86,7 @@ xykivystring = '''
             canvas.after:
                 PopMatrix
         Label:
-            id: trackinglabel
+            id: trackinglabel # in the python code move tracking label to opposite quarter
             pos: mypad.center
             text: str( root.xy_knob_trkval )
             size: self.texture_size
@@ -132,10 +133,10 @@ class XYKnob(BoxLayout):
         relative_position[1] = sorted([ relative_position[1], 1, self.ids.mypad.height ] )[1]
 
         xval = int(  relative_position[0] / self.ids.mypad.width 
-                   * (self.xy_knob_xmax - self.xy_knob_xmin)  
+                   * (self.xy_knob_xmax - self.xy_knob_xmin)
                    + self.xy_knob_xmin )
         yval = int(  relative_position[1] / self.ids.mypad.height
-                   * (self.xy_knob_ymax - self.xy_knob_ymin) 
+                   * (self.xy_knob_ymax - self.xy_knob_ymin)
                    + self.xy_knob_ymin  )
 
         relative_position[0] += self.ids.mypad.x
@@ -236,10 +237,10 @@ BoxLayout:
         XYKnob:
             id: two
             #size: 250,250
-            #xy_knob_ylab: "Bal"
-            #xy_knob_xmax: 11
-            #xy_knob_ymax: 1
-            #xy_knob_ymin: -1
+            xy_knob_ylab: "Bal"
+            xy_knob_xmax: 11
+            xy_knob_ymax: 10
+            xy_knob_ymin: -10
         XYKnob:
             id: three
         XYKnob:

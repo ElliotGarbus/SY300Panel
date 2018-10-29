@@ -11,7 +11,7 @@ Builder.load_string('''
 #-------------------------------
 <CircleKnob>
     orientation: 'vertical'
-    padding:10
+    #padding:10
     Label:
         font_size: 15
         text: root.knob_vals[ root.knob_ndx ]
@@ -37,7 +37,7 @@ Builder.load_string('''
                 width: dp(3)
     Label:
         id: knob_title
-        font_size: '15'
+        font_size: 15
         text: root.knob_title
         size: self.texture_size
         size_hint_y: None
