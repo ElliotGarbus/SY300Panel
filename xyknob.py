@@ -31,13 +31,16 @@ xykivystring = '''
 # from BoxLayout
 <XYKnob>
     orientation: 'vertical'
-    height: mypad.height + xytitle.height
-    size_hint_y: None
+    #height: mypad.height + xytitle.height
+    #size_hint_y: None
     RelativeLayout:
         Label:
+            id: mybackground 
+        Label:
             id: mypad
-            size: ( xytitle.width, xytitle.width )
+            size: ( min(root.width,root.height-xytitle.height),min(root.width,root.height-xytitle.height) )
             size_hint: (None,None)
+            pos: ( mybackground.center_x - .5 * self.width, mybackground.center_y - .5 * self.height )
             canvas.after:
                 Line:
                     points: root.xy_knob_trackx
@@ -50,9 +53,9 @@ xykivystring = '''
                     rgba: [ 1, 0, 0, .5 ]
                 Line:
                     width: 1
-                    points: [ 0, .5*mypad.width , mypad.width, .5*mypad.width ] if root.xy_knob_crosshair else []
+                    points: [ mypad.x, mypad.y+.5*mypad.height , mypad.x + mypad.width, mypad.y+.5*mypad.width ] if root.xy_knob_crosshair else []
                 Line:
-                    points: [ .5*mypad.width, 0 , .5*mypad.width, mypad.width ] if root.xy_knob_crosshair else []
+                    points: [ mypad.x+.5*mypad.width, mypad.y , mypad.x+.5*mypad.width, mypad.y+mypad.width ] if root.xy_knob_crosshair else []
             canvas.before:
                 Color:
                     rgba: [ 0, 0, .8, 1 ]
@@ -61,14 +64,19 @@ xykivystring = '''
                     size: self.size
         Label:
             id: x_axis
-            pos_hint: { 'center_y':.09}
+            pos: ( mypad.center_x - .5*self.width, mypad.y )
             text: root.xy_knob_xlab + "=  " + str( root.xy_knob_xmin )
-            font_size: int(.5 + 1.14 * self.width / (4 + max(root.ids.y_axis.text.find('='), self.text.find('=')) ) )
+            size: self.texture_size
+            size_hint: (None,None)
+            font_size: int(.5 + 1.14 * mypad.width / (4 + max(root.ids.y_axis.text.find('='), self.text.find('=')) ) )
         Label:
             id: y_axis
-            pos_hint: { 'center_y':.5, 'center_x':0.08 }
+            #pos_hint: { 'center_y':.5, 'center_x':0.08 }
+            pos: ( mypad.x - .38*self.width, mypad.center_y )
             text: root.xy_knob_ylab + "=  " + str( root.xy_knob_ymin )
-            font_size: int(.5 + 1.14 * self.width / (4 + max(root.ids.y_axis.text.find('='), self.text.find('=')) ) )
+            font_size: int(.5 + 1.14 * mypad.width / (4 + max(root.ids.y_axis.text.find('='), self.text.find('=')) ) )
+            size: self.texture_size
+            size_hint: (None,None)
             canvas.before:
                 PushMatrix
                 Rotate
@@ -85,7 +93,8 @@ xykivystring = '''
     Label:
         id: xytitle
         text: root.xy_knob_title
-        font_size: int(.5 + 1.14 * self.width / len(self.text) )
+        #font_size: int(.5 + 1.14 * mypad.width / len(self.text) )
+        font_size: 15
         size: self.texture_size
         size_hint_y: None
 #-----------------------
@@ -96,7 +105,7 @@ class XYKnob(BoxLayout):
     xy_knob_trackx    = ListProperty( [] )
     xy_knob_tracky    = ListProperty( [] )
     xy_knob_trkval    = StringProperty( '' )
-    xy_knob_val       = ListProperty([ [0, 0], [0,0] ] )
+    xy_knob_val       = ListProperty([  ] )
     xy_knob_xlab      = StringProperty( 'X-axis' )
     xy_knob_xmin      = NumericProperty(   0 )
     xy_knob_xmax      = NumericProperty( 100 )
@@ -113,6 +122,10 @@ class XYKnob(BoxLayout):
     # clamps that position tothe size of mypad (overkill until until we move!)
     # and converts the cordinates into x,y values
     #
+    # Since mypad is not at the origin, we must adjust all drawing directives
+    # We should probably be able to ask kivy for a translation to background space
+    # but right now the correct incantation exceeds my patience
+    #
         relative_position = list ( self.ids.mypad.to_widget(*touch.pos, True ) )
 
         relative_position[0] = sorted([ relative_position[0], 0, self.ids.mypad.width  ] )[1]
@@ -124,6 +137,9 @@ class XYKnob(BoxLayout):
         yval = int(  relative_position[1] / self.ids.mypad.height
                    * (self.xy_knob_ymax - self.xy_knob_ymin) 
                    + self.xy_knob_ymin  )
+
+        relative_position[0] += self.ids.mypad.x
+        relative_position[1] += self.ids.mypad.y
 
         return relative_position,xval,yval
 
@@ -139,8 +155,8 @@ class XYKnob(BoxLayout):
             self.ids.trackinglabel.pos = rel_pos
 
             # draw tracking lines
-            self.xy_knob_tracky.extend( [[rel_pos[0], 0], [rel_pos[0], self.ids.mypad.height ] ] )
-            self.xy_knob_trackx.extend( [[0, rel_pos[1]], [self.ids.mypad.width, rel_pos[1]] ] )
+            self.xy_knob_tracky.extend( [[rel_pos[0], self.ids.mypad.y], [rel_pos[0], self.ids.mypad.top ] ] )
+            self.xy_knob_trackx.extend( [[self.ids.mypad.x, rel_pos[1]], [self.ids.mypad.right, rel_pos[1]] ] )
 
             return True
         return super().on_touch_down(touch)
