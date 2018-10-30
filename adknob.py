@@ -2,7 +2,7 @@ from kivy.app import App
 from kivy.lang import Builder
 
 kv = '''
-FloatLayout:
+FloatLayout:  # combine a FloatLayout and BoxLayout
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
