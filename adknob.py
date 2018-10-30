@@ -6,8 +6,8 @@ FloatLayout:  # combine a FloatLayout and BoxLayout
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
-            Button:
-                text:'PL'
+            Widget:
+                #text:'PL'
             Label:
                 text:'X-Axis Label'
                 size_hint_x: None
@@ -30,15 +30,20 @@ FloatLayout:  # combine a FloatLayout and BoxLayout
                         rgba: [1,0,0,.5]
                     Line:
                         width:5
-                        points:[sq_pad.pos, (sq_pad.pos[0] + sq_pad.width, sq_pad.pos[1] + sq_pad.height) ]
-            Button:
-                id:pad_right
-                text: 'PR'
-        Button:
+                        points:[sq_pad.pos, (sq_pad.pos[0] + sq_pad.width, sq_pad.pos[1] + sq_pad.height)]
+                    Color:
+                        rgba:[1,1,1,1]
+                    Line:
+                        width:2
+                        rectangle: (*self.pos,self.width,self.height)
+            Widget:
+                #id:pad_right
+                #text: 'PR'
+        Label:
             text: 'Y-Axis Label'
             size_hint_y: None
             height: self.texture_size[1]
-        Button:
+        Label:
             text: 'Attack Decay Knob'
             size_hint_y: None
             height: self.texture_size[1]
