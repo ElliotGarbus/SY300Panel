@@ -9,7 +9,7 @@ kv = '''
     #BoxLayout:
     orientation: 'vertical'
     BoxLayout:
-        Button:
+        Label:
             id:pad_left
             text:'L'
             size_hint_x:.001
@@ -25,8 +25,7 @@ kv = '''
         #            origin: self.center
         #    canvas.after:
         #        PopMatrix         
-        
-        Button:
+        Label:
             id:sq_pad
             text: 'Square Pad'
             size_hint_x: None
@@ -42,7 +41,7 @@ kv = '''
                 Line:
                     width:2
                     rectangle: (*self.pos,self.width,self.height)
-        Button:
+        Label:
             id:pad_right
             text: 'R'
             size_hint_x: .001 
@@ -55,7 +54,7 @@ kv = '''
         size_hint_y: None
         height: self.texture_size[1]
     
-    Button:
+    Label:
         text: 'Test pos'
         size_hint: (None, None)
         color:[1,1,1,1]
@@ -68,10 +67,12 @@ class ADKnob(BoxLayout):
 
     def on_touch_down(self, touch):
         print('Touch Down')
-        if self.collide_point(*touch.pos):
-            print('Touch in widget:', self.ids.sq_pad.to_widget(touch.pos, True))
-            return True
-        return False
+        if self.ids.sq_pad.collide_point(*touch.pos):
+            sq_xy = [touch.pos[i]-self.ids.sq_pad.pos[i] for i in range(2)]
+            print('Self transformed pos:', sq_xy)
+
+        return super().on_touch_down(touch)
+
 
 if __name__ == '__main__':
     kv_test = '''
