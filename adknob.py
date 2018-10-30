@@ -69,7 +69,9 @@ class ADKnob(BoxLayout):
         print('Touch Down')
         if self.ids.sq_pad.collide_point(*touch.pos):
             sq_xy = [touch.pos[i]-self.ids.sq_pad.pos[i] for i in range(2)]
+            scale_xy = [sq_xy[0] * 100//self.ids.sq_pad.width, sq_xy[1] * 100//self.ids.sq_pad.height]
             print('Self transformed pos:', sq_xy)
+            print('Transformed and scaled', scale_xy)
 
         return super().on_touch_down(touch)
 
