@@ -223,6 +223,8 @@ BoxLayout:
 
     class XYKnobApp(App):
         def build(self):
-            return Builder.load_string(kv)
+            b = Builder.load_string(kv)
+            print( b.ids.mypad.pos )
+            return b
 
     XYKnobApp().run()
