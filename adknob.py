@@ -14,7 +14,7 @@ kv = '''
             size_hint_x:.001
         Label:
             id:sq_pad
-            text: '-50'
+            text: str(root.adknob_attack_value + root.adknob_decay_value)
             font_size: 15
             size_hint_x: None
             width: self.size[1]
@@ -30,11 +30,11 @@ kv = '''
                 Line: # Attack Line
                     width: 2
                     cap: 'none'
-                    points: [sq_pad.center_x - 6,sq_pad.pos[1], sq_pad.center_x - 6, sq_pad.top] #offset from center
+                    points: [sq_pad.center_x,sq_pad.pos[1], sq_pad.center_x, sq_pad.top]
                 Line: # Decay Line
                     width: 2
                     cap: 'none'   
-                    points: [sq_pad.center_x + 6 ,sq_pad.pos[1], sq_pad.center_x + 6, sq_pad.top] #offset from center
+                    points: [sq_pad.right,sq_pad.pos[1], sq_pad.center_x, sq_pad.top]
             
                 Color:
                     rgba:[1,1,1,1]
@@ -74,7 +74,7 @@ class ADKnob(BoxLayout):
     def on_touch_down(self, touch):
         if self.ids.sq_pad.collide_point(*touch.pos):
             sq_xy = self.ids.sq_pad.to_widget(*touch.pos, True)
-            scale_xy = [int(sq_xy[0] * 100/(self.ids.sq_pad.width - 1)), int(sq_xy[1] * 100/(self.ids.sq_pad.height - 1))]
+            scale_xy = [int(sq_xy[0] * 101/(self.ids.sq_pad.width)), int(sq_xy[1] * 101/(self.ids.sq_pad.height))]
             print('Self transformed pos:', sq_xy)
             print('Transformed and scaled', scale_xy)
             print('pos', touch.pos)
