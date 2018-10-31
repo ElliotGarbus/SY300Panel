@@ -32,19 +32,23 @@ xykivystring = '''
 # from BoxLayout
 <XYKnob>
     orientation: 'vertical'
+    id: vbox
     BoxLayout:
         orientation: 'horizontal'
+        id: hbox
         Label:
             text: ''
+            width: 0.5 * ( vbox.width - mypad.width )
+            size_hint_x: None
         RelativeLayout:
             #Label:
             #    id: mybackground 
             Label:
                 id: mypad
                 width: self.height
+                size_hint_x: None
                 font_size: 15
                 text: str(root.xy_knob_xval) + ',' + str(root.xy_knob_yval)
-                size_hint_x: None
                 canvas.after:
                     Line:
                         points: root.xy_knob_trackx
@@ -52,7 +56,7 @@ xykivystring = '''
                         points: root.xy_knob_tracky
                     Line:
                         width: 2
-                        points: root.xy_knob_val
+                        points: [ root._val2pos(root.xy_knob_xval, root.xy_knob_yval), root._val2pos(root.xy_knob_xval, root.xy_knob_yval) ]
                     Color:
                         rgba: [ 1, 0, 0, .5 ]
                     Line:
@@ -97,6 +101,8 @@ xykivystring = '''
                 size_hint: (None,None)
             #end rellay
         Label:
+            width: 0.5 * ( vbox.width - mypad.width  )
+            size_hint_x: None
             text: ''
     Label:
         id: xytitle
@@ -116,8 +122,6 @@ class XYKnob(BoxLayout):
     xy_knob_trkval    = StringProperty( '' )
     xy_knob_trkvis    = BooleanProperty( False )
 
-    xy_knob_val       = ListProperty([  ] )  # i am going to be deleted...
-
     xy_knob_xlab      = StringProperty( 'X-axis' )
     xy_knob_xmin      = NumericProperty(   0 )
     xy_knob_xmax      = NumericProperty( 100 )
@@ -125,16 +129,24 @@ class XYKnob(BoxLayout):
 
     xy_knob_ylab      = StringProperty( 'Y-axis' )
     xy_knob_ymin      = NumericProperty( 0 )
-    xy_knob_yval      = NumericProperty( 0 )
     xy_knob_ymax      = NumericProperty( 100 )
+    xy_knob_yval      = NumericProperty( 0 )
 
     xy_knob_title     = StringProperty( 'Title' )
     xy_knob_crosshair = BooleanProperty( False )
   
 
+    def _val2pos(self, valx, valy ):
+    #
+    # convert from a value back to a position
+    #
+        xv = (valx - self.xy_knob_xmin) / (self.xy_knob_xmax - self.xy_knob_xmin) * self.ids.mypad.width
+        yv = (valy - self.xy_knob_ymin) / (self.xy_knob_ymax - self.xy_knob_ymin) * self.ids.mypad.height
+        return xv, yv
+
     def _compute_pos_and_val(self,touch):
     #
-    # function determines the touch positionin a mypad cordinate space
+    # determine the touch positionin a mypad cordinate space
     # clamps that position tothe size of mypad (overkill until until we move!)
     # and converts the cordinates into x,y values
     #
@@ -206,17 +218,17 @@ class XYKnob(BoxLayout):
             # remove tracking lines and tracking label
             del(self.xy_knob_trackx[0:] )
             del(self.xy_knob_tracky[0:] )
-            #self.xy_knob_trkval = ''
+            self.xy_knob_trkval = ''
 
             rel_pos,xval,yval = self._compute_pos_and_val(touch)
-          
             # re-title the axis with the new value
             #self.ids.x_axis.text = self.xy_knob_xlab + "= " + str(xval)
             #self.ids.y_axis.text = self.xy_knob_ylab + "= " + str(yval)
 
             # Now move the dot to the new position
-            del(self.xy_knob_val[0:])
-            self.xy_knob_val.extend( ( rel_pos, rel_pos ) )
+            self.xy_knob_xval = xval
+            self.xy_knob_yval = yval
+
 
             return True
         return super().on_touch_up(touch)
