@@ -103,7 +103,10 @@ class ADKnob(BoxLayout):
     def on_touch_up(self, touch):
         if touch.is_mouse_scrolling and touch.grab_current is self:
             print('mouse scroll, ndx:', self.adknob_ndx)
-            self.adknob_ndx = sorted((0, self.adknob_ndx + self._scroll_direction[touch.button], 100))[1]
+            #self.adknob_ndx = sorted((0, self.adknob_ndx + self._scroll_direction[touch.button], 100))[1]
+            self.adknob_ndx = self.adknob_ndx + self._scroll_direction[touch.button]
+            print('mouse scroll, dir:',self._scroll_direction[touch.button])
+
             return super().on_touch_up(touch)
         elif touch.grab_current is self:
             touch.ungrab(self)
