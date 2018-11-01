@@ -30,18 +30,17 @@ kv = '''
                 Line: # Attack Line
                     width: 2
                     cap: 'none'
-                    points: [root.adknob_attack_pos, sq_pad.pos[1], sq_pad.center_x, sq_pad.top]
+                    points: [root._ndx_to_pos(root.adknob_ndx)['attack'], sq_pad.pos[1], sq_pad.center_x, sq_pad.top]
                 Line: # Decay Line
                     width: 2
                     cap: 'none'   
-                    points: [root.adknob_decay_pos, sq_pad.pos[1], sq_pad.center_x, sq_pad.top]
+                    points: [root._ndx_to_pos(root.adknob_ndx)['decay'], sq_pad.pos[1], sq_pad.center_x, sq_pad.top]
             
                 Color:
                     rgba:[1,1,1,1]
                 Line:
                     width:2
-                    rectangle: (*self.pos,self.width,self.height)
-
+                    rectangle: (*self.pos,self.width,self.height)                
                 
         Label:
             id:pad_right
@@ -58,60 +57,52 @@ kv = '''
         size_hint: (None, None)
         color:[1,1,1,1]
         size: self.texture_size
-        pos: (sq_pad.pos[0] + 20,sq_pad.pos[1] + 20) 
+        pos: (sq_pad.pos[0] + 20,sq_pad.pos[1] + 20)
+        
 '''
 
 
 class ADKnob(BoxLayout):
-    adknob_decay_pos = NumericProperty(0)   # position from 0 to center
-    adknob_attack_pos = NumericProperty(0)  # Position from center to right
-    adknob_ndx = NumericProperty(0)         # from 0 to 100
+    adknob_ndx = NumericProperty(50)         # from 0 to 100
 
+    def _ndx_to_pos(self, index): # need to pass adknob_ndx for KV to force update on change
+        center_x = self.ids.sq_pad.center_x
+        zero_attack = center_x
+        zero_decay = self.ids.sq_pad.right
+        curr_x = self.ids.sq_pad.width/100 * index + self.ids.sq_pad.x
+
+        if index <50: # left of center, adjust attack, zero delay
+            attack_pos = max(curr_x, self.ids.sq_pad.x)
+            decay_pos = zero_decay
+        elif index > 50:  # Right of center, set decay, zero attack
+            attack_pos = zero_attack
+            decay_pos = min(curr_x, self.ids.sq_pad.right)
+        else:  # zero
+            attack_pos = zero_attack
+            decay_pos = zero_decay
+        return {'attack':attack_pos,'decay':decay_pos}
 
     def on_touch_down(self, touch):
         if self.ids.sq_pad.collide_point(*touch.pos):
             touch.grab(self)
             sq_xy = self.ids.sq_pad.to_widget(*touch.pos, True)
-            scale_xy = [int(sq_xy[0] * 100/(self.ids.sq_pad.width)), int(sq_xy[1] * 100/(self.ids.sq_pad.height))]
-            print('Self transformed pos:', sq_xy)
-            print('Transformed and scaled', scale_xy)
-            print('pos', touch.pos)
-            print('to local', self.ids.sq_pad.to_widget(*touch.pos, True))
-        return super().on_touch_down(touch)
+            self.adknob_ndx = sorted([0, int(sq_xy[0] * 100 / (self.ids.sq_pad.width)), 100])[1]
+            self._ndx_to_pos(self.adknob_ndx)
+            return super().on_touch_down(touch)
+        return False
 
     def on_touch_move(self, touch):
         if touch.grab_current is self:
-            print('on touch move')
-            sq_xy= self.ids.sq_pad.to_widget(*touch.pos, True)
-            #clamp the move to stay in sq_pad
-            sq_x = sorted([0, int(sq_xy[0]),self.ids.sq_pad.width])[1]  # from 0 to width in pixels
-            print('sq_x', sq_x)
-            center_x = self.ids.sq_pad.center_x - self.ids.sq_pad.pos[0]
-
-            if sq_x == center_x:    # at center, set value to zero
-                self.adknob_decay_pos = self.ids.sq_pad.rigth
-                self.adknob_attack_pos = self.ids.sq_pad.center[0]
-                self.adknob_ndx = 50 # values go from [-50 to +50] 50 value is a 0 ndx
-            if sq_x < self.ids.sq_pad.center[0]:  # left of center set attack, zero decay
-                self.ids.adknob_decay_pos = self.ids.sq_pad.right
-                self.ids.adknob_attack_pos = sq_x
-                self.ids.adknob_attack_value = sq_x - 50 # 
-
-
-
-
-            return True
+            sq_xy = self.ids.sq_pad.to_widget(*touch.pos, True)
+            self.adknob_ndx = sorted([0, int(sq_xy[0] * 100/(self.ids.sq_pad.width)), 100])[1]
+            self._ndx_to_pos(self.adknob_ndx)
+            return super().on_touch_move(touch)
         return False
 
     def on_touch_up(self, touch):
-        #if touch.is_mouse_scrolling and touch.grab_current is self:
-            # sorted(min, val, max)[1] works to clamp val to floor or ceiling
-            #self.knob_ndx = (sorted((0, self.knob_ndx + self._scroll_direction[touch.button],
-            #                        len(self.knob_vals) - 1))[1])
-            #return True
         if touch.grab_current is self:
             touch.ungrab(self)
-            return True
+            return super().on_touch_up(touch)
         return False
 
 if __name__ == '__main__':
