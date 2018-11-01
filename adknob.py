@@ -30,12 +30,12 @@ kv = '''
                 Line: # Attack Line
                     width: 2
                     cap: 'none'
-                    points: [root._ndx_to_pos(root.adknob_ndx)['attack'], sq_pad.pos[1], sq_pad.center_x, sq_pad.top]
+                    points: [sq_pad.center_x if(root.adknob_ndx > 50) else  sq_pad.x + root.adknob_ndx/100 * sq_pad.width, sq_pad.pos[1], sq_pad.center_x, sq_pad.top]
+                    
                 Line: # Decay Line
                     width: 2
                     cap: 'none'   
-                    points: [root._ndx_to_pos(root.adknob_ndx)['decay'], sq_pad.pos[1], sq_pad.center_x, sq_pad.top]
-            
+                    points: [sq_pad.right if (root.adknob_ndx < 51) else sq_pad.x + root.adknob_ndx/100 * sq_pad.width , sq_pad.pos[1], sq_pad.center_x, sq_pad.top]
                 Color:
                     rgba:[1,1,1,1]
                 Line:
@@ -66,23 +66,6 @@ class ADKnob(BoxLayout):
     adknob_ndx = NumericProperty(50)         # from 0 to 100
     _scroll_direction = {'scrollup': 1, 'scrolldown': -1}
 
-    def _ndx_to_pos(self, index): # need to pass adknob_ndx for KV to force update on change
-        center_x = self.ids.sq_pad.center_x
-        zero_attack = center_x
-        zero_decay = self.ids.sq_pad.right
-        curr_x = self.ids.sq_pad.width/100 * index + self.ids.sq_pad.x
-
-        if index <50: # left of center, adjust attack, zero delay
-            attack_pos = max(curr_x, self.ids.sq_pad.x)
-            decay_pos = zero_decay
-        elif index > 50:  # Right of center, set decay, zero attack
-            attack_pos = zero_attack
-            decay_pos = min(curr_x, self.ids.sq_pad.right)
-        else:  # zero
-            attack_pos = zero_attack
-            decay_pos = zero_decay
-        return {'attack':attack_pos,'decay':decay_pos}
-
     def _touch_to_ndx(self, touch):
         sq_xy = self.ids.sq_pad.to_widget(*touch.pos, True)
         self.adknob_ndx = sorted([0, int(sq_xy[0] * 100 / (self.ids.sq_pad.width)), 100])[1]
@@ -90,7 +73,8 @@ class ADKnob(BoxLayout):
     def on_touch_down(self, touch):
         if self.ids.sq_pad.collide_point(*touch.pos):
             touch.grab(self)
-            self._touch_to_ndx(touch)
+            if  not touch.is_mouse_scrolling:
+                self._touch_to_ndx(touch)
             return super().on_touch_down(touch)
         return False
 
@@ -100,13 +84,9 @@ class ADKnob(BoxLayout):
             return super().on_touch_move(touch)
         return False
 
-    def on_touch_up(self, touch):
+    def on_touch_up(self, touch): 
         if touch.is_mouse_scrolling and touch.grab_current is self:
-            print('mouse scroll, ndx:', self.adknob_ndx)
-            #self.adknob_ndx = sorted((0, self.adknob_ndx + self._scroll_direction[touch.button], 100))[1]
-            self.adknob_ndx = self.adknob_ndx + self._scroll_direction[touch.button]
-            print('mouse scroll, dir:',self._scroll_direction[touch.button])
-
+            self.adknob_ndx = sorted((0, self.adknob_ndx + self._scroll_direction[touch.button], 100))[1]
             return super().on_touch_up(touch)
         elif touch.grab_current is self:
             touch.ungrab(self)
