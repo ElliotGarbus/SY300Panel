@@ -10,7 +10,7 @@ kv = '''
     BoxLayout:
         Label:
             id:pad_left
-            text:'L'
+            text:''
             size_hint_x:.001
         Label:
             id:sq_pad
@@ -44,7 +44,7 @@ kv = '''
                 
         Label:
             id:pad_right
-            text: 'R'
+            text: ''
             size_hint_x: .001 
     Label:
         text: 'AMP ENV'
@@ -52,13 +52,21 @@ kv = '''
         size_hint_y: None
         height: self.texture_size[1]
     
+
     Label:
-        text: 'Test pos:' # + str()
+        text: 'Slow\\nAttack' 
         size_hint: (None, None)
-        color:[1,1,1,1]
+        color:[.4, .4 , .4, .7 ]
         size: self.texture_size
-        pos: (sq_pad.pos[0] + 20,sq_pad.pos[1] + 20)
-        
+        pos: (sq_pad.x +2, sq_pad.y)
+    
+    Label:
+        id: sdecay
+        text: 'Shorten\\nDecay' 
+        size_hint: (None, None)
+        color:[.4, .4 , .4, .7 ]
+        size: self.texture_size
+        pos: (sq_pad.right - self.width, sq_pad.y)   
 '''
 
 
@@ -73,7 +81,7 @@ class ADKnob(BoxLayout):
     def on_touch_down(self, touch):
         if self.ids.sq_pad.collide_point(*touch.pos):
             touch.grab(self)
-            if  not touch.is_mouse_scrolling:
+            if not touch.is_mouse_scrolling:
                 self._touch_to_ndx(touch)
             return super().on_touch_down(touch)
         return False
