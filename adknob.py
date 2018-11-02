@@ -3,7 +3,7 @@ from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import NumericProperty
 
-kv = '''
+Builder.load_string('''
 <ADKnob>
     orientation: 'vertical'
     BoxLayout:
@@ -51,7 +51,6 @@ kv = '''
         size_hint_y: None
         height: self.texture_size[1]
     
-
     Label:
         text: 'Slow\\nAttack' 
         size_hint: (None, None)
@@ -60,13 +59,12 @@ kv = '''
         pos: (sq_pad.x +4, sq_pad.top - self.height -2)
     
     Label:
-        id: sdecay
         text: ' Short\\nDecay' 
         size_hint: (None, None)
         color:[.4, .4 , .4, .7 ]
         size: self.texture_size
         pos: (sq_pad.right - self.width -4, sq_pad.top - self.height -2)   
-'''
+''')
 
 
 class ADKnob(BoxLayout):
@@ -118,11 +116,11 @@ GridLayout:
     '''
 
 
-class ADKnobApp(App):
+    class ADKnobApp(App):
 
 
-    def build(self):
-        return Builder.load_string(kv + kv_test)
+        def build(self):
+            return Builder.load_string(kv_test)
 
-ADKnobApp().run()
+    ADKnobApp().run()
 
