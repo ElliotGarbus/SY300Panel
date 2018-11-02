@@ -3,7 +3,6 @@ from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import NumericProperty
 
-
 kv = '''
 <ADKnob>
     orientation: 'vertical'
@@ -35,12 +34,12 @@ kv = '''
                 Line: # Decay Line
                     width: 2
                     cap: 'none'   
-                    points: [sq_pad.right if (root.adknob_ndx < 51) else sq_pad.x + root.adknob_ndx/100 * sq_pad.width , sq_pad.pos[1], sq_pad.center_x, sq_pad.top]
+                    points: [sq_pad.right if (root.adknob_ndx < 51) else  sq_pad.right + (50-root.adknob_ndx)/100 * sq_pad.width, sq_pad.pos[1], sq_pad.center_x, sq_pad.top]
                 Color:
                     rgba:[1,1,1,1]
                 Line:
                     width:2
-                    rectangle: (*self.pos,self.width,self.height)                
+                    rectangle: (*self.pos,self.width,self.height)
                 
         Label:
             id:pad_right
@@ -58,15 +57,15 @@ kv = '''
         size_hint: (None, None)
         color:[.4, .4 , .4, .7 ]
         size: self.texture_size
-        pos: (sq_pad.x +2, sq_pad.y)
+        pos: (sq_pad.x +4, sq_pad.y +2)
     
     Label:
         id: sdecay
-        text: 'Shorten\\nDecay' 
+        text: ' Short\\nDecay' 
         size_hint: (None, None)
         color:[.4, .4 , .4, .7 ]
         size: self.texture_size
-        pos: (sq_pad.right - self.width, sq_pad.y)   
+        pos: (sq_pad.right - self.width -4, sq_pad.y +2)   
 '''
 
 
