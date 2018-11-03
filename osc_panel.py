@@ -9,7 +9,7 @@ kv = """
 <LFO@GridLayout>
     rows:2
     cols:4
-    size_hint_x: .8
+    size_hint_x: .8 # Widest panel has 5 knobs, LFO is 4 knobs wide 4/5 = 0.8
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
