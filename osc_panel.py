@@ -95,6 +95,7 @@ GridLayout: # Holds all panels
     Button:
         text: 'Three'
         size_hint_x: .1
+    
     Button:
         text: 'Four'
         size_hint_x: .1
