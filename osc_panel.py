@@ -58,6 +58,14 @@ GridLayout: # Holds all panels
     GridLayout:
         rows: 2
         cols: 3
+        canvas.after:
+            Color:
+                rgba:[.4, .4 , .4, .7 ]
+            Line:
+                width:2
+                rounded_rectangle: (*self.pos,self.width,self.height, 2)
+
+        
         BoxLayout:
             orientation: 'vertical'
             Spinner:
