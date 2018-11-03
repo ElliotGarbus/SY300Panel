@@ -5,6 +5,71 @@ kv = """
 #:import XYKnob xyknob
 #:import CircleKnob circleknob
 #:import ADKnob adknob
+
+<LFO@GridLayout>
+    rows:2
+    cols:4
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            padding: 5
+            orientation: 'vertical'
+            canvas.after:
+                Color:
+                    rgba:[.4, .4 , .4, .7 ]
+                Line:
+                    width:2
+                    rounded_rectangle: (*self.pos,*self.size, 2) # *self.size
+            Label:    
+                text: 'LFO'
+            Switch:
+        Spinner:
+            text: 'Wave'
+            values: ['SIN', 'SAW UP', 'SAW DOWN','TRI', 'SQR', 'RANDOM', 'S & H']
+         
+    CircleKnob:
+        knob_title: 'PTCH DPTH'
+    CircleKnob:
+        knob_title: 'FLTR DPTH'
+    CircleKnob:
+        knob_title: 'AMP DPTH' 
+    BoxLayout:
+        canvas.after:
+            Color:
+                rgba:[.4, .4 , .4, .7 ]
+            Line:
+                width:2
+                rounded_rectangle: (*self.pos,self.width *2, self.height, 2)
+        BoxLayout:
+            orientation: 'vertical'
+            Label:    
+                text: 'RATE/BPM'
+            Spinner:
+                text: 'RATE'
+                values: ['0-100', 'Whole Note', 'Dotted Half Note', 'Triplet Whole Note', 'Half Note', 'Dotted Qtr Note', 'Triplet of Half Note', 'Qtr Note', 'Dotted 8th Note', 'Triplet of Qtr Note', '8th Note', 'Dotted 16th Note','Triplet of 8th Note', '16th Note', 'Dotted 32th Note', 'Triplet of 16th Note', '32th Note']                     
+    CircleKnob:
+        knob_title: 'RATE'          
+    BoxLayout:
+        canvas.after:
+            Color:
+                rgba:[.4, .4 , .4, .7 ]
+            Line:
+                width:2
+                rounded_rectangle: (*self.pos,self.width *2, self.height, 2)
+        BoxLayout:
+            orientation: 'vertical'
+            Label:    
+                text: 'Dynamic Depth'
+            Switch:                
+    CircleKnob:
+        knob_title: 'FADE TIME' 
+#------------END LFO DEFINITION                            
+            
+
+
+
+
+
 GridLayout: # Holds all panels
     rows: 3
     cols: 4
@@ -91,14 +156,12 @@ GridLayout: # Holds all panels
             knob_title: 'LEVEL'
         CircleKnob: 
             knob_title: 'PAN'   
-        
-    Button:
-        text: 'Three'
-        size_hint_x: .1
-    
-    Button:
-        text: 'Four'
-        size_hint_x: .1
+                                
+    LFO:
+        id: LFO_1_1
+    LFO:
+        id: LFO_1_2          
+
 #------------------------------------------------OSC 2 Wave Panel ------------------------------        
     GridLayout: 
         rows: 2
@@ -189,12 +252,11 @@ GridLayout: # Holds all panels
         CircleKnob: 
             knob_title: 'PAN'   
 
-    Button:
-        text: 'Seven'
-        size_hint_x: .1
-    Button:
-        text: 'Eight'
-        size_hint_x: .1
+    LFO:
+        id: LFO_2_1
+    LFO:
+        id: LFO_2_2          
+
 #  ------------------------------------------------OSC 3 Wave Panel ------------------------------        
     GridLayout: 
         rows: 2
@@ -283,12 +345,11 @@ GridLayout: # Holds all panels
         CircleKnob: 
             knob_title: 'PAN'   
         
-    Button:
-        text: 'Elven'
-        size_hint_x: .1
-    Button:
-        text: 'Twelve'
-        size_hint_x: .1
+    LFO:
+        id: LFO_3_1
+    LFO:
+        id: LFO_3_2          
+
         
         
 """
