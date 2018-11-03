@@ -66,6 +66,8 @@ GridLayout: # Holds all panels
             Spinner:
                 text: 'Slope'
                 values: ['-12 dB', '-24 dB']
+            Label:
+                text:''
         
         XYKnob:
             xy_knob_title:'Filter'
@@ -78,6 +80,7 @@ GridLayout: # Holds all panels
             xy_knob_ylab: 'DEPTH'
   
         ADKnob:
+        
         CircleKnob:
             knob_title: 'LEVEL'
         CircleKnob: 

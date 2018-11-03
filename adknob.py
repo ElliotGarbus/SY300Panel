@@ -6,40 +6,58 @@ from kivy.properties import NumericProperty
 Builder.load_string('''
 <ADKnob>
     orientation: 'vertical'
+    id:vbox
     BoxLayout:
         Label:
             id:pad_left
             text:''
-            size_hint_x:.001
-        Label:
-            id:sq_pad
-            text: str(root.adknob_ndx - 50)
-            font_size: 15
-            size_hint_x: None
-            width: self.size[1]
-            canvas.before:
-                Color:
-                    rgba: [.4, .4 , .4, .5 ]
-                Line:  # Middle Bar
-                    width:4
-                    cap: 'none'
-                    points:[(sq_pad.center_x,sq_pad.pos[1]), (sq_pad.center_x, sq_pad.top)]
-                Color:
-                    rgba: [0, 0 , 1, .9]
-                Line: # Attack Line
-                    width: 2
-                    cap: 'none'
-                    points: [sq_pad.center_x if(root.adknob_ndx > 50) else  sq_pad.x + root.adknob_ndx/100 * sq_pad.width, sq_pad.y, sq_pad.center_x, sq_pad.top]
+            width: 0.5 * (vbox.width - sq_pad.width)
+            size_hint_x:None
+        RelativeLayout:
+            Label:
+                id:sq_pad
+                text: str(root.adknob_ndx - 50)
+                font_size: 15
+                size_hint_x: None
+                width: self.size[1]
+                canvas.before:
+                    Color:
+                        rgba: [.4, .4 , .4, .5 ]
+                    Line:  # Middle Bar
+                        width:4
+                        cap: 'none'
+                        points:[(sq_pad.center_x,sq_pad.pos[1]), (sq_pad.center_x, sq_pad.top)]
+                    Color:
+                        rgba: [0, 0 , 1, .9]
+                    Line: # Attack Line
+                        width: 2
+                        cap: 'none'
+                        points: [sq_pad.center_x if(root.adknob_ndx > 50) else  sq_pad.x + root.adknob_ndx/100 * sq_pad.width, sq_pad.y, sq_pad.center_x, sq_pad.top]
+                        
+                    Line: # Decay Line
+                        width: 2
+                        cap: 'none'   
+                        points: [sq_pad.right if (root.adknob_ndx < 51) else  sq_pad.right + (50-root.adknob_ndx)/100 * sq_pad.width, sq_pad.y, sq_pad.center_x, sq_pad.top]
+                    Color:
+                        rgba:[.4, .4 , .4, .7 ]
+                    Line:
+                        width:2
+                        rectangle: (*self.pos,self.width,self.height)
                     
-                Line: # Decay Line
-                    width: 2
-                    cap: 'none'   
-                    points: [sq_pad.right if (root.adknob_ndx < 51) else  sq_pad.right + (50-root.adknob_ndx)/100 * sq_pad.width, sq_pad.y, sq_pad.center_x, sq_pad.top]
-                Color:
-                    rgba:[.4, .4 , .4, .7 ]
-                Line:
-                    width:2
-                    rectangle: (*self.pos,self.width,self.height)
+            Label:
+                text: 'Slow\\nAttack' 
+                size_hint: (None, None)
+                color:[.4, .4 , .4, .7 ]
+                size: self.texture_size
+                pos: (sq_pad.x +4, sq_pad.top - self.height -2)
+            
+            Label:
+                text: ' Short\\nDecay' 
+                size_hint: (None, None)
+                color:[.4, .4 , .4, .7 ]
+                size: self.texture_size
+                pos: (sq_pad.right - self.width -4, sq_pad.top - self.height -2)   
+
                 
         Label:
             id:pad_right
@@ -50,20 +68,6 @@ Builder.load_string('''
         font_size: 15
         size_hint_y: None
         height: self.texture_size[1]
-    
-    Label:
-        text: 'Slow\\nAttack' 
-        size_hint: (None, None)
-        color:[.4, .4 , .4, .7 ]
-        size: self.texture_size
-        pos: (sq_pad.x +4, sq_pad.top - self.height -2)
-    
-    Label:
-        text: ' Short\\nDecay' 
-        size_hint: (None, None)
-        color:[.4, .4 , .4, .7 ]
-        size: self.texture_size
-        pos: (sq_pad.right - self.width -4, sq_pad.top - self.height -2)   
 ''')
 
 
@@ -76,7 +80,7 @@ class ADKnob(BoxLayout):
         self.adknob_ndx = sorted([0, int(sq_xy[0] * 100 / (self.ids.sq_pad.width)), 100])[1]
 
     def on_touch_down(self, touch):
-        if self.ids.sq_pad.collide_point(*touch.pos):
+        if self.collide_point(*touch.pos):
             touch.grab(self)
             if not touch.is_mouse_scrolling:
                 self._touch_to_ndx(touch)
