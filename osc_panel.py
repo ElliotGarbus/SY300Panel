@@ -64,8 +64,6 @@ GridLayout: # Holds all panels
             Line:
                 width:2
                 rounded_rectangle: (*self.pos,self.width,self.height, 2)
-
-        
         BoxLayout:
             orientation: 'vertical'
             Spinner:
@@ -163,7 +161,7 @@ GridLayout: # Holds all panels
     Button:
         text: 'Eight'
         size_hint_x: .1
-    #  ------------------------------------------------OSC 2 Wave Panel ------------------------------        
+    #  ------------------------------------------------OSC 3 Wave Panel ------------------------------        
     GridLayout: 
         rows: 2
         cols: 5
@@ -178,7 +176,7 @@ GridLayout: # Holds all panels
             orientation: 'vertical'
             spacing:2
             ToggleButton:
-                text: 'OSC 2'      
+                text: 'OSC 3'      
             Spinner:
                 text: 'SAW'
                 values: ['SIN', 'SAW', 'TRI', 'SQR', 'PWM', 'DETUNE SAW', 'NOISE', 'INPUT']
@@ -208,10 +206,8 @@ GridLayout: # Holds all panels
         XYKnob:
             xy_knob_title:'PITCH ENV'
             xy_knob_xlab: 'ATTACK'
-            xy_knob_ylab: 'DEPTH'
-        
-        
-        
+            xy_knob_ylab: 'DEPTH'                          
+#----------------------------------------------------------                                  
         CircleKnob:
             knob_title: 'PBEND DEPTH'
         CircleKnob:
