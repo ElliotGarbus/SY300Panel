@@ -9,7 +9,7 @@ GridLayout: # Holds all panels
     rows: 3
     cols: 4
     spacing: 5
- #------------------------------------------ OSC 1 Wave Panel ------------------------------------------    
+#------------------------------------------ OSC 1 Wave Panel ------------------------------------------    
     GridLayout:
         rows: 2
         cols: 5
@@ -98,7 +98,7 @@ GridLayout: # Holds all panels
     Button:
         text: 'Four'
         size_hint_x: .1
-#  ------------------------------------------------OSC 2 Wave Panel ------------------------------        
+#------------------------------------------------OSC 2 Wave Panel ------------------------------        
     GridLayout: 
         rows: 2
         cols: 5
@@ -144,9 +144,7 @@ GridLayout: # Holds all panels
             xy_knob_title:'PITCH ENV'
             xy_knob_xlab: 'ATTACK'
             xy_knob_ylab: 'DEPTH'
-        
-        
-        
+      
         CircleKnob:
             knob_title: 'PBEND DEPTH'
         CircleKnob:
