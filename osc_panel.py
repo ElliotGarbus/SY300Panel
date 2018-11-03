@@ -150,16 +150,51 @@ GridLayout: # Holds all panels
         CircleKnob:
             knob_title: 'PBEND CTL'
         
-    Button:
-        text: 'Filter 2'
-        size_hint_x: .1
+#------------------------------------------ OSC 1 Filer Panel ------------------------------------------            
+    GridLayout:
+        rows: 2
+        cols: 3
+        canvas.after:
+            Color:
+                rgba:[.4, .4 , .4, .7 ]
+            Line:
+                width:2
+                rounded_rectangle: (*self.pos,self.width,self.height, 2)
+        BoxLayout:
+            orientation: 'vertical'
+            Spinner:
+                text: 'Type'
+                values: ['BYPASS', 'LPF', 'HPF', 'BPF', 'PKG']
+            Spinner:
+                text: 'Slope'
+                values: ['-12 dB', '-24 dB']
+            Label:
+                text:''
+        
+        XYKnob:
+            xy_knob_title:'Filter'
+            xy_knob_xlab: 'CUTOFF'
+            xy_knob_ylab: 'RESO'
+        
+        XYKnob:
+            xy_knob_title:'ENV'
+            xy_knob_xlab: 'ATTACK'
+            xy_knob_ylab: 'DEPTH'
+  
+        ADKnob:
+        
+        CircleKnob:
+            knob_title: 'LEVEL'
+        CircleKnob: 
+            knob_title: 'PAN'   
+
     Button:
         text: 'Seven'
         size_hint_x: .1
     Button:
         text: 'Eight'
         size_hint_x: .1
-    #  ------------------------------------------------OSC 3 Wave Panel ------------------------------        
+#  ------------------------------------------------OSC 3 Wave Panel ------------------------------        
     GridLayout: 
         rows: 2
         cols: 5
@@ -204,16 +239,49 @@ GridLayout: # Holds all panels
         XYKnob:
             xy_knob_title:'PITCH ENV'
             xy_knob_xlab: 'ATTACK'
-            xy_knob_ylab: 'DEPTH'                          
-#----------------------------------------------------------                                  
+            xy_knob_ylab: 'DEPTH'                                                        
         CircleKnob:
             knob_title: 'PBEND DEPTH'
         CircleKnob:
             knob_title: 'PBEND CTL'
-
-    Button:
-        text: 'Filter 3'
-        size_hint_x: .1 
+#------------------------------------------ OSC 3 Filer Panel ------------------------------------------            
+    GridLayout:
+        rows: 2
+        cols: 3
+        canvas.after:
+            Color:
+                rgba:[.4, .4 , .4, .7 ]
+            Line:
+                width:2
+                rounded_rectangle: (*self.pos,self.width,self.height, 2)
+        BoxLayout:
+            orientation: 'vertical'
+            Spinner:
+                text: 'Type'
+                values: ['BYPASS', 'LPF', 'HPF', 'BPF', 'PKG']
+            Spinner:
+                text: 'Slope'
+                values: ['-12 dB', '-24 dB']
+            Label:
+                text:''
+        
+        XYKnob:
+            xy_knob_title:'Filter'
+            xy_knob_xlab: 'CUTOFF'
+            xy_knob_ylab: 'RESO'
+        
+        XYKnob:
+            xy_knob_title:'ENV'
+            xy_knob_xlab: 'ATTACK'
+            xy_knob_ylab: 'DEPTH'
+  
+        ADKnob:
+        
+        CircleKnob:
+            knob_title: 'LEVEL'
+        CircleKnob: 
+            knob_title: 'PAN'   
+        
     Button:
         text: 'Elven'
         size_hint_x: .1
