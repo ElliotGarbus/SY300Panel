@@ -11,7 +11,7 @@ Builder.load_string('''
         Label:
             id:pad_left
             text:''
-            width: 0.5 * (vbox.width - sq_pad.width)
+            width: 0.5 * (vbox.width - sq_pad.width) # set widths forces Box + Relativelayout to behave
             size_hint_x:None
         RelativeLayout:
             Label:
