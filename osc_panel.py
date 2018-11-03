@@ -9,6 +9,7 @@ kv = """
 <LFO@GridLayout>
     rows:2
     cols:4
+    size_hint_x: .8
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
@@ -64,11 +65,6 @@ kv = """
     CircleKnob:
         knob_title: 'FADE TIME' 
 #------------END LFO DEFINITION                            
-            
-
-
-
-
 
 GridLayout: # Holds all panels
     rows: 3
@@ -119,8 +115,9 @@ GridLayout: # Holds all panels
             knob_title: 'PBEND DEPTH'
         CircleKnob:
             knob_title: 'PBEND CTL'
-#------------------------------------------ OSC 1 Filer Panel ------------------------------------------            
+#------------------------------------------ OSC 1 Filter Panel ------------------------------------------            
     GridLayout:
+        size_hint_x: .6
         rows: 2
         cols: 3
         canvas.after:
@@ -214,10 +211,11 @@ GridLayout: # Holds all panels
         CircleKnob:
             knob_title: 'PBEND CTL'
         
-#------------------------------------------ OSC 1 Filer Panel ------------------------------------------            
+#------------------------------------------ OSC 2 Filer Panel ------------------------------------------            
     GridLayout:
         rows: 2
         cols: 3
+        size_hint_x: .6
         canvas.after:
             Color:
                 rgba:[.4, .4 , .4, .7 ]
@@ -307,10 +305,11 @@ GridLayout: # Holds all panels
             knob_title: 'PBEND DEPTH'
         CircleKnob:
             knob_title: 'PBEND CTL'
-#------------------------------------------ OSC 3 Filer Panel ------------------------------------------            
+#------------------------------------------ OSC 3 Filter Panel ------------------------------------------            
     GridLayout:
         rows: 2
         cols: 3
+        size_hint_x:.6
         canvas.after:
             Color:
                 rgba:[.4, .4 , .4, .7 ]
