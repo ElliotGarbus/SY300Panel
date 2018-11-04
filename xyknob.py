@@ -53,7 +53,10 @@ xykivystring = '''
                         points: root.xy_knob_tracky
                     Line:
                         width: 2
-                        points: [ root._val2pos(root.xy_knob_xval, root.xy_knob_yval), root._val2pos(root.xy_knob_xval, root.xy_knob_yval) ]
+                        #not too ugly, but does not resize
+                        #points: [ root._val2pos(root.xy_knob_xval, root.xy_knob_yval), root._val2pos(root.xy_knob_xval, root.xy_knob_yval) ]
+                        #ugly, but resizes properly
+                        points: [ (root.xy_knob_xval - root.xy_knob_xmin) / (root.xy_knob_xmax - root.xy_knob_xmin) * self.width, (root.xy_knob_yval - root.xy_knob_ymin) / (root.xy_knob_ymax - root.xy_knob_ymin) * self.height, (root.xy_knob_xval - root.xy_knob_xmin) / (root.xy_knob_xmax - root.xy_knob_xmin) * self.width, (root.xy_knob_yval - root.xy_knob_ymin) / (root.xy_knob_ymax - root.xy_knob_ymin) * self.height, ]
                     Color:
                         rgba: [ 1, 0, 0, .5 ]
                     Line:
