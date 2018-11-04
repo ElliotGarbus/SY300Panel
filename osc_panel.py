@@ -1,12 +1,14 @@
 from kivy.app import App
 from kivy.lang import Builder
+from kivy.uix.gridlayout import GridLayout
+from kivy.properties import BooleanProperty, StringProperty
 
 kv = """
 #:import XYKnob xyknob
 #:import CircleKnob circleknob
 #:import ADKnob adknob
 
-<OSC@GridLayout>
+<OSC>
     rows: 2
     cols: 5
     canvas.after:
@@ -20,17 +22,21 @@ kv = """
         orientation: 'vertical'
         spacing:2
         ToggleButton:
-            text: 'OSC TBD'      
+            text: root.text      
         Spinner:
             text: 'SAW'
             values: ['SIN', 'SAW', 'TRI', 'SQR', 'PWM', 'DETUNE SAW', 'NOISE', 'INPUT']
         BoxLayout:
             ToggleButton:
                 text: 'Ring'
-                size_hint_x: .5                            
+                size_hint_x: .5
+                opacity:   0 if root.is_osc_1 is True else 1
+                disabled:  1 if root.is_osc_1 is True else 0                        
             Spinner:
                 text: 'Sync'
-                values: ['Sync Off', 'Sync On', 'Sync LoFi']                 
+                values: ['Sync Off', 'Sync On', 'Sync LoFi']
+                opacity:   0 if root.is_osc_1 is True else 1
+                disabled:  1 if root.is_osc_1 is True else 0                 
             
     CircleKnob:
         knob_title: 'PITCH'
@@ -97,9 +103,15 @@ kv = """
         knob_title: 'PAN'   
 
 # --------------------------------------LFO ------------------------------
-<LFO@GridLayout> 
+<LFO> 
     rows:2
     cols:4
+    canvas.after:
+        Color:
+            rgba:[.4, .4 , .4, .7 ]
+        Line:
+            width:2
+            rounded_rectangle: (*self.pos,self.width,self.height, 2)
     size_hint_x: .8 # Widest panel has 5 knobs, LFO is 4 knobs wide 4/5 = 0.8
     BoxLayout:
         orientation: 'vertical'
@@ -113,10 +125,10 @@ kv = """
                     width:1
                     dash_offset: 2
                     dash_length: 5
-                    rounded_rectangle: (self.x, self.y + 5,self.width, self.height * .85, 2) # *self.size
+                    rounded_rectangle: (self.x + 5, self.y + 5,self.width -10, self.height * .85, 2) # *self.size
                     
             Label:    
-                text: 'LFO TBD'
+                text: root.text
             Switch:
         Spinner:
             size_hint_y: .4
@@ -134,7 +146,9 @@ kv = """
             Color:
                 rgba:[.4, .4 , .4, .7 ]
             Line:
-                width:2
+                width:1
+                dash_offset: 2
+                dash_length: 5
                 rounded_rectangle: (*self.pos,self.width *2, self.height, 2)
         BoxLayout:
             orientation: 'vertical'
@@ -143,7 +157,7 @@ kv = """
             Spinner:
                 size_hint_y: .4
                 text: 'RATE'
-                values: ['0-100', 'Whole Note', 'Dotted Half Note', 'Triplet Whole Note', 'Half Note', 'Dotted Qtr Note', 'Triplet of Half Note', 'Qtr Note', 'Dotted 8th Note', 'Triplet of Qtr Note', '8th Note', 'Dotted 16th Note','Triplet of 8th Note', '16th Note', 'Dotted 32th Note', 'Triplet of 16th Note', '32th Note']                     
+                values: ['0-100', 'Whole', 'Dotted Half', 'Triplet Whole', 'Half', 'Dotted Qtr', 'Triplet of Half', 'Qtr', 'Dotted 8th', 'Triplet of Qtr', '8th', 'Dotted 16th','Triplet of 8th', '16th', 'Dotted 32th', 'Triplet of 16th', '32th']                     
     CircleKnob:
         knob_title: 'RATE'          
     BoxLayout:
@@ -151,7 +165,9 @@ kv = """
             Color:
                 rgba:[.4, .4 , .4, .7 ]
             Line:
-                width:2
+                width:1
+                dash_offset: 2
+                dash_length: 5
                 rounded_rectangle: (*self.pos,self.width *2, self.height, 2)
         BoxLayout:
             orientation: 'vertical'
@@ -167,39 +183,57 @@ kv = """
 GridLayout: # Holds all panels
     rows: 3
     cols: 4
-    spacing: 5
+    spacing: 10
 #------------------------------------------ OSC 1 Controls -------------------------   
     OSC:
         id: osc_1
+        text: 'OSC 1'
+        is_osc_1: True
     Filter:
         id: filter_1
                                 
     LFO:
         id: LFO_1_1
+        text: 'LFO 1/1'
     LFO:
-        id: LFO_1_2          
+        id: LFO_1_2
+        text: 'LFO 1/2'         
 
 #------------------------------------------ OSC 2 Controls ------------------------------           
     OSC:
         id: osc_2
+        text: 'OSC 2'
     Filter:
         id: filter_2
     
     LFO:
         id: LFO_2_1
+        text: 'LFO 2/1'   
     LFO:
-        id: LFO_2_2          
+        id: LFO_2_2
+        text: 'LFO 2/2'             
 
 #------------------------------------------ OSC 3 Controls -------------------------------            
     OSC:
         id: osc_3
+        text: 'OSC 3'
     Filter:
         id: filter_3
     LFO:
         id: LFO_3_1
+        text: 'LFO 3/1'   
     LFO:
-        id: LFO_3_2          
+        id: LFO_3_2
+        text: 'LFO 3/2'            
 """
+
+class OSC(GridLayout):
+    is_osc_1 = BooleanProperty(False)
+    text = StringProperty('')
+
+class LFO(GridLayout):
+    text = StringProperty('')
+
 
 
 class PanelApp(App):
