@@ -105,14 +105,13 @@ kv = """
 # --------------------------------------LFO ------------------------------
 <LFO> 
     rows:2
-    cols:4
+    cols:5
     canvas.after:
         Color:
             rgba:[.4, .4 , .4, .7 ]
         Line:
             width:2
             rounded_rectangle: (*self.pos,self.width,self.height, 2)
-    size_hint_x: .8 # Widest panel has 5 knobs, LFO is 4 knobs wide 4/5 = 0.8
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
@@ -140,7 +139,12 @@ kv = """
     CircleKnob:
         knob_title: 'FLTR DPTH'
     CircleKnob:
-        knob_title: 'AMP DPTH' 
+        knob_title: 'AMP DPTH'
+    CircleKnob:
+        knob_title: 'PWM DPTH'
+    Label:
+        text:''
+         
     BoxLayout:
         canvas.after:
             Color:
