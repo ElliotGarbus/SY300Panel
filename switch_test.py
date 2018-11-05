@@ -3,7 +3,7 @@ from kivy.lang import Builder
 
 kv = '''
 BoxLayout:
-    BoxLayout:
+    BoxLayout:    #put the switch outside of the OSC wave box, it controls all the parts.
         id:outbox
         orientation: 'vertical'
         width: osc_name.texture_size[0]
