@@ -21,7 +21,7 @@ kv = """
     BoxLayout:
         orientation: 'vertical'
         spacing:2
-        ToggleButton:
+        Label:
             text: root.text      
         Spinner:
             text: 'SAW'
@@ -189,8 +189,26 @@ kv = """
 BoxLayout:
     BoxLayout:    #put the switch outside of the OSC wave box, it controls all the parts.
         orientation: 'vertical'
-        width: osc_name.texture_size[0]
+        width: 30
         size_hint_x: None   
+
+        Switch:
+            id:osc_sw_1
+            canvas.before:
+                PushMatrix
+                Rotate
+                    angle: 90
+                    origin: self.center
+            canvas.after:
+                PopMatrix                
+        Switch:
+            canvas.before:
+                PushMatrix
+                Rotate
+                    angle: 90
+                    origin: self.center
+            canvas.after:
+                PopMatrix                
         Switch:
             canvas.before:
                 PushMatrix
@@ -199,56 +217,8 @@ BoxLayout:
                     origin: self.center
             canvas.after:
                 PopMatrix         
-        Label:           
-            id:osc_name
-            text:'OSC 1'
-            halign: 'left' 
-            canvas.before:
-                PushMatrix
-                Rotate
-                    angle: 90
-                    origin: self.center
-            canvas.after:
-                PopMatrix 
-        Switch:
-            canvas.before:
-                PushMatrix
-                Rotate
-                    angle: 90
-                    origin: self.center
-            canvas.after:
-                PopMatrix         
-        Label:           
-            id:osc_name
-            text:'OSC 2'
-            halign: 'left' 
-            canvas.before:
-                PushMatrix
-                Rotate
-                    angle: 90
-                    origin: self.center
-            canvas.after:
-                PopMatrix 
-        Switch:
-            canvas.before:
-                PushMatrix
-                Rotate
-                    angle: 90
-                    origin: self.center
-            canvas.after:
-                PopMatrix         
-        Label:           
-            id:osc_name
-            text:'OSC 3'
-            halign: 'left' 
-            canvas.before:
-                PushMatrix
-                Rotate
-                    angle: 90
-                    origin: self.center
-            canvas.after:
-                PopMatrix 
-                
+        
+                    
     GridLayout: # Holds all panels
         rows: 3
         cols: 4
