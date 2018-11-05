@@ -182,54 +182,118 @@ kv = """
         knob_title: 'FADE TIME' 
 #------------END LFO DEFINITION                            
 
-
-
-GridLayout: # Holds all panels
-    rows: 3
-    cols: 4
-    spacing: 10
-    padding: 5
-#------------------------------------------ OSC 1 Controls -------------------------   
-    OSC:
-        id: osc_1
-        text: 'OSC 1'
-        is_osc_1: True
-    Filter:
-        id: filter_1
-                                
-    LFO:
-        id: LFO_1_1
-        text: 'LFO 1/1'
-    LFO:
-        id: LFO_1_2
-        text: 'LFO 1/2'         
-
-#------------------------------------------ OSC 2 Controls ------------------------------           
-    OSC:
-        id: osc_2
-        text: 'OSC 2'
-    Filter:
-        id: filter_2
+# ---------------------------------------- The Control Panel
+BoxLayout:
+    GridLayout:    #put the switch outside of the OSC wave box, it controls all the parts.
+        cols:1
+        rows:6
+        #orientation: 'vertical'
+        width: osc_name.texture_size[0]
+        size_hint_x: None   
+        Switch:
+            canvas.before:
+                PushMatrix
+                Rotate
+                    angle: 90
+                    origin: self.center
+            canvas.after:
+                PopMatrix         
+        Label:           
+            id:osc_name
+            text:'OSC 1'
+            halign: 'left' 
+            canvas.before:
+                PushMatrix
+                Rotate
+                    angle: 90
+                    origin: self.center
+            canvas.after:
+                PopMatrix 
+        Switch:
+            canvas.before:
+                PushMatrix
+                Rotate
+                    angle: 90
+                    origin: self.center
+            canvas.after:
+                PopMatrix         
+        Label:           
+            id:osc_name
+            text:'OSC 2'
+            halign: 'left' 
+            canvas.before:
+                PushMatrix
+                Rotate
+                    angle: 90
+                    origin: self.center
+            canvas.after:
+                PopMatrix 
+        Switch:
+            canvas.before:
+                PushMatrix
+                Rotate
+                    angle: 90
+                    origin: self.center
+            canvas.after:
+                PopMatrix         
+        Label:           
+            id:osc_name
+            text:'OSC 3'
+            halign: 'left' 
+            canvas.before:
+                PushMatrix
+                Rotate
+                    angle: 90
+                    origin: self.center
+            canvas.after:
+                PopMatrix 
+                
+    GridLayout: # Holds all panels
+        rows: 3
+        cols: 4
+        spacing: 10
+        padding: 5
+    #------------------------------------------ OSC 1 Controls -------------------------   
+        OSC:
+            id: osc_1
+            text: 'OSC 1'
+            is_osc_1: True
+        Filter:
+            id: filter_1
+                                    
+        LFO:
+            id: LFO_1_1
+            text: 'LFO 1/1'
+        LFO:
+            id: LFO_1_2
+            text: 'LFO 1/2'         
     
-    LFO:
-        id: LFO_2_1
-        text: 'LFO 2/1'   
-    LFO:
-        id: LFO_2_2
-        text: 'LFO 2/2'             
-
-#------------------------------------------ OSC 3 Controls -------------------------------            
-    OSC:
-        id: osc_3
-        text: 'OSC 3'
-    Filter:
-        id: filter_3
-    LFO:
-        id: LFO_3_1
-        text: 'LFO 3/1'   
-    LFO:
-        id: LFO_3_2
-        text: 'LFO 3/2'            
+    #------------------------------------------ OSC 2 Controls ------------------------------           
+        OSC:
+            id: osc_2
+            text: 'OSC 2'
+        Filter:
+            id: filter_2
+        
+        LFO:
+            id: LFO_2_1
+            text: 'LFO 2/1'   
+        LFO:
+            id: LFO_2_2
+            text: 'LFO 2/2'             
+    
+    #------------------------------------------ OSC 3 Controls -------------------------------            
+        OSC:
+            id: osc_3
+            text: 'OSC 3'
+        Filter:
+            id: filter_3
+        LFO:
+            id: LFO_3_1
+            text: 'LFO 3/1'   
+        LFO:
+            id: LFO_3_2
+            text: 'LFO 3/2'            
 """
 
 class OSC(GridLayout):
