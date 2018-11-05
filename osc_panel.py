@@ -176,7 +176,7 @@ kv = """
         BoxLayout:
             orientation: 'vertical'
             Label:    
-                text: 'Dynamic Depth'
+                text: 'Dynamic\\n   Depth'
             Switch:                
     CircleKnob:
         knob_title: 'FADE TIME' 
@@ -188,6 +188,7 @@ GridLayout: # Holds all panels
     rows: 3
     cols: 4
     spacing: 10
+    padding: 5
 #------------------------------------------ OSC 1 Controls -------------------------   
     OSC:
         id: osc_1
