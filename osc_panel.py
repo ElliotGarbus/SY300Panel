@@ -89,6 +89,9 @@ kv = """
         xy_knob_title:'Filter'
         xy_knob_xlab: 'CUTOFF'
         xy_knob_ylab: 'RESO'
+        xy_knob_laboffset: 0
+        xy_knob_xval: 0
+        xy_knob_yval: 0
     
     XYKnob:
         xy_knob_title:'ENV'
