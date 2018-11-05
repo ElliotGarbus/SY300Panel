@@ -50,7 +50,7 @@ kv = """
         knob_title: 'SHARPNESS'
     
     XYKnob:
-        xy_knob_title:' PWM ENV '   # we space pad the title so it is about the same length as other titles
+        xy_knob_title:'PWM ENV'
         xy_knob_xlab: 'ATTACK'
         xy_knob_ylab: 'DEPTH'
     XYKnob:
@@ -89,6 +89,9 @@ kv = """
         xy_knob_title:'Filter'
         xy_knob_xlab: 'CUTOFF'
         xy_knob_ylab: 'RESO'
+        xy_knob_laboffset: 0
+        xy_knob_xval: 0
+        xy_knob_yval: 0
     
     XYKnob:
         xy_knob_title:'ENV'
