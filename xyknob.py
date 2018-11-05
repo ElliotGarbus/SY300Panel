@@ -45,18 +45,17 @@ xykivystring = '''
                 width: self.height
                 size_hint_x: None
                 font_size: 15
-                text: str(root.xy_knob_xval) + ',' + str(root.xy_knob_yval)
+                text: str(root.xy_knob_xval + root.xy_knob_laboffset) + ',' + str(root.xy_knob_yval + root.xy_knob_laboffset)
                 canvas.after:
                     Line:
                         points: root.xy_knob_trackx
                     Line:
                         points: root.xy_knob_tracky
+                    Color:
+                        rgba: [ 0, 0, 1, 1 ]
                     Line:
-                        width: 2
-                        #not too ugly, but does not resize
-                        #points: [ root._val2pos(root.xy_knob_xval, root.xy_knob_yval), root._val2pos(root.xy_knob_xval, root.xy_knob_yval) ]
-                        #ugly, but resizes properly
-                        points: [ (root.xy_knob_xval - root.xy_knob_xmin) / (root.xy_knob_xmax - root.xy_knob_xmin) * self.width, (root.xy_knob_yval - root.xy_knob_ymin) / (root.xy_knob_ymax - root.xy_knob_ymin) * self.height, (root.xy_knob_xval - root.xy_knob_xmin) / (root.xy_knob_xmax - root.xy_knob_xmin) * self.width, (root.xy_knob_yval - root.xy_knob_ymin) / (root.xy_knob_ymax - root.xy_knob_ymin) * self.height, ]
+                        width: 3
+                        points: [ root.xy_knob_xval * 0.01 * self.width, root.xy_knob_yval * 0.01 * self.height, root.xy_knob_xval * 0.01 * self.width, root.xy_knob_yval * 0.01 * self.height ]
                     Color:
                         rgba: [ 1, 0, 0, .5 ]
                     Line:
@@ -66,10 +65,10 @@ xykivystring = '''
                         points: [ .5*mypad.width, 0, .5*mypad.width, mypad.width ] if root.xy_knob_crosshair else []
                 canvas.before:
                     Color:
-                        rgba: [ 0, 0, .8, 1 ]
-                    Rectangle:
-                        pos: self.pos
-                        size: self.size
+                        rgba: [ .4, .4, .4, 5 ]
+                    Line:
+                        width: 2
+                        rectangle: (*self.pos, *self.size)
                 #end mypad
             Label:
                 id: x_axis
@@ -93,12 +92,6 @@ xykivystring = '''
                         origin: self.center
                 canvas.after:
                     PopMatrix
-            Label:
-                id: trackinglabel
-                pos: mypad.center
-                text: str( root.xy_knob_trkval )
-                size: self.texture_size
-                size_hint: (None,None)
             #end rellay
         Label:
             width: 0.5 * ( vbox.width - mypad.width  )
@@ -119,30 +112,17 @@ class XYKnob(BoxLayout):
 
     xy_knob_trackx    = ListProperty( [] )
     xy_knob_tracky    = ListProperty( [] )
-    xy_knob_trkval    = StringProperty( '' )
-    xy_knob_trkvis    = BooleanProperty( False )
 
     xy_knob_xlab      = StringProperty( 'X-axis' )
-    xy_knob_xmin      = NumericProperty(   0 )
-    xy_knob_xmax      = NumericProperty( 100 )
-    xy_knob_xval      = NumericProperty( 0 )
+    xy_knob_xval      = NumericProperty( 50 )
 
     xy_knob_ylab      = StringProperty( 'Y-axis' )
-    xy_knob_ymin      = NumericProperty( 0 )
-    xy_knob_ymax      = NumericProperty( 100 )
-    xy_knob_yval      = NumericProperty( 0 )
+    xy_knob_yval      = NumericProperty( 50 )
 
+    xy_knob_laboffset = NumericProperty( -50 )
     xy_knob_title     = StringProperty( 'Title' )
     xy_knob_crosshair = BooleanProperty( False )
   
-
-    def _val2pos(self, valx, valy ):
-    #
-    # convert from a value back to a position
-    #
-        xv = (valx - self.xy_knob_xmin) / (self.xy_knob_xmax - self.xy_knob_xmin) * self.ids.mypad.width
-        yv = (valy - self.xy_knob_ymin) / (self.xy_knob_ymax - self.xy_knob_ymin) * self.ids.mypad.height
-        return xv, yv
 
     def _compute_pos_and_val(self,touch):
     #
@@ -156,30 +136,17 @@ class XYKnob(BoxLayout):
         relative_position[0] = sorted([ relative_position[0], 0, self.ids.mypad.width  ] )[1]
         relative_position[1] = sorted([ relative_position[1], 0, self.ids.mypad.height ] )[1]
 
-        xval = int(  relative_position[0] / self.ids.mypad.width 
-                   * (self.xy_knob_xmax - self.xy_knob_xmin)  
-                   + self.xy_knob_xmin )
-        yval = int(  relative_position[1] / self.ids.mypad.height
-                   * (self.xy_knob_ymax - self.xy_knob_ymin) 
-                   + self.xy_knob_ymin  )
+        self.xy_knob_xval = int(  relative_position[0] / self.ids.mypad.width  * 100.0 )
+        self.xy_knob_yval = int(  relative_position[1] / self.ids.mypad.height * 100.0 )
 
-
-        return relative_position,xval,yval
+        return relative_position
 
 
     def on_touch_down(self,touch):
         if self.collide_point(*touch.pos):
             touch.grab(self)
 
-            rel_pos,xval,yval = self._compute_pos_and_val(touch)
-
-            # position tracking label
-            #self.xy_knob_trkval = '(' + str(xval) + ',' + str(yval)  +')'
-            self.xy_knob_trkval = str(xval) + ',' + str(yval)
-
-            #self.ids.trackinglabel.pos = rel_pos
-            self.ids.trackinglabel.x = rel_pos[0] + (-1,0)[rel_pos[0]<.5*self.ids.mypad.width]  * self.ids.trackinglabel.size[0]
-            self.ids.trackinglabel.y = rel_pos[1] + (-1,0)[rel_pos[1]<.5*self.ids.mypad.height] * self.ids.trackinglabel.size[1]
+            rel_pos = self._compute_pos_and_val(touch)
 
             # draw tracking lines
             self.xy_knob_tracky.extend( [rel_pos[0], 0,   rel_pos[0], self.ids.mypad.top   ] )
@@ -191,15 +158,8 @@ class XYKnob(BoxLayout):
     def on_touch_move(self, touch):
         if touch.grab_current is self:
 
-            # position tracking label
-            rel_pos,xval,yval = self._compute_pos_and_val(touch)
-            #self.xy_knob_trkval = '(' + str(xval) + ',' + str(yval)  +')'
-            self.xy_knob_trkval = str(xval) + ',' + str(yval)
-            #self.ids.trackinglabel.pos = rel_pos
-            self.ids.trackinglabel.x = max ( self.ids.y_axis.size[1],
-                     rel_pos[0] + (-1,0)[rel_pos[0]<.5*self.ids.mypad.width]  * self.ids.trackinglabel.size[0] )
-            self.ids.trackinglabel.y = max ( self.ids.x_axis.top, 
-                     rel_pos[1] + (-1,0)[rel_pos[1]<.5*self.ids.mypad.height] * self.ids.trackinglabel.size[1] )
+            rel_pos = self._compute_pos_and_val(touch)
+
 
             # update tracking lines.
             self.xy_knob_tracky[0] = rel_pos[0]
@@ -215,27 +175,18 @@ class XYKnob(BoxLayout):
         if touch.grab_current is self:
             touch.ungrab(self)
 
-            # remove tracking lines and tracking label
+            # remove tracking lines
             del(self.xy_knob_trackx[0:] )
             del(self.xy_knob_tracky[0:] )
-            self.xy_knob_trkval = ''
 
-            rel_pos,xval,yval = self._compute_pos_and_val(touch)
-            # re-title the axis with the new value
-            #self.ids.x_axis.text = self.xy_knob_xlab + "= " + str(xval)
-            #self.ids.y_axis.text = self.xy_knob_ylab + "= " + str(yval)
-
-            # Now move the dot to the new position
-            self.xy_knob_xval = xval
-            self.xy_knob_yval = yval
-
+            # update values, ignore the relative position
+            rel_pos = self._compute_pos_and_val(touch)
 
             return True
         return super().on_touch_up(touch)
 
 
-Builder.load_string(xykivystring )
-
+Builder.load_string( xykivystring )
 
 
 
@@ -265,10 +216,6 @@ BoxLayout:
         XYKnob:
             id: two
             #size: 250,250
-            #xy_knob_ylab: "Bal"
-            #xy_knob_xmax: 11
-            #xy_knob_ymax: 1
-            #xy_knob_ymin: -1
         XYKnob:
             id: three
         XYKnob:
@@ -276,7 +223,9 @@ BoxLayout:
         XYKnob:
         XYKnob:
         XYKnob:
+            id: notme
             xy_knob_title: 'NotMe'
+            xy_knob_laboffset: 0
         XYKnob:
             xy_knob_crosshair: True
         XYKnob:
@@ -289,6 +238,7 @@ BoxLayout:
     class XYKnobApp(App):
         def build(self):
             r = Builder.load_string(kv)
+            print(r.ids.notme.ids.mypad.text)
             return r
 
     XYKnobApp().run()
