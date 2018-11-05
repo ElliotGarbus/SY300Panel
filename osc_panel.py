@@ -184,10 +184,8 @@ kv = """
 
 # ---------------------------------------- The Control Panel
 BoxLayout:
-    GridLayout:    #put the switch outside of the OSC wave box, it controls all the parts.
-        cols:1
-        rows:6
-        #orientation: 'vertical'
+    BoxLayout:    #put the switch outside of the OSC wave box, it controls all the parts.
+        orientation: 'vertical'
         width: osc_name.texture_size[0]
         size_hint_x: None   
         Switch:
