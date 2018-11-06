@@ -2,6 +2,7 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.gridlayout import GridLayout
 from kivy.properties import BooleanProperty, StringProperty
+from kivy.core.window import Window
 
 kv = """
 #:import XYKnob xyknob
@@ -24,6 +25,7 @@ kv = """
         Label:
             text: root.text      
         Spinner:
+            id:osc_wave
             text: 'SAW'
             values: ['SIN', 'SAW', 'TRI', 'SQR', 'PWM', 'DETUNE SAW', 'NOISE', 'INPUT']
         BoxLayout:
@@ -36,7 +38,7 @@ kv = """
                 text: 'Sync'
                 values: ['Sync Off', 'Sync On', 'Sync LoFi']
                 opacity:   0 if root.is_osc_1 is True else 1
-                disabled:  root.is_osc_1                
+                disabled:  1 if root.is_osc_1 is True else 0                
             
     CircleKnob:
         text: 'PITCH'
@@ -54,6 +56,7 @@ kv = """
         value: 50
     CircleKnob:
         text: 'SHARPNESS'
+        
     
     XYKnob:
         xy_knob_title:'PWM ENV'
@@ -222,7 +225,6 @@ BoxLayout:
         OSC:
             id: osc_1
             text: 'OSC 1'
-            is_osc_1: True
         Filter:
             id: filter_1
                                     
@@ -271,6 +273,11 @@ class LFO(GridLayout):
 
 
 class PanelApp(App):
+    title = 'SY300 OSC Sound Generation Control Panel'
+    Window.size = (1725, 710)
+    Window.top = 285
+    Window.left = 185
+
 
     def build(self):
         return Builder.load_string(kv)

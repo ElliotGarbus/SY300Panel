@@ -3,6 +3,7 @@ from kivy.lang import Builder
 
 kv = '''
 BoxLayout:
+    disabled: True
     BoxLayout:    #put the switch outside of the OSC wave box, it controls all the parts.
         id:outbox
         orientation: 'vertical'

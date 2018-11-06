@@ -36,7 +36,6 @@ Builder.load_string('''
                 cap: 'square'
                 width: dp(3)
     Label:
-        # id: knob_title
         font_size: 15
         text: root.text
         size: self.texture_size
