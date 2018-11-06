@@ -47,7 +47,7 @@ Builder.load_string('''
 class CircleKnob(BoxLayout):
     knob_title = StringProperty()
     knob_vals = ListProperty([str(i) for i in range(101)])
-    knob_ndx = NumericProperty(1)
+    knob_ndx = NumericProperty(0)
     _scroll_direction = {'scrollup': 1, 'scrolldown': -1}
 
     def on_touch_down(self, touch):
