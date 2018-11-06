@@ -32,7 +32,6 @@ xykivystring = '''
     id: vbox
     BoxLayout:
         orientation: 'horizontal'
-        id: hbox
         Label:
             text: ''
             width: 0.5 * ( vbox.width - mypad.width )
@@ -45,7 +44,7 @@ xykivystring = '''
                 width: self.height
                 size_hint_x: None
                 font_size: 15
-                text: str(root.xy_knob_xval + root.xy_knob_laboffset) + ',' + str(root.xy_knob_yval + root.xy_knob_laboffset)
+                text: str(root.value_x + root.labeloffset) + ',' + str(root.value_y + root.labeloffset)
                 canvas.after:
                     Line:
                         points: root.xy_knob_trackx
@@ -55,14 +54,14 @@ xykivystring = '''
                         rgba: [ 0, 0, 1, 1 ]
                     Line:
                         width: 3
-                        points: [ root.xy_knob_xval * 0.01 * self.width, root.xy_knob_yval * 0.01 * self.height, root.xy_knob_xval * 0.01 * self.width, root.xy_knob_yval * 0.01 * self.height ]
+                        points: [ root.value_x * 0.01 * self.width, root.value_y * 0.01 * self.height, root.value_x * 0.01 * self.width, root.value_y * 0.01 * self.height ]
                     Color:
                         rgba: [ 1, 0, 0, .5 ]
                     Line:
                         width: 1
-                        points: [ 0,.5*mypad.height, mypad.width, .5*mypad.width ] if root.xy_knob_crosshair else []
+                        points: [ 0,.5*mypad.height, mypad.width, .5*mypad.width ] if root.crosshairs else []
                     Line:
-                        points: [ .5*mypad.width, 0, .5*mypad.width, mypad.width ] if root.xy_knob_crosshair else []
+                        points: [ .5*mypad.width, 0, .5*mypad.width, mypad.width ] if root.crosshairs else []
                 canvas.before:
                     Color:
                         rgba: [ .4, .4, .4, 5 ]
@@ -73,7 +72,7 @@ xykivystring = '''
             Label:
                 id: x_axis
                 pos: ( mypad.center_x - .5*self.width, 0 )
-                text: root.xy_knob_xlab
+                text: root.label_x
                 size: self.texture_size
                 size_hint: (None,None)
                 font_size: int(.5 + 1.14 * mypad.width / max(len(root.ids.y_axis.text), len(self.text)) )
@@ -81,7 +80,7 @@ xykivystring = '''
                 id: y_axis
                 #pos_hint: { 'center_y':.5, 'center_x':0.08 }
                 pos: ( -.38*self.width, mypad.center_y )
-                text: root.xy_knob_ylab
+                text: root.label_y
                 font_size: int(.5 + 1.14 * mypad.width / max(len(root.ids.x_axis.text), len(self.text)) )
                 size: self.texture_size
                 size_hint: (None,None)
@@ -98,8 +97,7 @@ xykivystring = '''
             size_hint_x: None
             text: ''
     Label:
-        id: xytitle
-        text: root.xy_knob_title
+        text: root.text
         #font_size: int(.5 + 1.14 * mypad.width / len(self.text) )
         font_size: 15
         size: self.texture_size
@@ -113,15 +111,15 @@ class XYKnob(BoxLayout):
     xy_knob_trackx    = ListProperty( [] )
     xy_knob_tracky    = ListProperty( [] )
 
-    xy_knob_xlab      = StringProperty( 'X-axis' )
-    xy_knob_xval      = NumericProperty( 50 )
+    label_x      = StringProperty( 'X-axis' )
+    value_x      = NumericProperty( 50 )
 
-    xy_knob_ylab      = StringProperty( 'Y-axis' )
-    xy_knob_yval      = NumericProperty( 50 )
+    label_y      = StringProperty( 'Y-axis' )
+    value_y      = NumericProperty( 50 )
 
-    xy_knob_laboffset = NumericProperty( -50 )
-    xy_knob_title     = StringProperty( 'Title' )
-    xy_knob_crosshair = BooleanProperty( False )
+    labeloffset  = NumericProperty( -50 )
+    text         = StringProperty( 'Title' )
+    crosshairs   = BooleanProperty( False )
   
 
     def _compute_pos_and_val(self,touch):
@@ -136,8 +134,8 @@ class XYKnob(BoxLayout):
         relative_position[0] = sorted([ relative_position[0], 0, self.ids.mypad.width  ] )[1]
         relative_position[1] = sorted([ relative_position[1], 0, self.ids.mypad.height ] )[1]
 
-        self.xy_knob_xval = int(  relative_position[0] / self.ids.mypad.width  * 100.0 )
-        self.xy_knob_yval = int(  relative_position[1] / self.ids.mypad.height * 100.0 )
+        self.value_x = int(  relative_position[0] / self.ids.mypad.width  * 100.0 )
+        self.value_y = int(  relative_position[1] / self.ids.mypad.height * 100.0 )
 
         return relative_position
 
@@ -211,8 +209,8 @@ BoxLayout:
         
         XYKnob:
             id: primo
-            #xy_knob_xlab: 'Cut-off'
-            #xy_knob_ylab: "Res"
+            #label_x: 'Cut-off'
+            #label_y: "Res"
         XYKnob:
             id: two
             #size: 250,250
@@ -224,13 +222,13 @@ BoxLayout:
         XYKnob:
         XYKnob:
             id: notme
-            xy_knob_title: 'NotMe'
-            xy_knob_laboffset: 0
+            text: 'NotMe'
+            labeloffset: 0
         XYKnob:
-            xy_knob_crosshair: True
+            crosshairs: True
         XYKnob:
         XYKnob:
-            xy_knob_crosshair: True
+            crosshairs: True
         XYKnob:
         XYKnob:
 '''
