@@ -6,7 +6,7 @@ from kivy.lang import Builder
 Builder.load_string('''
 #-------------------------------
 # Knob class
-#  Properties are: knob_title, knob_vals, knob_ndx
+#  Properties are: text, values, value
 #
 #-------------------------------
 <CircleKnob>
@@ -14,7 +14,7 @@ Builder.load_string('''
     #padding:10
     Label:
         font_size: 15
-        text: root.knob_vals[ root.knob_ndx ]
+        text: root.values[root.value]
     
         canvas:
             Color:
@@ -31,23 +31,23 @@ Builder.load_string('''
                     (
                     self.center_x, self.center_y,
                     self.height/2 *.9,
-                    -140, -140 + root.knob_ndx * 280 / ( len(root.knob_vals) - 1 )
+                    -140, -140 + root.value * 280 / ( len(root.values) - 1 )
                     )
                 cap: 'square'
                 width: dp(3)
     Label:
-        id: knob_title
+        # id: knob_title
         font_size: 15
-        text: root.knob_title
+        text: root.text
         size: self.texture_size
         size_hint_y: None
 #-------------------------------
 ''')
 
 class CircleKnob(BoxLayout):
-    knob_title = StringProperty()
-    knob_vals = ListProperty([str(i) for i in range(101)])
-    knob_ndx = NumericProperty(0)
+    text = StringProperty()
+    values = ListProperty([str(i) for i in range(101)])
+    value = NumericProperty(0)
     _scroll_direction = {'scrollup': 1, 'scrolldown': -1}
 
     def on_touch_down(self, touch):
@@ -59,15 +59,15 @@ class CircleKnob(BoxLayout):
     def on_touch_move(self, touch):
         if touch.grab_current is self and touch.dy:
             #sorted(min, val, max)[1] works to clamp val to floor or ceiling
-            self.knob_ndx = (sorted((0, self.knob_ndx + int(touch.dy), len(self.knob_vals)-1))[1])
+            self.value = (sorted((0, self.value + int(touch.dy), len(self.values)-1))[1])
             return True
         return False
 
     def on_touch_up(self, touch):
         if touch.is_mouse_scrolling and touch.grab_current is self:
             # sorted(min, val, max)[1] works to clamp val to floor or ceiling
-            self.knob_ndx = (sorted((0, self.knob_ndx + self._scroll_direction[touch.button],
-                                    len(self.knob_vals) - 1))[1])
+            self.value = (sorted((0, self.value + self._scroll_direction[touch.button],
+                                    len(self.values) - 1))[1])
             return True
         elif touch.grab_current is self:
             touch.ungrab(self)
@@ -88,7 +88,7 @@ BoxLayout:
             text: "knob input is obsolete"
         TextInput
             text: '1'
-            on_text: primo.knob_ndx =  int(self.text)
+            on_text: primo.value =  int(self.text)
             multiline: False
 
     GridLayout:
@@ -97,44 +97,44 @@ BoxLayout:
 
         CircleKnob:
             id: primo
-            knob_title: "Pulse\\nWidth"
-            knob_vals:  [str(x) for x in range(101)]
+            text: "Pulse\\nWidth"
+            values:  [str(x) for x in range(101)]
         CircleKnob:
-            knob_vals: [str(x) for x in range(-24, 25)]
-            knob_ndx: 24
-            knob_title: 'Pitch'
+            values: [str(x) for x in range(-24, 25)]
+            value: 24
+            text: 'Pitch'
         CircleKnob:
-            knob_vals: ['L'+str(-x) for x in range(-50, 0)] + ['CTR'] + ['R'+ str(x) for x in range(1, 51)]
-            knob_ndx: 50
-            knob_title: 'Pan'
+            values: ['L'+str(-x) for x in range(-50, 0)] + ['CTR'] + ['R'+ str(x) for x in range(1, 51)]
+            value: 50
+            text: 'Pan'
         CircleKnob:
-            knob_title: "Rate"
+            text: "Rate"
         CircleKnob:
-            knob_title: "One"
-            knob_vals:  [str(x) for x in range(101)]
+            text: "One"
+            values:  [str(x) for x in range(101)]
         CircleKnob:
-            knob_vals: [str(x) for x in range(-24, 25)]
-            knob_ndx: 3
-            knob_title: 'Pitch Bend'
+            values: [str(x) for x in range(-24, 25)]
+            value: 3
+            text: 'Pitch Bend'
         CircleKnob:
-            knob_vals: ['L'+str(-x) for x in range(-50, 0)] + ['CTR'] + ['R'+ str(x) for x in range(1, 51)]
-            knob_ndx: 1
-            knob_title: 'Pan'
+            values: ['L'+str(-x) for x in range(-50, 0)] + ['CTR'] + ['R'+ str(x) for x in range(1, 51)]
+            value: 1
+            text: 'Pan'
         CircleKnob:
-            knob_title: "Default"
+            text: "Default"
         CircleKnob:
-            knob_title: "Pulse Width"
-            knob_vals:  [str(x) for x in range(101)]
+            text: "Pulse Width"
+            values:  [str(x) for x in range(101)]
         CircleKnob:
-            knob_vals: [str(x) for x in range(-24, 25)]
-            knob_ndx: 3
-            knob_title: 'Pitch'
+            values: [str(x) for x in range(-24, 25)]
+            value: 3
+            text: 'Pitch'
         CircleKnob:
-            knob_vals: ['L'+str(-x) for x in range(-50, 0)] + ['CTR'] + ['R'+ str(x) for x in range(1, 51)]
-            knob_ndx: 1
-            knob_title: 'Pan'
+            values: ['L'+str(-x) for x in range(-50, 0)] + ['CTR'] + ['R'+ str(x) for x in range(1, 51)]
+            value: 1
+            text: 'Pan'
         CircleKnob:
-            knob_title: "Rate"
+            text: "Rate"
     '''
 
     class CircleKnobApp(App):

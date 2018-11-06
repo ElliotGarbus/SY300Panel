@@ -36,18 +36,24 @@ kv = """
                 text: 'Sync'
                 values: ['Sync Off', 'Sync On', 'Sync LoFi']
                 opacity:   0 if root.is_osc_1 is True else 1
-                disabled:  1 if root.is_osc_1 is True else 0                 
+                disabled:  root.is_osc_1                
             
     CircleKnob:
-        knob_title: 'PITCH'
+        text: 'PITCH'
+        values: [str(x) for x in range(-24, 25)]
+        value: 24
     CircleKnob:
-        knob_title: 'FINE'
+        text: 'FINE'
+        values: [str(x) for x in range(-50, 51)]
+        value: 50
     CircleKnob:
-        knob_title: 'PULSE WIDTH'
+        text: 'PULSE WIDTH'
     CircleKnob:
-        knob_title: 'DETUNE'
+        text: 'DETUNE'
+        values: [str(x) for x in range(-50, 51)]
+        value: 50
     CircleKnob:
-        knob_title: 'SHARPNESS'
+        text: 'SHARPNESS'
     
     XYKnob:
         xy_knob_title:'PWM ENV'
@@ -58,9 +64,11 @@ kv = """
         xy_knob_xlab: 'ATTACK'
         xy_knob_ylab: 'DEPTH'                                                        
     CircleKnob:
-        knob_title: 'PBEND DEPTH'
+        text: 'PBEND DEPTH'
+        values: [str(x) for x in range(-24, 25)]
+        value: 24
     CircleKnob:
-        knob_title: 'PBEND CTL'
+        text: 'PBEND CTL'
 
 
 # ------------------------------ Filter --------------------------------------------
@@ -101,9 +109,13 @@ kv = """
     ADKnob:
     
     CircleKnob:
-        knob_title: 'LEVEL'
+        text: 'LEVEL'
+        values: [str(x) for x in range(201)]
+        value: 100
     CircleKnob: 
-        knob_title: 'PAN'   
+        text: 'PAN'
+        values: ['L'+str(-x) for x in range(-50, 0)] + ['CTR'] + ['R'+ str(x) for x in range(1, 51)]
+        value: 50   
 
 # --------------------------------------LFO ------------------------------
 <LFO>
@@ -139,7 +151,7 @@ kv = """
             values: ['SIN', 'SAW UP', 'SAW DOWN','TRI', 'SQR', 'RANDOM', 'S & H']
          
     CircleKnob:
-        knob_title: 'RATE'
+        text: 'RATE'
                           
     BoxLayout:
         orientation: 'vertical'
@@ -152,16 +164,16 @@ kv = """
         ToggleButton:    
             text: 'DYN DEPTH'               
     CircleKnob:
-        knob_title: 'FADE TIME'
+        text: 'FADE TIME'
         
     CircleKnob:
-        knob_title: 'PTCH DPTH'
+        text: 'PTCH DPTH'
     CircleKnob:
-        knob_title: 'FLTR DPTH'
+        text: 'FLTR DPTH'
     CircleKnob:
-        knob_title: 'AMP DPTH'
+        text: 'AMP DPTH'
     CircleKnob:
-        knob_title: 'PWM DPTH'
+        text: 'PWM DPTH'
  
 #------------END LFO DEFINITION                            
 
@@ -182,6 +194,7 @@ BoxLayout:
             canvas.after:
                 PopMatrix                
         Switch:
+            id:osc_sw_2
             canvas.before:
                 PushMatrix
                 Rotate
@@ -190,6 +203,7 @@ BoxLayout:
             canvas.after:
                 PopMatrix                
         Switch:
+            id:osc_sw_3
             canvas.before:
                 PushMatrix
                 Rotate
