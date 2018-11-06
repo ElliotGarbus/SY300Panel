@@ -275,7 +275,7 @@ class LFO(GridLayout):
 class PanelApp(App):
     title = 'SY300 OSC Sound Generation Control Panel'
     Window.size = (1725, 710)
-    Window.top = 285
+    Window.top = 285  # 0 is the top of the screen
     Window.left = 185
 
 
