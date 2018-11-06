@@ -106,9 +106,10 @@ kv = """
         knob_title: 'PAN'   
 
 # --------------------------------------LFO ------------------------------
-<LFO> 
+<LFO>
+    size_hint_x: 4/5 
     rows:2
-    cols:5
+    cols:4
     canvas.after:
         Color:
             rgba:[.4, .4 , .4, .7 ]
@@ -138,6 +139,22 @@ kv = """
             values: ['SIN', 'SAW UP', 'SAW DOWN','TRI', 'SQR', 'RANDOM', 'S & H']
          
     CircleKnob:
+        knob_title: 'RATE'
+                          
+    BoxLayout:
+        orientation: 'vertical'
+        Spinner:
+    
+            text: 'RATE'
+            values: ['0-100', 'Whole', 'Dotted Half', 'Triplet Whole', 'Half', 'Dotted Qtr', 'Triplet of Half', 'Qtr', 'Dotted 8th', 'Triplet of Qtr', '8th', 'Dotted 16th','Triplet of 8th', '16th', 'Dotted 32th', 'Triplet of 16th', '32th']
+        Label:
+            text:''
+        ToggleButton:    
+            text: 'DYN DEPTH'               
+    CircleKnob:
+        knob_title: 'FADE TIME'
+        
+    CircleKnob:
         knob_title: 'PTCH DPTH'
     CircleKnob:
         knob_title: 'FLTR DPTH'
@@ -145,44 +162,7 @@ kv = """
         knob_title: 'AMP DPTH'
     CircleKnob:
         knob_title: 'PWM DPTH'
-    Label:
-        text:''
-         
-    BoxLayout:
-        canvas.after:
-            Color:
-                rgba:[.4, .4 , .4, .7 ]
-            Line:
-                width:1
-                dash_offset: 2
-                dash_length: 5
-                rounded_rectangle: (*self.pos,self.width *2, self.height, 2)
-        BoxLayout:
-            orientation: 'vertical'
-            Label:    
-                text: 'RATE/BPM'
-            Spinner:
-                size_hint_y: .4
-                text: 'RATE'
-                values: ['0-100', 'Whole', 'Dotted Half', 'Triplet Whole', 'Half', 'Dotted Qtr', 'Triplet of Half', 'Qtr', 'Dotted 8th', 'Triplet of Qtr', '8th', 'Dotted 16th','Triplet of 8th', '16th', 'Dotted 32th', 'Triplet of 16th', '32th']                     
-    CircleKnob:
-        knob_title: 'RATE'          
-    BoxLayout:
-        canvas.after:
-            Color:
-                rgba:[.4, .4 , .4, .7 ]
-            Line:
-                width:1
-                dash_offset: 2
-                dash_length: 5
-                rounded_rectangle: (*self.pos,self.width *2, self.height, 2)
-        BoxLayout:
-            orientation: 'vertical'
-            Label:    
-                text: 'Dynamic\\n   Depth'
-            Switch:                
-    CircleKnob:
-        knob_title: 'FADE TIME' 
+ 
 #------------END LFO DEFINITION                            
 
 # ---------------------------------------- The Control Panel
