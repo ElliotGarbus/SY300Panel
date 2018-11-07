@@ -23,19 +23,23 @@ kv = """
         orientation: 'vertical'
         spacing:2
         Label:
-            text: root.text      
+            text: root.text
+            color: [144/255, 228/255 , 1, 1]      
         Spinner:
             id:osc_wave
             text: 'SAW'
+            color: [144/255, 228/255 , 1, 1]
             values: ['SIN', 'SAW', 'TRI', 'SQR', 'PWM', 'DETUNE SAW', 'NOISE', 'INPUT']
         BoxLayout:
             ToggleButton:
-                text: 'Ring'
+                text: 'RING'
+                color: [144/255, 228/255 , 1, 1]
                 size_hint_x: .5
                 opacity:   0 if root.is_osc_1 is True else 1
                 disabled:  1 if root.is_osc_1 is True else 0                        
             Spinner:
-                text: 'Sync'
+                text: 'SYNC'
+                color: [144/255, 228/255 , 1, 1]
                 values: ['Sync Off', 'Sync On', 'Sync LoFi']
                 opacity:   0 if root.is_osc_1 is True else 1
                 disabled:  1 if root.is_osc_1 is True else 0                
@@ -88,16 +92,18 @@ kv = """
     BoxLayout:
         orientation: 'vertical'
         Spinner:
-            text: 'Type'
+            text: 'TYPE'
             values: ['BYPASS', 'LPF', 'HPF', 'BPF', 'PKG']
+            color: [144/255, 228/255 , 1, 1]
         Spinner:
-            text: 'Slope'
+            text: 'SLOPE'
+            color: [144/255, 228/255 , 1, 1]
             values: ['-12 dB', '-24 dB']
         Label:
             text:''
     
     XYKnob:
-        text:       'Filter'
+        text:       'FILTER'
         label_x:    'CUTOFF'
         label_y:    'RESO'
         labeloffset: 0
@@ -147,10 +153,12 @@ kv = """
                     
             Label:    
                 text: root.text
+                color: [144/255, 228/255 , 1, 1]
             Switch:
         Spinner:
             size_hint_y: .4
-            text: 'Wave'
+            text: 'WAVE'
+            color: [144/255, 228/255 , 1, 1]
             values: ['SIN', 'SAW UP', 'SAW DOWN','TRI', 'SQR', 'RANDOM', 'S & H']
          
     CircleKnob:
@@ -158,14 +166,15 @@ kv = """
                           
     BoxLayout:
         orientation: 'vertical'
-        Spinner:
-    
+        Spinner:  
             text: 'RATE'
+            color: [144/255, 228/255 , 1, 1]
             values: ['0-100', 'Whole', 'Dotted Half', 'Triplet Whole', 'Half', 'Dotted Qtr', 'Triplet of Half', 'Qtr', 'Dotted 8th', 'Triplet of Qtr', '8th', 'Dotted 16th','Triplet of 8th', '16th', 'Dotted 32th', 'Triplet of 16th', '32th']
         Label:
             text:''
         ToggleButton:    
-            text: 'DYN DEPTH'               
+            text: 'DYN DEPTH'
+            color: [144/255, 228/255 , 1, 1]               
     CircleKnob:
         text: 'FADE TIME'
         
