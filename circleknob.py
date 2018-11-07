@@ -1,6 +1,6 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import ListProperty, NumericProperty, StringProperty
+from kivy.properties import ListProperty, NumericProperty, StringProperty, BooleanProperty
 from kivy.lang import Builder
 
 Builder.load_string('''
@@ -14,18 +14,19 @@ Builder.load_string('''
     #padding:10
     Label:
         font_size: 15
+        color: [144/255, 228/255 , 1, 1] if root.disabled is False else  [144/255, 228/255 , 1, .25]
         text: root.values[root.value]
     
         canvas:
             Color:
-                rgba: .4, .4 , .4, .5 
+                rgba: [.4, .4 , .4, .5] if root.disabled is False else  [.4, .4 , .4, .25]
             Line:         
                 circle: self.center_x, self.center_y, self.height/2 *.9, -140, 140
                 cap: 'square'
                 width: dp(3)
         canvas.after:
             Color:
-                rgba: 0, 0 , 1, .9 
+                rgba: [144/255, 228/255 , 1, 1] if root.disabled is False else  [144/255, 228/255 , 1,  .25]
             Line:         
                 circle:
                     (
@@ -40,6 +41,7 @@ Builder.load_string('''
         text: root.text
         size: self.texture_size
         size_hint_y: None
+        color: [144/255, 228/255 , 1, 1] if root.disabled is False else  [144/255, 228/255 , 1, .25]
 #-------------------------------
 ''')
 
@@ -47,23 +49,30 @@ class CircleKnob(BoxLayout):
     text = StringProperty()
     values = ListProperty([str(i) for i in range(101)])
     value = NumericProperty(0)
+    disabled = BooleanProperty(False)
     _scroll_direction = {'scrollup': 1, 'scrolldown': -1}
 
     def on_touch_down(self, touch):
-        if self.collide_point(*touch.pos):
+        if self.disabled is True:
+            return False
+        elif self.collide_point(*touch.pos):
             touch.grab(self)
             return True
         return False
 
     def on_touch_move(self, touch):
-        if touch.grab_current is self and touch.dy:
+        if self.disabled is True:
+            return False
+        elif touch.grab_current is self and touch.dy:
             #sorted(min, val, max)[1] works to clamp val to floor or ceiling
             self.value = (sorted((0, self.value + int(touch.dy), len(self.values)-1))[1])
             return True
         return False
 
     def on_touch_up(self, touch):
-        if touch.is_mouse_scrolling and touch.grab_current is self:
+        if self.disabled is True:
+            return False
+        elif touch.is_mouse_scrolling and touch.grab_current is self:
             # sorted(min, val, max)[1] works to clamp val to floor or ceiling
             self.value = (sorted((0, self.value + self._scroll_direction[touch.button],
                                     len(self.values) - 1))[1])
