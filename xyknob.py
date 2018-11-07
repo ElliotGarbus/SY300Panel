@@ -51,7 +51,7 @@ xykivystring = '''
                     Line:
                         points: root.xy_knob_tracky
                     Color:
-                        rgba: [ 0, 0, 1, 1 ]
+                        rgba: [ 144/255, 228/255, 1, 1 ]
                     Line:
                         width: 3
                         points: [ root.value_x * 0.01 * self.width, root.value_y * 0.01 * self.height, root.value_x * 0.01 * self.width, root.value_y * 0.01 * self.height ]
@@ -97,6 +97,7 @@ xykivystring = '''
             size_hint_x: None
             text: ''
     Label:
+        color: 144/255, 228/255, 1, 1
         text: root.text
         #font_size: int(.5 + 1.14 * mypad.width / len(self.text) )
         font_size: 15
@@ -141,7 +142,7 @@ class XYKnob(BoxLayout):
 
 
     def on_touch_down(self,touch):
-        if self.collide_point(*touch.pos):
+        if self.collide_point(*touch.pos) and not self.disabled:
             touch.grab(self)
 
             rel_pos = self._compute_pos_and_val(touch)
@@ -154,7 +155,7 @@ class XYKnob(BoxLayout):
         return super().on_touch_down(touch)
 
     def on_touch_move(self, touch):
-        if touch.grab_current is self:
+        if touch.grab_current is self and not self.disabled:
 
             rel_pos = self._compute_pos_and_val(touch)
 
@@ -170,7 +171,7 @@ class XYKnob(BoxLayout):
         return super().on_touch_move(touch)
 
     def on_touch_up(self, touch):
-        if touch.grab_current is self:
+        if touch.grab_current is self and not self.disabled:
             touch.ungrab(self)
 
             # remove tracking lines
