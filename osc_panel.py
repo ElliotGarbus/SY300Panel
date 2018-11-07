@@ -59,13 +59,13 @@ kv = """
         
     
     XYKnob:
-        xy_knob_title:'PWM ENV'
-        xy_knob_xlab: 'ATTACK'
-        xy_knob_ylab: 'DEPTH'
+        text:    'PWM ENV'
+        label_x: 'ATTACK'
+        label_y: 'DEPTH'
     XYKnob:
-        xy_knob_title:'PITCH ENV'
-        xy_knob_xlab: 'ATTACK'
-        xy_knob_ylab: 'DEPTH'                                                        
+        text:    'PITCH ENV'
+        label_x: 'ATTACK'
+        label_y: 'DEPTH'                                                        
     CircleKnob:
         text: 'PBEND DEPTH'
         values: [str(x) for x in range(-24, 25)]
@@ -97,17 +97,17 @@ kv = """
             text:''
     
     XYKnob:
-        xy_knob_title:'Filter'
-        xy_knob_xlab: 'CUTOFF'
-        xy_knob_ylab: 'RESO'
-        xy_knob_laboffset: 0
-        xy_knob_xval: 0
-        xy_knob_yval: 0
+        text:       'Filter'
+        label_x:    'CUTOFF'
+        label_y:    'RESO'
+        labeloffset: 0
+        value_x:     0
+        value_y:     0
     
     XYKnob:
-        xy_knob_title:'ENV'
-        xy_knob_xlab: 'ATTACK'
-        xy_knob_ylab: 'DEPTH'
+        text:    'ENV'
+        label_x: 'ATTACK'
+        label_y: 'DEPTH'
 
     ADKnob:
     
