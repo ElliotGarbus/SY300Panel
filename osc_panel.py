@@ -118,7 +118,7 @@ kv = """
         labeloffset: 0
         value_x:     0
         value_y:     0
-        addresses: [ 0xe, 0xf ]
+        addresses: [ 0xf, 0x10 ]
     
     XYKnob:
         text:    'ENV'
