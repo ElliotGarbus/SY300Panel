@@ -225,6 +225,7 @@ BoxLayout:
         OSC:
             id: osc_1
             text: 'OSC 1'
+            is_osc_1: True
         Filter:
             id: filter_1
                                     
