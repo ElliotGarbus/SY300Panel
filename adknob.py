@@ -28,7 +28,7 @@ Builder.load_string('''
                         cap: 'none'
                         points:[(sq_pad.center_x,sq_pad.pos[1]), (sq_pad.center_x, sq_pad.top)]
                     Color:
-                        rgba: [0, 0 , 1, .9]
+                        rgba: [144/255, 228/255 , 1, 1]
                     Line: # Attack Line
                         width: 2
                         cap: 'none'
