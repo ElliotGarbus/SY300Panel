@@ -124,6 +124,8 @@ class XYKnob(BoxLayout):
     labeloffset  = NumericProperty( -50 )
     text         = StringProperty( 'Title' )
     crosshairs   = BooleanProperty( False )
+
+    addresses    = ListProperty( [] )
   
 
     def _compute_pos_and_val(self,touch):

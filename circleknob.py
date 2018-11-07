@@ -50,6 +50,7 @@ class CircleKnob(BoxLayout):
     values = ListProperty([str(i) for i in range(101)])
     value = NumericProperty(0)
     disabled = BooleanProperty(False)
+    addresses = ListProperty( [] )
     _scroll_direction = {'scrollup': 1, 'scrolldown': -1}
 
     def on_touch_down(self, touch):

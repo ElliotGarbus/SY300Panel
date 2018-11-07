@@ -2,6 +2,7 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import NumericProperty
+from kivy.properties import ListProperty
 
 Builder.load_string('''
 <ADKnob>
@@ -77,6 +78,7 @@ Builder.load_string('''
 
 class ADKnob(BoxLayout):
     adknob_ndx = NumericProperty(50)         # from 0 to 100
+    addresses  = ListProperty( [] )
     _scroll_direction = {'scrollup': 1, 'scrolldown': -1}
 
     def _touch_to_ndx(self, touch):

@@ -48,34 +48,43 @@ kv = """
         text: 'PITCH'
         values: [str(x) for x in range(-24, 25)]
         value: 24
+        addresses: [ 0x7 ]
     CircleKnob:
         text: 'FINE'
         values: [str(x) for x in range(-50, 51)]
         value: 50
+        addresses: [ 0x8 ]
     CircleKnob:
         text: 'PULSE WIDTH'
+        addresses: [ 0x2 ]
     CircleKnob:
         text: 'DETUNE'
         values: [str(x) for x in range(-50, 51)]
         value: 50
+        addresses: [ 0x5 ]
     CircleKnob:
         text: 'SHARPNESS'
+        addresses: [ 0x6 ]
         
     
     XYKnob:
         text:    'PWM ENV'
         label_x: 'ATTACK'
         label_y: 'DEPTH'
+        addresses: [ 0x3, 0x4 ]
     XYKnob:
         text:    'PITCH ENV'
         label_x: 'ATTACK'
         label_y: 'DEPTH'                                                        
+        addresses: [ 0x9, 0xa ]
     CircleKnob:
         text: 'PBEND DEPTH'
         values: [str(x) for x in range(-24, 25)]
         value: 24
+        addresses: [ 0xb ]
     CircleKnob:
         text: 'PBEND CTL'
+        addresses: [ 0xc ]
 
 
 # ------------------------------ Filter --------------------------------------------
@@ -109,22 +118,27 @@ kv = """
         labeloffset: 0
         value_x:     0
         value_y:     0
+        addresses: [ 0xe, 0xf ]
     
     XYKnob:
         text:    'ENV'
         label_x: 'ATTACK'
         label_y: 'DEPTH'
+        addresses: [ 0x11, 0x12 ]
 
     ADKnob:
+        addresses: [ 0x13 ]
     
     CircleKnob:
         text: 'LEVEL'
         values: [str(x) for x in range(201)]
         value: 100
+        addresses: [ 0x14 ]
     CircleKnob: 
         text: 'PAN'
         values: ['L'+str(-x) for x in range(-50, 0)] + ['CTR'] + ['R'+ str(x) for x in range(1, 51)]
         value: 50   
+        addresses: [ 0x15 ]
 
 # --------------------------------------LFO ------------------------------
 <LFO>
