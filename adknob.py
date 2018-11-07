@@ -17,7 +17,7 @@ Builder.load_string('''
             Label:
                 id:sq_pad
                 text: str(root.adknob_ndx - 50)
-                font_size: 15
+                font_size: 25
                 size_hint_x: None
                 width: self.size[1]
                 canvas.before:
