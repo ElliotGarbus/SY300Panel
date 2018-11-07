@@ -11,22 +11,22 @@ Builder.load_string('''
 #-------------------------------
 <CircleKnob>
     orientation: 'vertical'
-    #padding:10
+    opacity: .25 if root.disabled else 1
     Label:
-        font_size: 15
-        color: [144/255, 228/255 , 1, 1] if root.disabled is False else  [144/255, 228/255 , 1, .25]
+        font_size: 25
+        color: [144/255, 228/255 , 1, 1] 
         text: root.values[root.value]
     
         canvas:
             Color:
-                rgba: [.4, .4 , .4, .5] if root.disabled is False else  [.4, .4 , .4, .25]
+                rgba: [.4, .4 , .4, .5] 
             Line:         
                 circle: self.center_x, self.center_y, self.height/2 *.9, -140, 140
                 cap: 'square'
                 width: dp(3)
         canvas.after:
             Color:
-                rgba: [144/255, 228/255 , 1, 1] if root.disabled is False else  [144/255, 228/255 , 1,  .25]
+                rgba: [144/255, 228/255 , 1, 1] 
             Line:         
                 circle:
                     (
@@ -41,7 +41,7 @@ Builder.load_string('''
         text: root.text
         size: self.texture_size
         size_hint_y: None
-        color: [144/255, 228/255 , 1, 1] if root.disabled is False else  [144/255, 228/255 , 1, .25]
+        color: [144/255, 228/255 , 1, 1]
 #-------------------------------
 ''')
 

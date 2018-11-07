@@ -17,9 +17,10 @@ Builder.load_string('''
             Label:
                 id:sq_pad
                 text: str(root.adknob_ndx - 50)
-                font_size: 15
+                font_size: 25
                 size_hint_x: None
                 width: self.size[1]
+                color: [144/255, 228/255 , 1, 1]
                 canvas.before:
                     Color:
                         rgba: [.4, .4 , .4, .5 ]
@@ -28,7 +29,7 @@ Builder.load_string('''
                         cap: 'none'
                         points:[(sq_pad.center_x,sq_pad.pos[1]), (sq_pad.center_x, sq_pad.top)]
                     Color:
-                        rgba: [144/255, 228/255 , 1, 1]
+                        rgba: [ 36/255, 129/255, 215/255, 1 ]
                     Line: # Attack Line
                         width: 2
                         cap: 'none'
@@ -45,7 +46,8 @@ Builder.load_string('''
                         rectangle: (*self.pos,self.width,self.height)
                     
             Label:
-                text: 'Slow\\nAttack' 
+                text: 'Slow\\nAttack'
+                font_size: 13 
                 size_hint: (None, None)
                 color:[.4, .4 , .4, .7 ]
                 size: self.texture_size
@@ -53,6 +55,7 @@ Builder.load_string('''
             
             Label:
                 text: ' Short\\nDecay' 
+                font_size: 13
                 size_hint: (None, None)
                 color:[.4, .4 , .4, .7 ]
                 size: self.texture_size
@@ -68,6 +71,7 @@ Builder.load_string('''
         font_size: 15
         size_hint_y: None
         height: self.texture_size[1]
+        color: [144/255, 228/255 , 1, 1]
 ''')
 
 

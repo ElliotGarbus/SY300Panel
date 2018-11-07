@@ -43,7 +43,8 @@ xykivystring = '''
                 id: mypad
                 width: self.height
                 size_hint_x: None
-                font_size: 15
+                font_size: 25
+                color: [ 144/255, 228/255, 1, 1 ]
                 text: str(root.value_x + root.labeloffset) + ',' + str(root.value_y + root.labeloffset)
                 canvas.after:
                     Line:
@@ -51,10 +52,10 @@ xykivystring = '''
                     Line:
                         points: root.xy_knob_tracky
                     Color:
-                        rgba: [ 144/255, 228/255, 1, 1 ]
+                        rgba: [ 36/255, 129/255, 215/255, 1 ]
                     Line:
-                        width: 3
-                        points: [ root.value_x * 0.01 * self.width, root.value_y * 0.01 * self.height, root.value_x * 0.01 * self.width, root.value_y * 0.01 * self.height ]
+                        width: 2
+                        circle: [root.value_x * 0.01 * self.width, root.value_y * 0.01 * self.height, 2.5]
                     Color:
                         rgba: [ 1, 0, 0, .5 ]
                     Line:
@@ -64,7 +65,7 @@ xykivystring = '''
                         points: [ .5*mypad.width, 0, .5*mypad.width, mypad.width ] if root.crosshairs else []
                 canvas.before:
                     Color:
-                        rgba: [ .4, .4, .4, 5 ]
+                        rgba: [.4, .4 , .4, .5]
                     Line:
                         width: 2
                         rectangle: (*self.pos, *self.size)
@@ -75,13 +76,15 @@ xykivystring = '''
                 text: root.label_x
                 size: self.texture_size
                 size_hint: (None,None)
-                font_size: int(.5 + 1.14 * mypad.width / max(len(root.ids.y_axis.text), len(self.text)) )
+                font_size: 12 #int(.5 + 1.14 * mypad.width / max(len(root.ids.y_axis.text), len(self.text)) )
+                color: [.4, .4 , .4, .6]
             Label:
                 id: y_axis
                 #pos_hint: { 'center_y':.5, 'center_x':0.08 }
-                pos: ( -.38*self.width, mypad.center_y )
+                pos: ( -.3 *self.width, mypad.center_y )
                 text: root.label_y
-                font_size: int(.5 + 1.14 * mypad.width / max(len(root.ids.x_axis.text), len(self.text)) )
+                font_size: 12 # int(.5 + 1.14 * mypad.width / max(len(root.ids.x_axis.text), len(self.text)) )
+                color: [.4, .4 , .4, .6]
                 size: self.texture_size
                 size_hint: (None,None)
                 canvas.before:
