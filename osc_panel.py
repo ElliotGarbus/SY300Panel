@@ -1,13 +1,16 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.gridlayout import GridLayout
-from kivy.properties import BooleanProperty, StringProperty
+from kivy.properties import BooleanProperty, StringProperty, NumericProperty
 from kivy.core.window import Window
+from circleknob import CircleKnob
+from xyknob     import XYKnob
+from adknob     import ADKnob
 
-kv = """
 #:import XYKnob xyknob
 #:import CircleKnob circleknob
 #:import ADKnob adknob
+kv = """
 
 <OSC>
     rows: 2
@@ -72,23 +75,28 @@ kv = """
         label_x: 'ATTACK'
         label_y: 'DEPTH'
         addresses: [ 0x3, 0x4 ]
+        on_value_x: app.send2midi( root.osc_adr, self.addresses[0], self.value_x )
+        on_value_y: app.send2midi( root.osc_adr, self.addresses[1], self.value_y )
     XYKnob:
         text:    'PITCH ENV'
         label_x: 'ATTACK'
         label_y: 'DEPTH'                                                        
         addresses: [ 0x9, 0xa ]
+        #on_value_x: app.send2midi( root.osc_adr, self.addresses[0], self.value_x )
+        #on_value_y: app.send2midi( root.osc_adr, self.addresses[1], self.value_y )
     CircleKnob:
         text: 'PBEND DEPTH'
         values: [str(x) for x in range(-24, 25)]
         value: 24
         addresses: [ 0xb ]
+        #on_value: app.send2midi( root.osc_adr, self.addresses[0], self.value )
     CircleKnob:
         text: 'PBEND CTL'
         addresses: [ 0xc ]
 
 
 # ------------------------------ Filter --------------------------------------------
-<Filter@GridLayout>
+<Filter>
     size_hint_x: .6
     rows: 2
     cols: 3
@@ -194,12 +202,18 @@ kv = """
         
     CircleKnob:
         text: 'PTCH DPTH'
+        addresses: [ 0x1a + 9 * root.lfo_num ]
+        #on_value: print ( root.osc_adr, self.addresses)
+        on_value: app.send2midi( root.osc_adr, self.addresses[0], self.value )
     CircleKnob:
         text: 'FLTR DPTH'
+        addresses: [ 0x1b + 9 * root.lfo_num  ]
     CircleKnob:
         text: 'AMP DPTH'
+        addresses: [ 0x1c + 9 * root.lfo_num ]
     CircleKnob:
         text: 'PWM DPTH'
+        addresses: [ 0x1d + 9 * root.lfo_num ]
  
 #------------END LFO DEFINITION                            
 
@@ -249,50 +263,74 @@ BoxLayout:
             id: osc_1
             text: 'OSC 1'
             is_osc_1: True
+            osc_adr: 0x20
         Filter:
             id: filter_1
+            osc_adr: 0x20
                                     
         LFO:
             id: LFO_1_1
             text: 'LFO 1/1'
+            lfo_num: 0
+            osc_adr: 0x20
         LFO:
             id: LFO_1_2
             text: 'LFO 1/2'         
+            lfo_num: 1
+            osc_adr: 0x20
     
     #------------------------------------------ OSC 2 Controls ------------------------------           
         OSC:
             id: osc_2
             text: 'OSC 2'
+            osc_adr: 0x28
         Filter:
             id: filter_2
+            osc_adr: 0x28
         
         LFO:
             id: LFO_2_1
             text: 'LFO 2/1'   
+            lfo_num: 0
+            osc_adr: 0x28
         LFO:
             id: LFO_2_2
             text: 'LFO 2/2'             
+            lfo_num: 1
+            osc_adr: 0x28
     
     #------------------------------------------ OSC 3 Controls -------------------------------            
         OSC:
             id: osc_3
             text: 'OSC 3'
+            osc_adr: 0x30
         Filter:
             id: filter_3
+            osc_adr: 0x30
         LFO:
             id: LFO_3_1
             text: 'LFO 3/1'   
+            lfo_num: 0
+            osc_adr: 0x30
         LFO:
             id: LFO_3_2
             text: 'LFO 3/2'            
+            lfo_num: 1
+            osc_adr: 0x30
 """
+
+class Filter(GridLayout):
+    osc_adr = NumericProperty()
 
 class OSC(GridLayout):
     is_osc_1 = BooleanProperty(False)
     text = StringProperty('')
+    osc_adr = NumericProperty()
 
 class LFO(GridLayout):
     text = StringProperty('')
+    lfo_num = NumericProperty( 0 )
+    osc_adr = NumericProperty()
 
 
 
@@ -301,10 +339,19 @@ class PanelApp(App):
     Window.size = (1725, 710)
     Window.top = 285  # 0 is the top of the screen
     Window.left = 185
-
+    adr2knob = {}
 
     def build(self):
-        return Builder.load_string(kv)
+        r = Builder.load_string(kv)
+        for c in r.walk():
+            if isinstance( c, CircleKnob ) or isinstance( c, XYKnob ) or isinstance( c, ADKnob ):
+                for a in c.addresses:
+                    self.adr2knob[ c.parent.osc_adr ,  c.addresses[0] ] = c
 
+        self.adr2knob[ 0x20, 0x3 ].text = 'splat' # debug check
+        return r
+
+    def send2midi(self, osc, adr, val):
+      print( 'message to midi:', osc, adr, val )
 
 PanelApp().run()
