@@ -330,13 +330,6 @@ class OSC(GridLayout):
     text = StringProperty('')
     osc_adr = NumericProperty()
 
-    def set_knob(self, knob_adr, value):
-        #offset_to_knob = {0x07: ('pitch', self.ids.osc_1.ids[pitch].value),
-        #                  0x08: ('fine', self.ids[osc_1].ids[fine].value),
-        #                  0x02: ('pulse_width', self.ids[pulse_width].value)}
-        #offset_to_knob[knob_adr][1] = value
-        self.ids.fine.value = 25
-
 class LFO(GridLayout):
     text = StringProperty('')
     lfo_num = NumericProperty( 0 )
