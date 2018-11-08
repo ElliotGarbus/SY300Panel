@@ -45,16 +45,19 @@ kv = """
                 disabled:  1 if root.is_osc_1 is True else 0                
             
     CircleKnob:
+        id: pitch
         text: 'PITCH'
         values: [str(x) for x in range(-24, 25)]
         value: 24
         addresses: [ 0x7 ]
     CircleKnob:
+        id: fine
         text: 'FINE'
         values: [str(x) for x in range(-50, 51)]
         value: 50
         addresses: [ 0x8 ]
     CircleKnob:
+        id:pulse_width
         text: 'PULSE WIDTH'
         addresses: [ 0x2 ]
     CircleKnob:
@@ -290,6 +293,13 @@ BoxLayout:
 class OSC(GridLayout):
     is_osc_1 = BooleanProperty(False)
     text = StringProperty('')
+
+    def set_knob(self, knob_adr, value):
+        #offset_to_knob = {0x07: ('pitch', self.ids.osc_1.ids[pitch].value),
+        #                  0x08: ('fine', self.ids[osc_1].ids[fine].value),
+        #                  0x02: ('pulse_width', self.ids[pulse_width].value)}
+        #offset_to_knob[knob_adr][1] = value
+        self.ids.fine.value = 25
 
 class LFO(GridLayout):
     text = StringProperty('')
