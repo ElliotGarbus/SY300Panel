@@ -1,9 +1,9 @@
 from kivy.app import App
 from kivy.lang import Builder
+from kivy.uix.boxlayout import BoxLayout
 
 kv = '''
-BoxLayout:
-    disabled: True
+<TryIt>
     BoxLayout:    #put the switch outside of the OSC wave box, it controls all the parts.
         id:outbox
         orientation: 'vertical'
@@ -53,22 +53,38 @@ BoxLayout:
         rows:2
         cols:2
         Button:
+            id: b1
             text: 'Touch Here'
         Button:
+            id: b2
             text: 'Touch Here'
         
         Button:
+            id: b3
             text: 'Touch Here'
         Button:
-            text: 'Touch Here'
-
-     
-        
+            id: b4
+            text: 'Touch Here to set b1'
+            on_press: root.setb1()
+    
+TryIt:    
+    
 
 '''
+class TryIt(BoxLayout):
+
+    def setb1(self):
+        map_to_knob = {1: self.ids.b1,
+                       2: self.ids.b2,
+                       3: self.ids.b3
+                       }
+        print('setb1 called')
+        map_to_knob[2].text = 'Double WTF???'
+        print(dir(self.ids.b1))
 
 
 class SWtestApp(App):
+
 
     def build(self):
         return Builder.load_string(kv)
