@@ -8,6 +8,9 @@ from xyknob     import XYKnob
 from adknob     import ADKnob
 from spinnerknob import SpinnerKnob
 from switchknob import SwitchKnob
+from toggleknob import ToggleKnob
+
+#TODO: Fix the link between the osc_wave and the ability to disable the PWM depth knob in the LFO
 
 #:import XYKnob xyknob
 #:import CircleKnob circleknob
@@ -36,7 +39,7 @@ kv = """
             color: [144/255, 228/255 , 1, 1]
             values: ['SIN', 'SAW', 'TRI', 'SQR', 'PWM', 'DETUNE SAW', 'NOISE', 'INPUT']
         BoxLayout:
-            ToggleButton:
+            ToggleKnob:
                 text: 'RING'
                 color: [144/255, 228/255 , 1, 1]
                 size_hint_x: .5
@@ -65,14 +68,17 @@ kv = """
         id:pulse_width
         text: 'PULSE WIDTH'
         addresses: [ 0x2 ]
+        disabled: True if osc_wave.text != 'PWM' else False
     CircleKnob:
         text: 'DETUNE'
         values: [str(x) for x in range(-50, 51)]
         value: 50
         addresses: [ 0x5 ]
+        disabled: True if osc_wave.text != 'DETUNE SAW' else False
     CircleKnob:
         text: 'SHARPNESS'
         addresses: [ 0x6 ]
+        disabled: True if osc_wave.text != 'NOISE' else False
         
     
     XYKnob:
@@ -82,6 +88,7 @@ kv = """
         addresses: [ 0x3, 0x4 ]
         on_value_x: app.send2midi( root.osc_adr, self.addresses[0], self.value_x )
         on_value_y: app.send2midi( root.osc_adr, self.addresses[1], self.value_y )
+        disabled: True if osc_wave.text != 'PWM' else False
     XYKnob:
         text:    'PITCH ENV'
         label_x: 'ATTACK'
@@ -113,16 +120,21 @@ kv = """
             rounded_rectangle: (*self.pos,self.width,self.height, 2)
     BoxLayout:
         orientation: 'vertical'
+        Label:
+            text:'FILTER'
+            color: [144/255, 228/255 , 1, 1]
         SpinnerKnob:
-            text: 'TYPE'
+            text: 'BYPASS'
             values: ['BYPASS', 'LPF', 'HPF', 'BPF', 'PKG']
             color: [144/255, 228/255 , 1, 1]
         SpinnerKnob:
-            text: 'SLOPE'
+            text: '-12 dB'
             color: [144/255, 228/255 , 1, 1]
             values: ['-12 dB', '-24 dB']
         Label:
             text:''
+            size_hint_y: .1
+        
     
     XYKnob:
         text:       'FILTER'
@@ -181,34 +193,39 @@ kv = """
             Label:    
                 text: root.text
                 color: [144/255, 228/255 , 1, 1]
-            SwitchKnob:
+            SwitchKnob: #LFO on or off
         SpinnerKnob:
             size_hint_y: .4
-            text: 'WAVE'
+            text: 'SIN'
             color: [144/255, 228/255 , 1, 1]
             values: ['SIN', 'SAW UP', 'SAW DOWN','TRI', 'SQR', 'RANDOM', 'S & H']
          
     CircleKnob:
+        id: rate_knob
         text: 'RATE'
+        disabled: True if rate_spinner.text != '0-100' else False
                           
     BoxLayout:
         orientation: 'vertical'
-        SpinnerKnob:  
-            text: 'RATE'
+        RateComboKnob:
+            id: rate_spinner  
+            text: '0-100'
             color: [144/255, 228/255 , 1, 1]
             values: ['0-100', 'Whole', 'Dotted Half', 'Triplet Whole', 'Half', 'Dotted Qtr', 'Triplet of Half', 'Qtr', 'Dotted 8th', 'Triplet of Qtr', '8th', 'Dotted 16th','Triplet of 8th', '16th', 'Dotted 32th', 'Triplet of 16th', '32th']
         Label:
             text:''
-        ToggleButton:    
+        ToggleKnob:    
+            id: dyn_depth
             text: 'DYN DEPTH'
             color: [144/255, 228/255 , 1, 1]               
     CircleKnob:
         text: 'FADE TIME'
+        disabled: dyn_depth.state == 'normal'
+        
         
     CircleKnob:
         text: 'PTCH DPTH'
         addresses: [ 0x1a + 9 * root.lfo_num ]
-        #on_value: print ( root.osc_adr, self.addresses)
         on_value: app.send2midi( root.osc_adr, self.addresses[0], self.value )
     CircleKnob:
         text: 'FLTR DPTH'
@@ -219,8 +236,12 @@ kv = """
     CircleKnob:
         text: 'PWM DPTH'
         addresses: [ 0x1d + 9 * root.lfo_num ]
+        #disabled: True if osc_wave.text != 'PWM' else False ********************************
  
 #------------END LFO DEFINITION                            
+#<RateComboKnob>
+
+
 
 # ---------------------------------------- The Control Panel
 BoxLayout:
@@ -342,6 +363,18 @@ class LFO(GridLayout):
     lfo_num = NumericProperty( 0 )
     osc_adr = NumericProperty()
 
+class RateComboKnob(SpinnerKnob):
+    # if the spinner is at zero, selecting 0-100, then the knob associated with the spinner is active.
+    # There is a single address for the RateComboKnob with values from 0 to 116
+    # The logic is in set_knob method of the RateComboKnob class
+
+    def set_knob(self, adr, value):
+        if value <= 100:
+            self.ids.rate_knob.value = value
+            self.text = self.values[0]
+        else:
+            self.text = self.values[value - 100]
+
 
 
 class PanelApp(App):
@@ -358,7 +391,7 @@ class PanelApp(App):
                 for a in c.addresses:
                     self.adr2knob[ c.parent.osc_adr ,  c.addresses[0] ] = c
 
-        self.adr2knob[ 0x20, 0x3 ].text = 'splat' # debug check
+        #self.adr2knob[ 0x20, 0x3 ].text = 'splat' # debug check
         return r
 
     def send2midi(self, osc, adr, val):

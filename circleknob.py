@@ -49,7 +49,6 @@ class CircleKnob(BoxLayout):
     text = StringProperty()
     values = ListProperty([str(i) for i in range(101)])
     value = NumericProperty(0)
-    disabled = BooleanProperty(False)
     addresses = ListProperty( [] )
     _scroll_direction = {'scrollup': 1, 'scrolldown': -1}
 
@@ -118,6 +117,7 @@ BoxLayout:
             text: 'Pan'
         CircleKnob:
             text: "Rate"
+            disabled: True
         CircleKnob:
             text: "One"
             values:  [str(x) for x in range(101)]

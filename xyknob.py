@@ -29,6 +29,7 @@ xykivystring = '''
 # from BoxLayout
 <XYKnob>
     orientation: 'vertical'
+    opacity: .25 if root.disabled else 1
     id: vbox
     BoxLayout:
         orientation: 'horizontal'
@@ -222,6 +223,7 @@ BoxLayout:
             #size: 250,250
         XYKnob:
             id: three
+            disabled: True
         XYKnob:
             id: four
         XYKnob:
