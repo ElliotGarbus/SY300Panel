@@ -7,6 +7,7 @@ from circleknob import CircleKnob
 from xyknob     import XYKnob
 from adknob     import ADKnob
 from spinnerknob import SpinnerKnob
+from switchknob import SwitchKnob
 
 #:import XYKnob xyknob
 #:import CircleKnob circleknob
@@ -180,7 +181,7 @@ kv = """
             Label:    
                 text: root.text
                 color: [144/255, 228/255 , 1, 1]
-            Switch:
+            SwitchKnob:
         SpinnerKnob:
             size_hint_y: .4
             text: 'WAVE'
@@ -229,7 +230,7 @@ BoxLayout:
         size_hint_x: None   
         BoxLayout:
             osc_adr: 0x20
-            Switch:
+            SwitchKnob:
                 id:osc_sw_1
                 canvas.before:
                     PushMatrix
@@ -240,7 +241,7 @@ BoxLayout:
                     PopMatrix                
         BoxLayout:
             osc_adr: 0x28
-            Switch:
+            SwitchKnob:
                 id:osc_sw_2
                 canvas.before:
                     PushMatrix
@@ -251,7 +252,7 @@ BoxLayout:
                     PopMatrix                
         BoxLayout:
             osc_adr: 0x30
-            Switch:
+            SwitchKnob:
                 id:osc_sw_3
                 canvas.before:
                     PushMatrix
