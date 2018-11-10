@@ -8,6 +8,7 @@ from xyknob     import XYKnob
 from adknob     import ADKnob
 from spinnerknob import SpinnerKnob
 from switchknob import SwitchKnob
+from toggleknob import ToggleKnob
 
 #:import XYKnob xyknob
 #:import CircleKnob circleknob
@@ -36,7 +37,7 @@ kv = """
             color: [144/255, 228/255 , 1, 1]
             values: ['SIN', 'SAW', 'TRI', 'SQR', 'PWM', 'DETUNE SAW', 'NOISE', 'INPUT']
         BoxLayout:
-            ToggleButton:
+            ToggleKnob:
                 text: 'RING'
                 color: [144/255, 228/255 , 1, 1]
                 size_hint_x: .5
@@ -199,7 +200,7 @@ kv = """
             values: ['0-100', 'Whole', 'Dotted Half', 'Triplet Whole', 'Half', 'Dotted Qtr', 'Triplet of Half', 'Qtr', 'Dotted 8th', 'Triplet of Qtr', '8th', 'Dotted 16th','Triplet of 8th', '16th', 'Dotted 32th', 'Triplet of 16th', '32th']
         Label:
             text:''
-        ToggleButton:    
+        ToggleKnob:    
             text: 'DYN DEPTH'
             color: [144/255, 228/255 , 1, 1]               
     CircleKnob:
