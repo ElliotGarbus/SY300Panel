@@ -6,6 +6,7 @@ from kivy.core.window import Window
 from circleknob import CircleKnob
 from xyknob     import XYKnob
 from adknob     import ADKnob
+from spinnerknob import SpinnerKnob
 
 #:import XYKnob xyknob
 #:import CircleKnob circleknob
@@ -28,7 +29,7 @@ kv = """
         Label:
             text: root.text
             color: [144/255, 228/255 , 1, 1]      
-        Spinner:
+        SpinnerKnob:
             id:osc_wave
             text: 'SAW'
             color: [144/255, 228/255 , 1, 1]
@@ -40,7 +41,7 @@ kv = """
                 size_hint_x: .5
                 opacity:   0 if root.is_osc_1 is True else 1
                 disabled:  1 if root.is_osc_1 is True else 0                        
-            Spinner:
+            SpinnerKnob:
                 text: 'SYNC'
                 color: [144/255, 228/255 , 1, 1]
                 values: ['Sync Off', 'Sync On', 'Sync LoFi']
@@ -111,11 +112,11 @@ kv = """
             rounded_rectangle: (*self.pos,self.width,self.height, 2)
     BoxLayout:
         orientation: 'vertical'
-        Spinner:
+        SpinnerKnob:
             text: 'TYPE'
             values: ['BYPASS', 'LPF', 'HPF', 'BPF', 'PKG']
             color: [144/255, 228/255 , 1, 1]
-        Spinner:
+        SpinnerKnob:
             text: 'SLOPE'
             color: [144/255, 228/255 , 1, 1]
             values: ['-12 dB', '-24 dB']
@@ -180,7 +181,7 @@ kv = """
                 text: root.text
                 color: [144/255, 228/255 , 1, 1]
             Switch:
-        Spinner:
+        SpinnerKnob:
             size_hint_y: .4
             text: 'WAVE'
             color: [144/255, 228/255 , 1, 1]
@@ -191,7 +192,7 @@ kv = """
                           
     BoxLayout:
         orientation: 'vertical'
-        Spinner:  
+        SpinnerKnob:  
             text: 'RATE'
             color: [144/255, 228/255 , 1, 1]
             values: ['0-100', 'Whole', 'Dotted Half', 'Triplet Whole', 'Half', 'Dotted Qtr', 'Triplet of Half', 'Qtr', 'Dotted 8th', 'Triplet of Qtr', '8th', 'Dotted 16th','Triplet of 8th', '16th', 'Dotted 32th', 'Triplet of 16th', '32th']
