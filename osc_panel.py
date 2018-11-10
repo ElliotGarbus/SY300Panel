@@ -387,11 +387,15 @@ class PanelApp(App):
     def build(self):
         r = Builder.load_string(kv)
         for c in r.walk():
-            if isinstance( c, CircleKnob ) or isinstance( c, XYKnob ) or isinstance( c, ADKnob ):
+            #if isinstance( c, CircleKnob ) or isinstance( c, XYKnob ) or isinstance( c, ADKnob ):
+            if hasattr(c, 'addresses'):
                 for a in c.addresses:
-                    self.adr2knob[ c.parent.osc_adr ,  c.addresses[0] ] = c
+                    self.adr2knob[ c.parent.osc_adr ,  a ] = c
 
         #self.adr2knob[ 0x20, 0x3 ].text = 'splat' # debug check
+        print('DEBUG: collected knobs for:')
+        for k in sorted(self.adr2knob.keys(),key=lambda x: x[0]*100+x[1]):
+           print('  ', k );
         return r
 
     def send2midi(self, osc, adr, val):

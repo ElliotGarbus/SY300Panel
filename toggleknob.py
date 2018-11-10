@@ -17,7 +17,7 @@ Builder.load_string('''
 
 
 class ToggleKnob(ToggleButton):
-    addresses = ListProperty([0x00])
+    addresses = ListProperty([])
 
     def set_knob(self, adr, value):
         self.state = 'normal' if not value else 'down'

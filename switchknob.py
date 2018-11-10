@@ -17,7 +17,7 @@ Builder.load_string('''
 
 
 class SwitchKnob(Switch):
-    addresses = ListProperty([0x00])
+    addresses = ListProperty([])
 
     def set_knob(self, adr, value):
         self.active = value
