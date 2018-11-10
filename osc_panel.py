@@ -118,6 +118,9 @@ kv = """
             rounded_rectangle: (*self.pos,self.width,self.height, 2)
     BoxLayout:
         orientation: 'vertical'
+        Label:
+            text:'FILTER'
+            color: [144/255, 228/255 , 1, 1]
         SpinnerKnob:
             text: 'BYPASS'
             values: ['BYPASS', 'LPF', 'HPF', 'BPF', 'PKG']
@@ -128,6 +131,8 @@ kv = """
             values: ['-12 dB', '-24 dB']
         Label:
             text:''
+            size_hint_y: .1
+        
     
     XYKnob:
         text:       'FILTER'
@@ -213,7 +218,7 @@ kv = """
             color: [144/255, 228/255 , 1, 1]               
     CircleKnob:
         text: 'FADE TIME'
-        disabled: dyn_depth.state == 'down'
+        disabled: dyn_depth.state == 'normal'
         
         
     CircleKnob:
@@ -230,13 +235,10 @@ kv = """
     CircleKnob:
         text: 'PWM DPTH'
         addresses: [ 0x1d + 9 * root.lfo_num ]
+        #disabled: True if osc_wave.text != 'PWM' else False
  
 #------------END LFO DEFINITION                            
-<RateComboKnob>
-# if the spinner is at zero, selecting 0-100, then the knob associated with the spinner is active.
-# There is a single address for the RateComboKnob with values from 0 to 116
-# The logic is in set_knob method of the RateComboKnob class
-    
+#<RateComboKnob>
 
 
 
@@ -361,6 +363,9 @@ class LFO(GridLayout):
     osc_adr = NumericProperty()
 
 class RateComboKnob(SpinnerKnob):
+    # if the spinner is at zero, selecting 0-100, then the knob associated with the spinner is active.
+    # There is a single address for the RateComboKnob with values from 0 to 116
+    # The logic is in set_knob method of the RateComboKnob class
 
     def set_knob(self, adr, value):
         if value <= 100:
