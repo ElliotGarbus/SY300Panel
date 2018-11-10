@@ -181,7 +181,7 @@ kv = """
             Label:    
                 text: root.text
                 color: [144/255, 228/255 , 1, 1]
-            SwitchKnob:
+            SwitchKnob: #LFO on or off
         SpinnerKnob:
             size_hint_y: .4
             text: 'WAVE'
