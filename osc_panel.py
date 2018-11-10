@@ -227,34 +227,39 @@ BoxLayout:
         orientation: 'vertical'
         width: 30
         size_hint_x: None   
-
-        Switch:
-            id:osc_sw_1
-            canvas.before:
-                PushMatrix
-                Rotate
-                    angle: 90
-                    origin: self.center
-            canvas.after:
-                PopMatrix                
-        Switch:
-            id:osc_sw_2
-            canvas.before:
-                PushMatrix
-                Rotate
-                    angle: 90
-                    origin: self.center
-            canvas.after:
-                PopMatrix                
-        Switch:
-            id:osc_sw_3
-            canvas.before:
-                PushMatrix
-                Rotate
-                    angle: 90
-                    origin: self.center
-            canvas.after:
-                PopMatrix         
+        BoxLayout:
+            osc_adr: 0x20
+            Switch:
+                id:osc_sw_1
+                canvas.before:
+                    PushMatrix
+                    Rotate
+                        angle: 90
+                        origin: self.center
+                canvas.after:
+                    PopMatrix                
+        BoxLayout:
+            osc_adr: 0x28
+            Switch:
+                id:osc_sw_2
+                canvas.before:
+                    PushMatrix
+                    Rotate
+                        angle: 90
+                        origin: self.center
+                canvas.after:
+                    PopMatrix                
+        BoxLayout:
+            osc_adr: 0x30
+            Switch:
+                id:osc_sw_3
+                canvas.before:
+                    PushMatrix
+                    Rotate
+                        angle: 90
+                        origin: self.center
+                canvas.after:
+                    PopMatrix         
         
                     
     GridLayout: # Holds all panels
