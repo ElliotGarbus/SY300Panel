@@ -10,6 +10,8 @@ from spinnerknob import SpinnerKnob
 from switchknob import SwitchKnob
 from toggleknob import ToggleKnob
 
+#TODO: Fix the link between the osc_wave and the ability to disable the PWM depth knob in the LFO
+
 #:import XYKnob xyknob
 #:import CircleKnob circleknob
 #:import ADKnob adknob
@@ -224,7 +226,6 @@ kv = """
     CircleKnob:
         text: 'PTCH DPTH'
         addresses: [ 0x1a + 9 * root.lfo_num ]
-        #on_value: print ( root.osc_adr, self.addresses)
         on_value: app.send2midi( root.osc_adr, self.addresses[0], self.value )
     CircleKnob:
         text: 'FLTR DPTH'
@@ -235,7 +236,7 @@ kv = """
     CircleKnob:
         text: 'PWM DPTH'
         addresses: [ 0x1d + 9 * root.lfo_num ]
-        #disabled: True if osc_wave.text != 'PWM' else False
+        #disabled: True if osc_wave.text != 'PWM' else False ********************************
  
 #------------END LFO DEFINITION                            
 #<RateComboKnob>
