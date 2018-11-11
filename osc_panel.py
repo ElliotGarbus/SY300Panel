@@ -11,7 +11,7 @@ from spinnerknob import SpinnerKnob
 from switchknob import SwitchKnob
 from toggleknob import ToggleKnob
 
-#TODO: Fix the link between the osc_wave and the ability to disable the PWM depth knob in the LFO
+#TODO: Add Labels for LFO and OSC
 
 #:import XYKnob xyknob
 #:import CircleKnob circleknob
@@ -21,6 +21,9 @@ kv = """
 <OSC>
     rows: 2
     cols: 5
+    #spacing: 1
+    padding: 2
+
     canvas.after:
         Color:
             rgba:[.4, .4 , .4, .7 ]
@@ -40,6 +43,7 @@ kv = """
             color: [144/255, 228/255 , 1, 1]
             values: ['SIN', 'SAW', 'TRI', 'SQR', 'PWM', 'DETUNE SAW', 'NOISE', 'INPUT']
         BoxLayout:
+            
             ToggleKnob:
                 text: 'RING'
                 color: [144/255, 228/255 , 1, 1]
@@ -110,7 +114,9 @@ kv = """
 
 # ------------------------------ Filter --------------------------------------------
 <Filter>
-    size_hint_x: .6
+    size_hint_x: 3/5
+    spacing: 2
+    padding: 5
     rows: 2
     cols: 3
     canvas.after:
@@ -168,7 +174,10 @@ kv = """
 
 # --------------------------------------LFO ------------------------------
 <LFO>
-    size_hint_x: 4/5 
+    size_hint_x: .76
+    spacing: 2
+    padding: 3
+ 
     rows:2
     cols:4
     canvas.after:
@@ -245,7 +254,7 @@ kv = """
 # ----------------------------------------The OSC Strip ------------------------
 <OSCStrip>: # Derived from BoxLayout
     SwitchKnob:
-        width: 30
+        width: 25
         size_hint_x: None   
         id:osc_sw_1
         canvas.before:
@@ -255,6 +264,7 @@ kv = """
                 origin: self.center
         canvas.after:
             PopMatrix
+
     OSC:
         id:osc
         
@@ -286,12 +296,16 @@ kv = """
 
 #------------------------------ Control Panel using OSCStrip
 BoxLayout:
+    spacing: 10
+    padding: [2,5,5,5]
     orientation:'vertical'
     OSCStrip:
         is_osc_1: True 
-        
+        spacing: 5
     OSCStrip:
+        spacing: 5
     OSCStrip:
+        spacing: 5
 
 
 
