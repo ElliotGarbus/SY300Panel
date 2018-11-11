@@ -35,9 +35,9 @@ kv = """
         orientation: 'vertical'
         spacing:2
         Label:
-            text: root.parent.osc_text
+            text: 'OSC ' + root.parent.osc_text
             color: [144/255, 228/255 , 1, 1]      
-        MySpinnerKnob:
+        SpinnerKnob:
             id:osc_wave
             addresses: [ 0x01 ]
             text: 'SAW'
@@ -64,17 +64,19 @@ kv = """
         values: [str(x) for x in range(-24, 25)]
         value: 24
         addresses: [ 0x7 ]
+        disabled: True if osc_wave.text == 'INPUT' else False
     CircleKnob:
         id: fine
         text: 'FINE'
         values: [str(x) for x in range(-50, 51)]
         value: 50
         addresses: [ 0x8 ]
+        disabled: True if osc_wave.text == 'INPUT' else False
     CircleKnob:
         id:pulse_width
         text: 'PULSE WIDTH'
         addresses: [ 0x2 ]
-        disabled: True if osc_wave.text != 'PWM' else False
+        disabled: True if osc_wave.text != 'PWM'  else False
     CircleKnob:
         text: 'DETUNE'
         values: [str(x) for x in range(-50, 51)]
@@ -102,15 +104,18 @@ kv = """
         addresses: [ 0x9, 0xa ]
         #on_value_x: app.send2midi( root.osc_adr, self.addresses[0], self.value_x )
         #on_value_y: app.send2midi( root.osc_adr, self.addresses[1], self.value_y )
+        disabled: True if osc_wave.text == 'INPUT' else False
     CircleKnob:
         text: 'PBEND DEPTH'
         values: [str(x) for x in range(-24, 25)]
         value: 24
         addresses: [ 0xb ]
         #on_value: app.send2midi( root.osc_adr, self.addresses[0], self.value )
+        disabled: True if osc_wave.text == 'INPUT' else False
     CircleKnob:
         text: 'PBEND CTL'
         addresses: [ 0xc ]
+        disabled: True if osc_wave.text == 'INPUT' else False
 
 
 # ------------------------------ Filter --------------------------------------------
@@ -131,12 +136,12 @@ kv = """
         Label:
             text:'FILTER'
             color: [144/255, 228/255 , 1, 1]
-        MySpinnerKnob:
+        SpinnerKnob:
             text: 'BYPASS'
             addresses: [ 0x0d ]
             values: ['BYPASS', 'LPF', 'HPF', 'BPF', 'PKG']
             color: [144/255, 228/255 , 1, 1]
-        MySpinnerKnob:
+        SpinnerKnob:
             text: '-12 dB'
             addresses: [ 0x0e ]
             color: [144/255, 228/255 , 1, 1]
@@ -163,6 +168,7 @@ kv = """
 
     ADKnob:
         addresses: [ 0x13 ]
+        disabled: True if root.parent.ids.osc.ids.osc_wave.text == 'INPUT' else False
     
     CircleKnob:
         text: 'LEVEL'
@@ -204,11 +210,11 @@ kv = """
                     rounded_rectangle: (self.x + 5, self.y + 5,self.width -10, self.height * .85, 2) # *self.size
                     
             Label:    
-                text: root.text
+                text: 'LFO ' + root.parent.osc_text + '/' + str(root.lfo_num + 1)
                 color: [144/255, 228/255 , 1, 1]
-            MySwitchKnob: #LFO on or off
+            SwitchKnob: #LFO on or off
                 addresses: [ 0x17 + 9 * root.lfo_num ]
-        MySpinnerKnob:
+        SpinnerKnob:
             size_hint_y: .4
             addresses: [ 0x18 + 9 * root.lfo_num ]
             text: 'SIN'
@@ -230,7 +236,7 @@ kv = """
             values: ['0-100', 'Whole', 'Dotted Half', 'Triplet Whole', 'Half', 'Dotted Qtr', 'Triplet of Half', 'Qtr', 'Dotted 8th', 'Triplet of Qtr', '8th', 'Dotted 16th','Triplet of 8th', '16th', 'Dotted 32th', 'Triplet of 16th', '32th']
         Label:
             text:''
-        MyToggleKnob:    
+        ToggleKnob:    
             id: dyn_depth
             addresses: [ 0x1E + 9 * root.lfo_num ]
             text: 'DYN DEPTH'
@@ -238,12 +244,11 @@ kv = """
     CircleKnob:
         text: 'FADE TIME'
         addresses: [ 0x1f + 9 * root.lfo_num ]
-        disabled: dyn_depth.state == 'normal'
-        
-        
+        disabled: dyn_depth.state == 'normal'       
     CircleKnob:
         text: 'PTCH DPTH'
         addresses: [ 0x1a + 9 * root.lfo_num ]
+        disabled: True if root.parent.ids.osc.ids.osc_wave.text == 'INPUT' else False
         #on_value: app.send2midi( root.osc_adr, self.addresses[0], self.value )
     CircleKnob:
         text: 'FLTR DPTH'
@@ -256,15 +261,14 @@ kv = """
         addresses: [ 0x1d + 9 * root.lfo_num ]
         disabled: True if root.parent.ids.osc.ids.osc_wave.text != 'PWM' else False
  
- 
 #------------END LFO DEFINITION                            
 
 # ----------------------------------------The OSC Strip ------------------------
 <OSCStrip>: # Derived from BoxLayout
-    MySwitchKnob:
+    SwitchKnob:
         width: 25
         size_hint_x: None   
-        id:osc_sw_1
+        id:osc_sw
         addresses: [ 0x0 ]
         canvas.before:
             PushMatrix
@@ -281,29 +285,6 @@ kv = """
         lfo_num: 0
     LFO:               
         lfo_num: 1
-
-    #BoxLayout:    #put the switch outside of the OSC wave box, it controls all the parts.
-    #    orientation: 'vertical'
-    #    width: 30
-    #    size_hint_x: None   
-    #    BoxLayout:
-    #        osc_adr: 0x20
-    #        SwitchKnob:
-    #            id:osc_sw_1
-    #            canvas.before:
-    #                PushMatrix
-    #                Rotate
-    #                    angle: 90
-    #                    origin: self.center
-    #            canvas.after:
-    #                PopMatrix
-    #BoxLayout:
-    #    OSC:
-    #        is_osc_1: root.is_osc_1
-    #    Filter:
-    #    LFO:
-    #    LFO:               
-
 #------------------------------ Control Panel using OSCStrip
 BoxLayout:
     spacing: 10
@@ -312,124 +293,17 @@ BoxLayout:
     OSCStrip:
         is_osc_1: True 
         spacing: 5
-        osc_text: 'OSC 1'
+        osc_text: '1'
         osc_adr: 0x20
     OSCStrip:
         spacing: 5
-        osc_text: 'OSC 2'
+        osc_text: '2'
         osc_adr: 0x28
     OSCStrip:
         spacing: 5
-        osc_text: 'OSC 3'
+        osc_text: '3'
         osc_adr: 0x30
 
-
-
-## ---------------------------------------- The OLD Control Panel
-#BoxLayout:
-#    BoxLayout:    #put the switch outside of the OSC wave box, it controls all the parts.
-#        orientation: 'vertical'
-#        width: 30
-#        size_hint_x: None   
-#        BoxLayout:
-#            osc_adr: 0x20
-#            SwitchKnob:
-#                id:osc_sw_1
-#                canvas.before:
-#                    PushMatrix
-#                    Rotate
-#                        angle: 90
-#                        origin: self.center
-#                canvas.after:
-#                    PopMatrix                
-#        BoxLayout:
-#            osc_adr: 0x28
-#            SwitchKnob:
-#                id:osc_sw_2
-#                canvas.before:
-#                    PushMatrix
-#                    Rotate
-#                        angle: 90
-#                        origin: self.center
-#                canvas.after:
-#                    PopMatrix                
-#        BoxLayout:
-#            osc_adr: 0x30
-#            SwitchKnob:
-#                id:osc_sw_3
-#                canvas.before:
-#                    PushMatrix
-#                    Rotate
-#                        angle: 90
-#                        origin: self.center
-#                canvas.after:
-#                    PopMatrix         
-#        
-#                    
-#    GridLayout: # Holds all panels
-#        rows: 3
-#        cols: 4
-#        spacing: 10
-#        padding: 5
-#    #------------------------------------------ OSC 1 Controls -------------------------   
-#        OSC:
-#            id: osc_1
-#            text: 'OSC 1'
-#            is_osc_1: True
-#            osc_adr: 0x20
-#        Filter:
-#            id: filter_1
-#            osc_adr: 0x20
-#                                    
-#        LFO:
-#            id: LFO_1_1
-#            text: 'LFO 1/1'
-#            lfo_num: 0
-#            osc_adr: 0x20
-#        LFO:
-#            id: LFO_1_2
-#            text: 'LFO 1/2'         
-#            lfo_num: 1
-#            osc_adr: 0x20
-#    
-#    #------------------------------------------ OSC 2 Controls ------------------------------           
-#        OSC:
-#            id: osc_2
-#            text: 'OSC 2'
-#            osc_adr: 0x28
-#        Filter:
-#            id: filter_2
-#            osc_adr: 0x28
-#        
-#        LFO:
-#            id: LFO_2_1
-#            text: 'LFO 2/1'   
-#            lfo_num: 0
-#            osc_adr: 0x28
-#        LFO:
-#            id: LFO_2_2
-#            text: 'LFO 2/2'             
-#            lfo_num: 1
-#            osc_adr: 0x28
-#    
-#    #------------------------------------------ OSC 3 Controls -------------------------------            
-#        OSC:
-#            id: osc_3
-#            text: 'OSC 3'
-#            osc_adr: 0x30
-#        Filter:
-#            id: filter_3
-#            osc_adr: 0x30
-#        LFO:
-#            id: LFO_3_1
-#            text: 'LFO 3/1'   
-#            lfo_num: 0
-#            osc_adr: 0x30
-#        LFO:
-#            id: LFO_3_2
-#            text: 'LFO 3/2'            
-#            lfo_num: 1
-#            osc_adr: 0x30
 """
 
 class Filter(GridLayout):
@@ -462,15 +336,6 @@ class OSCStrip(BoxLayout):
     is_osc_1 = BooleanProperty(False)
     osc_text = StringProperty('')
     osc_adr  = NumericProperty()
-
-class MySwitchKnob(SwitchKnob):
-    addresses = ListProperty([])
-
-class MyToggleKnob(ToggleKnob):
-    addresses = ListProperty([])
-
-class MySpinnerKnob(SpinnerKnob):
-    addresses = ListProperty([])
 
 
 class PanelApp(App):
