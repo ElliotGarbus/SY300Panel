@@ -35,7 +35,7 @@ kv = """
         orientation: 'vertical'
         spacing:2
         Label:
-            text: root.parent.osc_text
+            text: 'OSC ' + root.parent.osc_text
             color: [144/255, 228/255 , 1, 1]      
         MySpinnerKnob:
             id:osc_wave
@@ -204,7 +204,7 @@ kv = """
                     rounded_rectangle: (self.x + 5, self.y + 5,self.width -10, self.height * .85, 2) # *self.size
                     
             Label:    
-                text: root.text
+                text: 'LFO ' + root.parent.osc_text + '/' + str(root.lfo_num + 1)
                 color: [144/255, 228/255 , 1, 1]
             MySwitchKnob: #LFO on or off
                 addresses: [ 0x17 + 9 * root.lfo_num ]
@@ -238,9 +238,7 @@ kv = """
     CircleKnob:
         text: 'FADE TIME'
         addresses: [ 0x1f + 9 * root.lfo_num ]
-        disabled: dyn_depth.state == 'normal'
-        
-        
+        disabled: dyn_depth.state == 'normal'       
     CircleKnob:
         text: 'PTCH DPTH'
         addresses: [ 0x1a + 9 * root.lfo_num ]
@@ -281,29 +279,6 @@ kv = """
         lfo_num: 0
     LFO:               
         lfo_num: 1
-
-    #BoxLayout:    #put the switch outside of the OSC wave box, it controls all the parts.
-    #    orientation: 'vertical'
-    #    width: 30
-    #    size_hint_x: None   
-    #    BoxLayout:
-    #        osc_adr: 0x20
-    #        SwitchKnob:
-    #            id:osc_sw_1
-    #            canvas.before:
-    #                PushMatrix
-    #                Rotate
-    #                    angle: 90
-    #                    origin: self.center
-    #            canvas.after:
-    #                PopMatrix
-    #BoxLayout:
-    #    OSC:
-    #        is_osc_1: root.is_osc_1
-    #    Filter:
-    #    LFO:
-    #    LFO:               
-
 #------------------------------ Control Panel using OSCStrip
 BoxLayout:
     spacing: 10
@@ -312,124 +287,17 @@ BoxLayout:
     OSCStrip:
         is_osc_1: True 
         spacing: 5
-        osc_text: 'OSC 1'
+        osc_text: '1'
         osc_adr: 0x20
     OSCStrip:
         spacing: 5
-        osc_text: 'OSC 2'
+        osc_text: '2'
         osc_adr: 0x28
     OSCStrip:
         spacing: 5
-        osc_text: 'OSC 3'
+        osc_text: '3'
         osc_adr: 0x30
 
-
-
-## ---------------------------------------- The OLD Control Panel
-#BoxLayout:
-#    BoxLayout:    #put the switch outside of the OSC wave box, it controls all the parts.
-#        orientation: 'vertical'
-#        width: 30
-#        size_hint_x: None   
-#        BoxLayout:
-#            osc_adr: 0x20
-#            SwitchKnob:
-#                id:osc_sw_1
-#                canvas.before:
-#                    PushMatrix
-#                    Rotate
-#                        angle: 90
-#                        origin: self.center
-#                canvas.after:
-#                    PopMatrix                
-#        BoxLayout:
-#            osc_adr: 0x28
-#            SwitchKnob:
-#                id:osc_sw_2
-#                canvas.before:
-#                    PushMatrix
-#                    Rotate
-#                        angle: 90
-#                        origin: self.center
-#                canvas.after:
-#                    PopMatrix                
-#        BoxLayout:
-#            osc_adr: 0x30
-#            SwitchKnob:
-#                id:osc_sw_3
-#                canvas.before:
-#                    PushMatrix
-#                    Rotate
-#                        angle: 90
-#                        origin: self.center
-#                canvas.after:
-#                    PopMatrix         
-#        
-#                    
-#    GridLayout: # Holds all panels
-#        rows: 3
-#        cols: 4
-#        spacing: 10
-#        padding: 5
-#    #------------------------------------------ OSC 1 Controls -------------------------   
-#        OSC:
-#            id: osc_1
-#            text: 'OSC 1'
-#            is_osc_1: True
-#            osc_adr: 0x20
-#        Filter:
-#            id: filter_1
-#            osc_adr: 0x20
-#                                    
-#        LFO:
-#            id: LFO_1_1
-#            text: 'LFO 1/1'
-#            lfo_num: 0
-#            osc_adr: 0x20
-#        LFO:
-#            id: LFO_1_2
-#            text: 'LFO 1/2'         
-#            lfo_num: 1
-#            osc_adr: 0x20
-#    
-#    #------------------------------------------ OSC 2 Controls ------------------------------           
-#        OSC:
-#            id: osc_2
-#            text: 'OSC 2'
-#            osc_adr: 0x28
-#        Filter:
-#            id: filter_2
-#            osc_adr: 0x28
-#        
-#        LFO:
-#            id: LFO_2_1
-#            text: 'LFO 2/1'   
-#            lfo_num: 0
-#            osc_adr: 0x28
-#        LFO:
-#            id: LFO_2_2
-#            text: 'LFO 2/2'             
-#            lfo_num: 1
-#            osc_adr: 0x28
-#    
-#    #------------------------------------------ OSC 3 Controls -------------------------------            
-#        OSC:
-#            id: osc_3
-#            text: 'OSC 3'
-#            osc_adr: 0x30
-#        Filter:
-#            id: filter_3
-#            osc_adr: 0x30
-#        LFO:
-#            id: LFO_3_1
-#            text: 'LFO 3/1'   
-#            lfo_num: 0
-#            osc_adr: 0x30
-#        LFO:
-#            id: LFO_3_2
-#            text: 'LFO 3/2'            
-#            lfo_num: 1
-#            osc_adr: 0x30
 """
 
 class Filter(GridLayout):
