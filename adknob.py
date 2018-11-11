@@ -7,6 +7,7 @@ from kivy.properties import ListProperty
 Builder.load_string('''
 <ADKnob>
     orientation: 'vertical'
+    opacity: .25 if root.disabled else 1
     id:vbox
     BoxLayout:
         Label:
@@ -86,7 +87,7 @@ class ADKnob(BoxLayout):
         self.adknob_ndx = sorted([0, int(sq_xy[0] * 100 / (self.ids.sq_pad.width)), 100])[1]
 
     def on_touch_down(self, touch):
-        if self.collide_point(*touch.pos):
+        if not self.disabled and self.collide_point(*touch.pos):
             touch.grab(self)
             if not touch.is_mouse_scrolling:
                 self._touch_to_ndx(touch)
@@ -94,13 +95,13 @@ class ADKnob(BoxLayout):
         return False
 
     def on_touch_move(self, touch):
-        if touch.grab_current is self:
+        if not self.disabled and touch.grab_current is self:
             self._touch_to_ndx(touch)
             return super().on_touch_move(touch)
         return False
 
     def on_touch_up(self, touch): 
-        if touch.is_mouse_scrolling and touch.grab_current is self:
+        if not self.disabled and touch.is_mouse_scrolling and touch.grab_current is self:
             self.adknob_ndx = sorted((0, self.adknob_ndx + self._scroll_direction[touch.button], 100))[1]
             return super().on_touch_up(touch)
         elif touch.grab_current is self:
@@ -120,7 +121,8 @@ GridLayout:
     ADKnob:
     ADKnob:
     ADKnob:
-    ADKnob:       
+    ADKnob:
+        disabled: True       
     ADKnob:       
 
     '''

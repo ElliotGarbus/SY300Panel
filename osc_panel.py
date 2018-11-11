@@ -37,7 +37,7 @@ kv = """
         Label:
             text: 'OSC ' + root.parent.osc_text
             color: [144/255, 228/255 , 1, 1]      
-        MySpinnerKnob:
+        SpinnerKnob:
             id:osc_wave
             addresses: [ 0x01 ]
             text: 'SAW'
@@ -64,17 +64,19 @@ kv = """
         values: [str(x) for x in range(-24, 25)]
         value: 24
         addresses: [ 0x7 ]
+        disabled: True if osc_wave.text == 'INPUT' else False
     CircleKnob:
         id: fine
         text: 'FINE'
         values: [str(x) for x in range(-50, 51)]
         value: 50
         addresses: [ 0x8 ]
+        disabled: True if osc_wave.text == 'INPUT' else False
     CircleKnob:
         id:pulse_width
         text: 'PULSE WIDTH'
         addresses: [ 0x2 ]
-        disabled: True if osc_wave.text != 'PWM' else False
+        disabled: True if osc_wave.text != 'PWM'  else False
     CircleKnob:
         text: 'DETUNE'
         values: [str(x) for x in range(-50, 51)]
@@ -102,15 +104,18 @@ kv = """
         addresses: [ 0x9, 0xa ]
         #on_value_x: app.send2midi( root.osc_adr, self.addresses[0], self.value_x )
         #on_value_y: app.send2midi( root.osc_adr, self.addresses[1], self.value_y )
+        disabled: True if osc_wave.text == 'INPUT' else False
     CircleKnob:
         text: 'PBEND DEPTH'
         values: [str(x) for x in range(-24, 25)]
         value: 24
         addresses: [ 0xb ]
         #on_value: app.send2midi( root.osc_adr, self.addresses[0], self.value )
+        disabled: True if osc_wave.text == 'INPUT' else False
     CircleKnob:
         text: 'PBEND CTL'
         addresses: [ 0xc ]
+        disabled: True if osc_wave.text == 'INPUT' else False
 
 
 # ------------------------------ Filter --------------------------------------------
@@ -131,12 +136,12 @@ kv = """
         Label:
             text:'FILTER'
             color: [144/255, 228/255 , 1, 1]
-        MySpinnerKnob:
+        SpinnerKnob:
             text: 'BYPASS'
             addresses: [ 0x0d ]
             values: ['BYPASS', 'LPF', 'HPF', 'BPF', 'PKG']
             color: [144/255, 228/255 , 1, 1]
-        MySpinnerKnob:
+        SpinnerKnob:
             text: '-12 dB'
             addresses: [ 0x0e ]
             color: [144/255, 228/255 , 1, 1]
@@ -163,6 +168,7 @@ kv = """
 
     ADKnob:
         addresses: [ 0x13 ]
+        disabled: True if root.parent.ids.osc.ids.osc_wave.text == 'INPUT' else False
     
     CircleKnob:
         text: 'LEVEL'
@@ -206,9 +212,9 @@ kv = """
             Label:    
                 text: 'LFO ' + root.parent.osc_text + '/' + str(root.lfo_num + 1)
                 color: [144/255, 228/255 , 1, 1]
-            MySwitchKnob: #LFO on or off
+            SwitchKnob: #LFO on or off
                 addresses: [ 0x17 + 9 * root.lfo_num ]
-        MySpinnerKnob:
+        SpinnerKnob:
             size_hint_y: .4
             addresses: [ 0x18 + 9 * root.lfo_num ]
             text: 'SIN'
@@ -230,7 +236,7 @@ kv = """
             values: ['0-100', 'Whole', 'Dotted Half', 'Triplet Whole', 'Half', 'Dotted Qtr', 'Triplet of Half', 'Qtr', 'Dotted 8th', 'Triplet of Qtr', '8th', 'Dotted 16th','Triplet of 8th', '16th', 'Dotted 32th', 'Triplet of 16th', '32th']
         Label:
             text:''
-        MyToggleKnob:    
+        ToggleKnob:    
             id: dyn_depth
             addresses: [ 0x1E + 9 * root.lfo_num ]
             text: 'DYN DEPTH'
@@ -242,6 +248,7 @@ kv = """
     CircleKnob:
         text: 'PTCH DPTH'
         addresses: [ 0x1a + 9 * root.lfo_num ]
+        disabled: True if root.parent.ids.osc.ids.osc_wave.text == 'INPUT' else False
         #on_value: app.send2midi( root.osc_adr, self.addresses[0], self.value )
     CircleKnob:
         text: 'FLTR DPTH'
@@ -254,15 +261,14 @@ kv = """
         addresses: [ 0x1d + 9 * root.lfo_num ]
         disabled: True if root.parent.ids.osc.ids.osc_wave.text != 'PWM' else False
  
- 
 #------------END LFO DEFINITION                            
 
 # ----------------------------------------The OSC Strip ------------------------
 <OSCStrip>: # Derived from BoxLayout
-    MySwitchKnob:
+    SwitchKnob:
         width: 25
         size_hint_x: None   
-        id:osc_sw_1
+        id:osc_sw
         addresses: [ 0x0 ]
         canvas.before:
             PushMatrix
@@ -330,15 +336,6 @@ class OSCStrip(BoxLayout):
     is_osc_1 = BooleanProperty(False)
     osc_text = StringProperty('')
     osc_adr  = NumericProperty()
-
-class MySwitchKnob(SwitchKnob):
-    addresses = ListProperty([])
-
-class MyToggleKnob(ToggleKnob):
-    addresses = ListProperty([])
-
-class MySpinnerKnob(SpinnerKnob):
-    addresses = ListProperty([])
 
 
 class PanelApp(App):
