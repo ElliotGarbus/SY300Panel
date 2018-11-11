@@ -207,10 +207,10 @@ kv = """
                 text: root.text
                 color: [144/255, 228/255 , 1, 1]
             MySwitchKnob: #LFO on or off
-                addresses: [ 0x17 + 9 * self.parent.parent.parent.lfo_num ]
+                addresses: [ 0x17 + 9 * root.lfo_num ]
         MySpinnerKnob:
             size_hint_y: .4
-            addresses: [ 0x18 + 9 * self.parent.parent.lfo_num ]
+            addresses: [ 0x18 + 9 * root.lfo_num ]
             text: 'SIN'
             color: [144/255, 228/255 , 1, 1]
             values: ['SIN', 'SAW UP', 'SAW DOWN','TRI', 'SQR', 'RANDOM', 'S & H']
@@ -224,7 +224,7 @@ kv = """
         orientation: 'vertical'
         RateComboKnob:
             id: rate_spinner  
-            addresses: [ 0x19 + 9 * self.parent.parent.lfo_num ]
+            addresses: [ 0x19 + 9 * root.lfo_num ]
             text: '0-100'
             color: [144/255, 228/255 , 1, 1]
             values: ['0-100', 'Whole', 'Dotted Half', 'Triplet Whole', 'Half', 'Dotted Qtr', 'Triplet of Half', 'Qtr', 'Dotted 8th', 'Triplet of Qtr', '8th', 'Dotted 16th','Triplet of 8th', '16th', 'Dotted 32th', 'Triplet of 16th', '32th']
@@ -232,28 +232,28 @@ kv = """
             text:''
         MyToggleKnob:    
             id: dyn_depth
-            addresses: [ 0x1E + 9 * self.parent.parent.lfo_num ]
+            addresses: [ 0x1E + 9 * root.lfo_num ]
             text: 'DYN DEPTH'
             color: [144/255, 228/255 , 1, 1]               
     CircleKnob:
         text: 'FADE TIME'
-        addresses: [ 0x1f + 9 * self.parent.lfo_num ]
+        addresses: [ 0x1f + 9 * root.lfo_num ]
         disabled: dyn_depth.state == 'normal'
         
         
     CircleKnob:
         text: 'PTCH DPTH'
-        addresses: [ 0x1a + 9 * self.parent.lfo_num ]
+        addresses: [ 0x1a + 9 * root.lfo_num ]
         #on_value: app.send2midi( root.osc_adr, self.addresses[0], self.value )
     CircleKnob:
         text: 'FLTR DPTH'
-        addresses: [ 0x1b + 9 * self.parent.lfo_num  ]
+        addresses: [ 0x1b + 9 * root.lfo_num  ]
     CircleKnob:
         text: 'AMP DPTH'
-        addresses: [ 0x1c + 9 * self.parent.lfo_num ]
+        addresses: [ 0x1c + 9 * root.lfo_num ]
     CircleKnob:
         text: 'PWM DPTH'
-        addresses: [ 0x1d + 9 * self.parent.lfo_num ]
+        addresses: [ 0x1d + 9 * root.lfo_num ]
         disabled: True if root.parent.ids.osc.ids.osc_wave.text != 'PWM' else False
  
  
