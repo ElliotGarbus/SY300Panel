@@ -2,14 +2,14 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import BooleanProperty, StringProperty, NumericProperty
+from kivy.properties import BooleanProperty, StringProperty, NumericProperty, ListProperty
 from kivy.core.window import Window
-from circleknob import CircleKnob
-from xyknob     import XYKnob
-from adknob     import ADKnob
+from circleknob  import CircleKnob
+from xyknob      import XYKnob
+from adknob      import ADKnob
 from spinnerknob import SpinnerKnob
-from switchknob import SwitchKnob
-from toggleknob import ToggleKnob
+from switchknob  import SwitchKnob
+from toggleknob  import ToggleKnob
 
 #TODO: Add Labels for LFO and OSC
 
@@ -37,8 +37,9 @@ kv = """
         Label:
             text: root.parent.osc_text
             color: [144/255, 228/255 , 1, 1]      
-        SpinnerKnob:
+        MySpinnerKnob:
             id:osc_wave
+            addresses: [ 0x01 ]
             text: 'SAW'
             color: [144/255, 228/255 , 1, 1]
             values: ['SIN', 'SAW', 'TRI', 'SQR', 'PWM', 'DETUNE SAW', 'NOISE', 'INPUT']
@@ -91,8 +92,8 @@ kv = """
         label_x: 'ATTACK'
         label_y: 'DEPTH'
         addresses: [ 0x3, 0x4 ]
-        on_value_x: app.send2midi( root.osc_adr, self.addresses[0], self.value_x )
-        on_value_y: app.send2midi( root.osc_adr, self.addresses[1], self.value_y )
+        #on_value_x: app.send2midi( root.osc_adr, self.addresses[0], self.value_x )
+        #on_value_y: app.send2midi( root.osc_adr, self.addresses[1], self.value_y )
         disabled: True if osc_wave.text != 'PWM' else False
     XYKnob:
         text:    'PITCH ENV'
@@ -130,12 +131,14 @@ kv = """
         Label:
             text:'FILTER'
             color: [144/255, 228/255 , 1, 1]
-        SpinnerKnob:
+        MySpinnerKnob:
             text: 'BYPASS'
+            addresses: [ 0x0d ]
             values: ['BYPASS', 'LPF', 'HPF', 'BPF', 'PKG']
             color: [144/255, 228/255 , 1, 1]
-        SpinnerKnob:
+        MySpinnerKnob:
             text: '-12 dB'
+            addresses: [ 0x0e ]
             color: [144/255, 228/255 , 1, 1]
             values: ['-12 dB', '-24 dB']
         Label:
@@ -203,9 +206,11 @@ kv = """
             Label:    
                 text: root.text
                 color: [144/255, 228/255 , 1, 1]
-            SwitchKnob: #LFO on or off
-        SpinnerKnob:
+            MySwitchKnob: #LFO on or off
+                addresses: [ 0x17 + 9 * self.parent.parent.parent.lfo_num ]
+        MySpinnerKnob:
             size_hint_y: .4
+            addresses: [ 0x18 + 9 * self.parent.parent.lfo_num ]
             text: 'SIN'
             color: [144/255, 228/255 , 1, 1]
             values: ['SIN', 'SAW UP', 'SAW DOWN','TRI', 'SQR', 'RANDOM', 'S & H']
@@ -219,33 +224,36 @@ kv = """
         orientation: 'vertical'
         RateComboKnob:
             id: rate_spinner  
+            addresses: [ 0x19 + 9 * self.parent.parent.lfo_num ]
             text: '0-100'
             color: [144/255, 228/255 , 1, 1]
             values: ['0-100', 'Whole', 'Dotted Half', 'Triplet Whole', 'Half', 'Dotted Qtr', 'Triplet of Half', 'Qtr', 'Dotted 8th', 'Triplet of Qtr', '8th', 'Dotted 16th','Triplet of 8th', '16th', 'Dotted 32th', 'Triplet of 16th', '32th']
         Label:
             text:''
-        ToggleKnob:    
+        MyToggleKnob:    
             id: dyn_depth
+            addresses: [ 0x1E + 9 * self.parent.parent.lfo_num ]
             text: 'DYN DEPTH'
             color: [144/255, 228/255 , 1, 1]               
     CircleKnob:
         text: 'FADE TIME'
+        addresses: [ 0x1f + 9 * self.parent.lfo_num ]
         disabled: dyn_depth.state == 'normal'
         
         
     CircleKnob:
         text: 'PTCH DPTH'
-        addresses: [ 0x1a + 9 * root.lfo_num ]
-        on_value: app.send2midi( root.osc_adr, self.addresses[0], self.value )
+        addresses: [ 0x1a + 9 * self.parent.lfo_num ]
+        #on_value: app.send2midi( root.osc_adr, self.addresses[0], self.value )
     CircleKnob:
         text: 'FLTR DPTH'
-        addresses: [ 0x1b + 9 * root.lfo_num  ]
+        addresses: [ 0x1b + 9 * self.parent.lfo_num  ]
     CircleKnob:
         text: 'AMP DPTH'
-        addresses: [ 0x1c + 9 * root.lfo_num ]
+        addresses: [ 0x1c + 9 * self.parent.lfo_num ]
     CircleKnob:
         text: 'PWM DPTH'
-        addresses: [ 0x1d + 9 * root.lfo_num ]
+        addresses: [ 0x1d + 9 * self.parent.lfo_num ]
         disabled: True if root.parent.ids.osc.ids.osc_wave.text != 'PWM' else False
  
  
@@ -253,10 +261,11 @@ kv = """
 
 # ----------------------------------------The OSC Strip ------------------------
 <OSCStrip>: # Derived from BoxLayout
-    SwitchKnob:
+    MySwitchKnob:
         width: 25
         size_hint_x: None   
         id:osc_sw_1
+        addresses: [ 0x0 ]
         canvas.before:
             PushMatrix
             Rotate
@@ -269,7 +278,9 @@ kv = """
         id:osc
     Filter:
     LFO:
+        lfo_num: 0
     LFO:               
+        lfo_num: 1
 
     #BoxLayout:    #put the switch outside of the OSC wave box, it controls all the parts.
     #    orientation: 'vertical'
@@ -302,12 +313,15 @@ BoxLayout:
         is_osc_1: True 
         spacing: 5
         osc_text: 'OSC 1'
+        osc_adr: 0x20
     OSCStrip:
         spacing: 5
         osc_text: 'OSC 2'
+        osc_adr: 0x28
     OSCStrip:
         spacing: 5
         osc_text: 'OSC 3'
+        osc_adr: 0x30
 
 
 
@@ -419,20 +433,20 @@ BoxLayout:
 """
 
 class Filter(GridLayout):
-    osc_adr = NumericProperty()
+    pass
 
 
 class OSC(GridLayout):
     text = StringProperty('')
-    osc_adr = NumericProperty()
 
 
 class LFO(GridLayout):
     text = StringProperty('')
     lfo_num = NumericProperty( 0 )
-    osc_adr = NumericProperty()
 
 class RateComboKnob(SpinnerKnob):
+    addresses = ListProperty([])
+
     # if the spinner is at zero, selecting 0-100, then the knob associated with the spinner is active.
     # There is a single address for the RateComboKnob with values from 0 to 116
     # The logic is in set_knob method of the RateComboKnob class
@@ -447,6 +461,16 @@ class RateComboKnob(SpinnerKnob):
 class OSCStrip(BoxLayout):
     is_osc_1 = BooleanProperty(False)
     osc_text = StringProperty('')
+    osc_adr  = NumericProperty()
+
+class MySwitchKnob(SwitchKnob):
+    addresses = ListProperty([])
+
+class MyToggleKnob(ToggleKnob):
+    addresses = ListProperty([])
+
+class MySpinnerKnob(SpinnerKnob):
+    addresses = ListProperty([])
 
 
 class PanelApp(App):
@@ -458,19 +482,20 @@ class PanelApp(App):
 
     def build(self):
         r = Builder.load_string(kv)
-#        for c in r.walk():
-#            #if isinstance( c, CircleKnob ) or isinstance( c, XYKnob ) or isinstance( c, ADKnob ):
-#            if hasattr(c, 'addresses'):
-#                for a in c.addresses:
-#                    self.adr2knob[ c.parent.osc_adr ,  a ] = c
-#
-#        #self.adr2knob[ 0x20, 0x3 ].text = 'splat' # debug check
-#        print('DEBUG: collected knobs for:')
-#        for k in sorted(self.adr2knob.keys(),key=lambda x: x[0]*100+x[1]):
-#           print('  ', k );
-        print(dir(r))
-        for c in r.children:
-            print('c: ', c, 'c.ids: ', c.ids)
+        for osc in r.children:    # these children should be the three strips
+            for c in osc.walk():
+                if hasattr(c, 'addresses'):
+                    for a in c.addresses:
+                        self.adr2knob[ osc.osc_adr ,  a ] = c
+
+        print('DEBUG: collected knobs for:')
+        for k in sorted(self.adr2knob.keys(),key=lambda x: x[0]*100+x[1]):
+           print('  ', k , end=' ')
+           if hasattr(self.adr2knob[k], 'text'):
+               print('  ', k, ' text is ', self.adr2knob[k].text);
+           else:
+               print('  ', k , '(knob does not have text field)')
+
 
         return r
 
