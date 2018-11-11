@@ -35,7 +35,7 @@ kv = """
         orientation: 'vertical'
         spacing:2
         Label:
-            text: root.text
+            text: root.parent.osc_text
             color: [144/255, 228/255 , 1, 1]      
         SpinnerKnob:
             id:osc_wave
@@ -267,7 +267,6 @@ kv = """
 
     OSC:
         id:osc
-        
     Filter:
     LFO:
     LFO:               
@@ -302,10 +301,13 @@ BoxLayout:
     OSCStrip:
         is_osc_1: True 
         spacing: 5
+        osc_text: 'OSC 1'
     OSCStrip:
         spacing: 5
+        osc_text: 'OSC 2'
     OSCStrip:
         spacing: 5
+        osc_text: 'OSC 3'
 
 
 
@@ -444,6 +446,7 @@ class RateComboKnob(SpinnerKnob):
 
 class OSCStrip(BoxLayout):
     is_osc_1 = BooleanProperty(False)
+    osc_text = StringProperty('')
 
 
 class PanelApp(App):
