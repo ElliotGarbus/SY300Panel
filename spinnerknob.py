@@ -17,7 +17,8 @@ Builder.load_string('''
 
 
 class SpinnerKnob(Spinner):
-    addresses = ListProperty([])
+    addresses    = ListProperty([])
+    comaddresses = ListProperty([])
 
     def set_knob(self, adr, value):
         self.text = self.values[value]

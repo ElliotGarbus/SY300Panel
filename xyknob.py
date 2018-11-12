@@ -158,7 +158,7 @@ class XYKnob(BoxLayout):
             self.xy_knob_trackx.extend( [0, rel_pos[1],   self.ids.mypad.right, rel_pos[1] ] )
 
             return True
-        return super().on_touch_down(touch)
+        return False
 
     def on_touch_move(self, touch):
         if touch.grab_current is self and not self.disabled:
