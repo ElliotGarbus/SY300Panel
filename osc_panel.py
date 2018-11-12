@@ -398,6 +398,6 @@ class PanelApp(App):
         return r
 
     def send2midi(self, osc, adr, val):
-      print( 'message to midi:', osc, adr, val )
+      print( f'message to midi: osc:0x{osc:2x} adr:0x{adr:2x} val:0x{val:2x}' )
 
 PanelApp().run()
