@@ -11,8 +11,6 @@ from spinnerknob import SpinnerKnob
 from switchknob  import SwitchKnob
 from toggleknob  import ToggleKnob
 
-#TODO: Add Labels for LFO and OSC
-
 #:import XYKnob xyknob
 #:import CircleKnob circleknob
 #:import ADKnob adknob
@@ -185,7 +183,7 @@ kv = """
 
     ADKnob:
         addresses: [ 0x13 ]
-        on_adknob_ndx: app.send2midi( root.parent.osc_adr, self.addresses[0], self.adknob_ndx )
+        on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value)
         disabled: True if root.parent.ids.osc.ids.osc_wave.text == 'INPUT' else False
     
     CircleKnob:
@@ -400,6 +398,6 @@ class PanelApp(App):
         return r
 
     def send2midi(self, osc, adr, val):
-      print( 'message to midi:', osc, adr, val )
+      print( f'message to midi: osc:0x{osc:2x} adr:0x{adr:2x} val:0x{val:2x}' )
 
 PanelApp().run()

@@ -18,7 +18,7 @@ Builder.load_string('''
         RelativeLayout:
             Label:
                 id:sq_pad
-                text: str(root.adknob_ndx - 50)
+                text: str(root.value - 50)
                 font_size: 25
                 size_hint_x: None
                 width: self.size[1]
@@ -35,12 +35,12 @@ Builder.load_string('''
                     Line: # Attack Line
                         width: 2
                         cap: 'none'
-                        points: [sq_pad.center_x if(root.adknob_ndx > 50) else  sq_pad.x + root.adknob_ndx/100 * sq_pad.width, sq_pad.y, sq_pad.center_x, sq_pad.top]
+                        points: [sq_pad.center_x if(root.value > 50) else  sq_pad.x + root.value/100 * sq_pad.width, sq_pad.y, sq_pad.center_x, sq_pad.top]
                         
                     Line: # Decay Line
                         width: 2
                         cap: 'none'   
-                        points: [sq_pad.right if (root.adknob_ndx < 51) else  sq_pad.right + (50-root.adknob_ndx)/100 * sq_pad.width, sq_pad.y, sq_pad.center_x, sq_pad.top]
+                        points: [sq_pad.right if (root.value < 51) else  sq_pad.right + (50-root.value)/100 * sq_pad.width, sq_pad.y, sq_pad.center_x, sq_pad.top]
                     Color:
                         rgba:[.4, .4 , .4, .7 ]
                     Line:
@@ -78,13 +78,13 @@ Builder.load_string('''
 
 
 class ADKnob(BoxLayout):
-    adknob_ndx = NumericProperty(50)         # from 0 to 100
+    value = NumericProperty(50)         # from 0 to 100
     addresses  = ListProperty( [] )
     _scroll_direction = {'scrollup': 1, 'scrolldown': -1}
 
     def _touch_to_ndx(self, touch):
         sq_xy = self.ids.sq_pad.to_widget(*touch.pos, True)
-        self.adknob_ndx = sorted([0, int(sq_xy[0] * 100 / (self.ids.sq_pad.width)), 100])[1]
+        self.value = sorted([0, int(sq_xy[0] * 100 / (self.ids.sq_pad.width)), 100])[1]
 
     def on_touch_down(self, touch):
         if not self.disabled and self.collide_point(*touch.pos):
@@ -102,7 +102,7 @@ class ADKnob(BoxLayout):
 
     def on_touch_up(self, touch): 
         if not self.disabled and touch.is_mouse_scrolling and touch.grab_current is self:
-            self.adknob_ndx = sorted((0, self.adknob_ndx + self._scroll_direction[touch.button], 100))[1]
+            self.value = sorted((0, self.value + self._scroll_direction[touch.button], 100))[1]
             return super().on_touch_up(touch)
         elif touch.grab_current is self:
             touch.ungrab(self)
