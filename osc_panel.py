@@ -188,8 +188,8 @@ kv = """
     
     CircleKnob:
         text: 'LEVEL'
-        values: [str(x) for x in range(201)]
-        value: 100
+        values: [str(x) for x in range(0,201,2)]
+        value: 50
         addresses: [ 0x14 ]
         on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
     CircleKnob: 
