@@ -383,11 +383,13 @@ class PanelApp(App):
                 if hasattr(c, 'addresses'):
                     for a in c.addresses:
                         self.adr2knob[ osc.osc_adr ,  a ] = c
-                        print ('just inited ', osc.osc_adr, a, c )
                 if hasattr(c, 'comaddresses'):
                     for a in c.comaddresses:
                         self.adr2knob[ 0x18 ,  a ] = c
-                        print ('just inited ', 0x18, a, c )
+
+        # remove bogus key(s)
+        boguskeys = [ (o,a) for o,a in self.adr2knob.keys() if a>400 ]
+        for bogus in boguskeys: del self.adr2knob[ bogus ]
 
         print('DEBUG: collected knobs for:')
         for k in sorted(self.adr2knob.keys(),key=lambda x: x[0]*100+x[1]):
