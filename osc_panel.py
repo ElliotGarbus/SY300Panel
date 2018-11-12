@@ -399,5 +399,11 @@ class PanelApp(App):
 
     def send2midi(self, osc, adr, val):
       print( f'message to midi: osc:0x{osc:2x} adr:0x{adr:2x} val:0x{val:2x}' )
+      if (osc==0x30) and (adr==0x17):   # our pet switch (lfo 3/1)
+        a = self.adr2knob[  0x30, 0x1a  ].value     # lfo 3/1: Ptch Depth = (24 or 32 or 40 or 48)
+        b = self.adr2knob[  0x30, 0x1b  ].value     # lfo 3/1: Fltr Depth = address (typically 0..40)
+        c = self.adr2knob[  0x30, 0x1c  ].value     # lfo 3/1: Amp Dpth   = value to set
+        self.adr2knob[ a,b ].set_knob( b, c )
+        #to use, set knobs for a, b, and c.  Then toggle the LFO switch to send message!
 
 PanelApp().run()
