@@ -109,6 +109,12 @@ class ADKnob(BoxLayout):
             return super().on_touch_up(touch)
         return False
 
+    def set_knob(self, adr, value):
+        self.value = value
+
+
+
+
 if __name__ == '__main__':
     kv_test = '''
 GridLayout:

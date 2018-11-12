@@ -46,7 +46,7 @@ kv = """
             
             ToggleKnob:
                 text: 'RING'
-                comaddresses: [ 0x01  + 2 * (root.parent.osc_text == "3") ]
+                comaddresses: [ 0x01  + 2 * (root.parent.osc_text == "3") if root.parent.osc_text != "1" else 500 ]
                 on_state: app.send2midi( 0x18, self.comaddresses[0], self.state == 'down' )
                 color: [144/255, 228/255 , 1, 1]
                 size_hint_x: .5
@@ -54,7 +54,7 @@ kv = """
                 disabled: 1 if root.parent.is_osc_1 is True else 0                        
             SpinnerKnob:
                 text: 'SYNC'
-                comaddresses: [ 0x00  + 2 * (root.parent.osc_text == "3") ]
+                comaddresses: [ 0x00  + 2 * (root.parent.osc_text == "3") if root.parent.osc_text != "1" else 500 ]
                 on_text: app.send2midi( 0x18, self.comaddresses[0], self.values.index(self.text) )
                 color: [144/255, 228/255 , 1, 1]
                 values: ['Sync Off', 'Sync On', 'Sync LoFi']
@@ -357,7 +357,7 @@ class RateComboKnob(SpinnerKnob):
 
     def set_knob(self, adr, value):
         if value <= 100:
-            self.ids.rate_knob.value = value
+            self.parent.parent.ids.rate_knob.value = value
             self.text = self.values[0]
         else:
             self.text = self.values[value - 100]
@@ -379,20 +379,22 @@ class PanelApp(App):
         r = Builder.load_string(kv)
 #note rate/combo switch needs special dealings, as there is ONE address for TWO widgets.... dont drop them!
         for osc in r.children:    # these children should be the three strips
-            for c in osc.walk():
+            for c in osc.walk(restrict=True, loopback=False ):
                 if hasattr(c, 'addresses'):
                     for a in c.addresses:
                         self.adr2knob[ osc.osc_adr ,  a ] = c
+                        print ('just inited ', osc.osc_adr, a, c )
                 if hasattr(c, 'comaddresses'):
                     for a in c.comaddresses:
                         self.adr2knob[ 0x18 ,  a ] = c
+                        print ('just inited ', 0x18, a, c )
 
         print('DEBUG: collected knobs for:')
         for k in sorted(self.adr2knob.keys(),key=lambda x: x[0]*100+x[1]):
            if hasattr(self.adr2knob[k], 'text'):
-               print('  ', k, ' text is ', self.adr2knob[k].text);
+               print('  ', k, ' text is ', self.adr2knob[k].text, self.adr2knob[k])
            else:
-               print('  ', k , '(knob does not have text field)')
+               print('  ', k , '(knob does not have text field)', self.adr2knob[k])
 
 
         return r
@@ -403,6 +405,7 @@ class PanelApp(App):
         a = self.adr2knob[  0x30, 0x1a  ].value     # lfo 3/1: Ptch Depth = (24 or 32 or 40 or 48)
         b = self.adr2knob[  0x30, 0x1b  ].value     # lfo 3/1: Fltr Depth = address (typically 0..40)
         c = self.adr2knob[  0x30, 0x1c  ].value     # lfo 3/1: Amp Dpth   = value to set
+        print ( 'about to change osc', a, ' at addr', b, ' setting value ',c, 'self ptr was', self.adr2knob[a,b] )
         self.adr2knob[ a,b ].set_knob( b, c )
         #to use, set knobs for a, b, and c.  Then toggle the LFO switch to send message!
 

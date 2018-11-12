@@ -191,6 +191,14 @@ class XYKnob(BoxLayout):
         return super().on_touch_up(touch)
 
 
+    def set_knob(self, adr, value):
+        if adr & 0x1:
+            self.value_x = value
+        else:
+            self.value_y = value
+
+
+
 Builder.load_string( xykivystring )
 
 
