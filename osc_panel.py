@@ -10,6 +10,8 @@ from adknob      import ADKnob
 from spinnerknob import SpinnerKnob
 from switchknob  import SwitchKnob
 from toggleknob  import ToggleKnob
+from sy300midi import set_sy300, get_midi_ports
+import mido
 
 #:import XYKnob xyknob
 #:import CircleKnob circleknob
@@ -402,13 +404,31 @@ class PanelApp(App):
         return r
 
     def send2midi(self, osc, adr, val):
+      global to_sy300
       print( f'message to midi: osc:0x{osc:2x} adr:0x{adr:2x} val:0x{val:2x}' )
-      if (osc==0x30) and (adr==0x17):   # our pet switch (lfo 3/1)
-        a = self.adr2knob[  0x30, 0x1a  ].value     # lfo 3/1: Ptch Depth = (24 or 32 or 40 or 48)
-        b = self.adr2knob[  0x30, 0x1b  ].value     # lfo 3/1: Fltr Depth = address (typically 0..40)
-        c = self.adr2knob[  0x30, 0x1c  ].value     # lfo 3/1: Amp Dpth   = value to set
-        print ( 'about to change osc', a, ' at addr', b, ' setting value ',c, 'self ptr was', self.adr2knob[a,b] )
-        self.adr2knob[ a,b ].set_knob( b, c )
-        #to use, set knobs for a, b, and c.  Then toggle the LFO switch to send message!
+      #if (osc==0x30) and (adr==0x17):   # our pet switch (lfo 3/1)
+      #  a = self.adr2knob[  0x30, 0x1a  ].value     # lfo 3/1: Ptch Depth = (24 or 32 or 40 or 48)
+      #  b = self.adr2knob[  0x30, 0x1b  ].value     # lfo 3/1: Fltr Depth = address (typically 0..40)
+      #  c = self.adr2knob[  0x30, 0x1c  ].value     # lfo 3/1: Amp Dpth   = value to set
+      #  print ( 'about to change osc', a, ' at addr', b, ' setting value ',c, 'self ptr was', self.adr2knob[a,b] )
+      #  self.adr2knob[ a,b ].set_knob( b, c )
+      #  #to use, set knobs for a, b, and c.  Then toggle the LFO switch to send message!
+      print('MIDI ADDRESS:',[0x20, 0x00, osc, adr])
+      to_sy300.send(set_sy300([0x20, 0x00, osc, adr], [val]))
+
+
+    def on_start(self):
+        global to_sy300
+        midi_ports = get_midi_ports()
+        if midi_ports is False:
+            print("Connection Failure: SY300 not connected")
+        else:
+            print(f"SYS300 input:{midi_ports['in']}  output: {midi_ports['out']}")
+        to_sy300 = mido.open_output(midi_ports['out'])
+        print("Port Opened")
+        super().on_start()
+
+
+
 
 PanelApp().run()
