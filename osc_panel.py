@@ -12,6 +12,7 @@ from switchknob  import SwitchKnob
 from toggleknob  import ToggleKnob
 from sy300midi import set_sy300, get_midi_ports
 import mido
+from kivy.clock import Clock
 
 #:import XYKnob xyknob
 #:import CircleKnob circleknob
@@ -369,6 +370,12 @@ class OSCStrip(BoxLayout):
     osc_text = StringProperty('')
     osc_adr  = NumericProperty()
 
+def callback_read_midi(dt):
+    global from_sy300
+    print('entered callback')
+    for msg in from_sy300.iter_pending():
+        if (msg.type == 'sysex'):
+            print(msg)
 
 class PanelApp(App):
     title = 'SY300 OSC Sound Generation Control Panel'
@@ -379,7 +386,7 @@ class PanelApp(App):
 
     def build(self):
         r = Builder.load_string(kv)
-#note rate/combo switch needs special dealings, as there is ONE address for TWO widgets.... dont drop them!
+        # rate/combo switch needs special dealings, as there is ONE address for TWO widgets.... don't drop them!
         for osc in r.children:    # these children should be the three strips
             for c in osc.walk(restrict=True, loopback=False ):
                 if hasattr(c, 'addresses'):
@@ -419,14 +426,25 @@ class PanelApp(App):
 
     def on_start(self):
         global to_sy300
+        global from_sy300
         midi_ports = get_midi_ports()
         if not midi_ports:
             print("Connection Failure: SY300 not connected")
         else:
             print(f"SYS300 input:{midi_ports['in']}  output: {midi_ports['out']}")
         to_sy300 = mido.open_output(midi_ports['out'])
-        print("Port Opened")
-        super().on_start()
+        from_sy300 = mido.open_input(midi_ports['in'])
+        print("Ports Opened")
+        Clock.schedule_interval(callback_read_midi, 1)
+
+    def on_stop(self):
+        global to_sy300
+        global from_sy300
+        to_sy300.close()
+        from_sy300.close()
+        
+        
+
 
 
 
