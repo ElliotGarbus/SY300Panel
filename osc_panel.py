@@ -420,7 +420,7 @@ class PanelApp(App):
     def on_start(self):
         global to_sy300
         midi_ports = get_midi_ports()
-        if midi_ports is False:
+        if not midi_ports:
             print("Connection Failure: SY300 not connected")
         else:
             print(f"SYS300 input:{midi_ports['in']}  output: {midi_ports['out']}")
