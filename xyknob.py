@@ -58,7 +58,7 @@ xykivystring = '''
                         width: 2
                         circle: [root.value_x * 0.01 * self.width, root.value_y * 0.01 * self.height, 2.5]
                     Color:
-                        rgba: [ 1, 0, 0, .5 ]
+                        rgba: [ 36/255, 129/255, 215/255, 1 ]
                     Line:
                         width: 1
                         points: [ 0,.5*mypad.height, mypad.width, .5*mypad.width ] if root.crosshairs else []

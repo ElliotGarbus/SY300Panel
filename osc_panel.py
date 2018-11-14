@@ -102,6 +102,7 @@ kv = """
     
     XYKnob:
         text:    'PWM ENV'
+        crosshairs: True
         label_x: 'ATTACK'
         label_y: 'DEPTH'
         addresses: [ 0x3, 0x4 ]
@@ -110,6 +111,7 @@ kv = """
         disabled: True if osc_wave.text != 'PWM' else False
     XYKnob:
         text:    'PITCH ENV'
+        crosshairs: True
         label_x: 'ATTACK'
         label_y: 'DEPTH'                                                        
         addresses: [ 0x9, 0xa ]
@@ -177,7 +179,8 @@ kv = """
         on_value_y: app.send2midi( root.parent.osc_adr, self.addresses[1], self.value_y )
     
     XYKnob:
-        text:    'ENV'
+        text:    'FILTER ENV'
+        crosshairs: True
         label_x: 'ATTACK'
         label_y: 'DEPTH'
         addresses: [ 0x11, 0x12 ]
