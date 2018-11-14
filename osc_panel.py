@@ -6,21 +6,17 @@ from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy.properties import BooleanProperty, StringProperty, NumericProperty, ListProperty
 from kivy.core.window import Window
-from circleknob  import CircleKnob
-from xyknob      import XYKnob
-from adknob      import ADKnob
+from circleknob import CircleKnob
+from xyknob import XYKnob
+from adknob import ADKnob
 from spinnerknob import SpinnerKnob
-from switchknob  import SwitchKnob
-from toggleknob  import ToggleKnob
+from switchknob import SwitchKnob
+from toggleknob import ToggleKnob
 from sy300midi import set_sy300, get_midi_ports, req_sy300
 import mido
 from kivy.clock import Clock
 from kivy.factory import Factory
 
-
-#:import XYKnob xyknob
-#:import CircleKnob circleknob
-#:import ADKnob adknob
 kv = """
 
 <OSC>
