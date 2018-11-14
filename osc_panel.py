@@ -58,7 +58,7 @@ kv = """
                 color: [144/255, 228/255 , 1, 1]
                 size_hint_x: .5
                 opacity:  0 if root.parent.is_osc_1 is True else 1     
-                disabled: 1 if root.parent.is_osc_1 is True else 0                        
+                disabled: 1 if (root.parent.is_osc_1 or osc_wave.text in ['INPUT']) is True else 0                        
             SpinnerKnob:
                 text: 'SYNC'
                 comaddresses: [ 0x00  + 2 * (root.parent.osc_text == "3") if root.parent.osc_text != "1" else 500 ]
@@ -66,7 +66,7 @@ kv = """
                 color: [144/255, 228/255 , 1, 1]
                 values: ['Sync Off', 'Sync On', 'Sync LoFi']
                 opacity:   0 if root.parent.is_osc_1 is True else 1
-                disabled:  1 if root.parent.is_osc_1 is True else 0                
+                disabled:  1 if (root.parent.is_osc_1 or osc_wave.text in ['DETUNE SAW', 'NOISE', 'INPUT']) is True else 0                 
             
     CircleKnob:
         id: pitch
