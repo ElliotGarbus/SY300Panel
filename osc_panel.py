@@ -454,17 +454,19 @@ class PanelApp(App):
             print(f"SYS300 input:{midi_ports['in']}  output: {midi_ports['out']}")
             to_sy300 = mido.open_output(midi_ports['out'])
             from_sy300 = mido.open_input(midi_ports['in'])
-            Clock.schedule_interval(self.callback_read_midi, .1)
-            to_sy300.send(req_sy300([0x20,0x00,0x18,0x00], [4]))
-            to_sy300.send(req_sy300([0x20, 0x00, 0x20, 0x00], [0x29]))
-            to_sy300.send(req_sy300([0x20, 0x00, 0x28, 0x00], [0x29]))
-            to_sy300.send(req_sy300([0x20, 0x00, 0x30, 0x00], [0x29]))
+            Clock.schedule_interval(self.callback_read_midi, .1) # read the midi port at a regular interval
+            to_sy300.send(set_sy300([0x7F, 0x00, 0x00, 0x01], [0x01])) # set the SY300 into verbose or editor mode
+            to_sy300.send(req_sy300([0x20,0x00,0x18,0x00], [4])) # req the state of the ring and Sync for osc 2&3
+            to_sy300.send(req_sy300([0x20, 0x00, 0x20, 0x00], [0x29])) # req all of the knob settings for OSC1
+            to_sy300.send(req_sy300([0x20, 0x00, 0x28, 0x00], [0x29])) # ...OSC2
+            to_sy300.send(req_sy300([0x20, 0x00, 0x30, 0x00], [0x29])) # ...and OSC 3
 
     def on_stop(self):
         global to_sy300
         global from_sy300
         global midi_ports
-        if midi_ports:
+        if midi_ports:      # if the midi_ports were not opened, do not close at shutdown.
+            to_sy300.send(set_sy300([0x7F, 0x00, 0x00, 0x01], [0x00])) # set the SY300 to turn off verbose/editor mode
             to_sy300.close()
             from_sy300.close()
 
