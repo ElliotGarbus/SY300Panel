@@ -151,6 +151,7 @@ kv = """
             text:'FILTER'
             color: [144/255, 228/255 , 1, 1]
         SpinnerKnob:
+            id: filter_type
             text: 'BYPASS'
             addresses: [ 0x0d ]
             on_text: app.send2midi( root.parent.osc_adr, self.addresses[0], self.values.index(self.text) )
@@ -174,6 +175,7 @@ kv = """
         labeloffset: 0
         value_x:     0
         value_y:     0
+        disabled: True if filter_type.text == 'BYPASS' else False
         addresses: [ 0xf, 0x10 ]
         on_value_x: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value_x )
         on_value_y: app.send2midi( root.parent.osc_adr, self.addresses[1], self.value_y )
@@ -183,6 +185,7 @@ kv = """
         crosshairs: True
         label_x: 'ATTACK'
         label_y: 'DEPTH'
+        disabled: True if filter_type.text == 'BYPASS' else False
         addresses: [ 0x11, 0x12 ]
         on_value_x: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value_x )
         on_value_y: app.send2midi( root.parent.osc_adr, self.addresses[1], self.value_y )

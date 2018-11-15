@@ -33,12 +33,12 @@ Builder.load_string('''
         #
         # failure to size this layout will result in the outside box
         # not understanding the width of the layout.
-        # the behavior is independant of whether this is a box, float or relative
+        # the behavior is independent of whether this is a box, float or relative
         # This is a failure of our understanding.
         # We expected the layout to look at the sizes of its members and say,
         #  "oh, I see that all my members are fixed width, so I shall set my width"
         # It seems that no such behavior occurs.  Rather, the behavior looks closer to
-        #  "oh, I have no preconcieved notions of my width, so I will take my que from
+        #  "oh, I have no preconceived notions of my width, so I will take my que from
         #   the layout i am a part of"
         # Interestingly enough, if you just set the size_hint_x to None, you gain more
         # insight into what is happening.  Just uncommenting size_hint_x causes the
@@ -48,7 +48,7 @@ Builder.load_string('''
         # AND, as a kicker, this observation probably (mostly) explains our funny grid behavior with respect
         # to height.  Remember as soon as we forced a column height, the layout suddenly became
         # maximally sized top to bottom.  We interpreted this as kivy loosing its mind.
-        # More likey, what probably was occuring is that when we forced a column height, we got a size hint
+        # More likely, what probably was occurring is that when we forced a column height, we got a size hint
         # of None in that dimension.  BUT we had not actually set the height.  So we lost the benefit of
         # of relative sizing in that dimension.  Our solution for the grid was the correct one: manually
         # set the height, because we should have no expectation that this was going to happen automatically.
