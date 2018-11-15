@@ -56,7 +56,7 @@ Builder.load_string('''
         #
         # Play with this a little, commenting and uncommenting the next two lines
         # and varying the size of the inner widgets.  You can change the layouts of the internal
-        # thing here, and you will see that box, float and relative are actually pretty consistant
+        # thing here, and you will see that box, float and relative are actually pretty consistent
         # in behavior
         #
         size_hint_x: None
