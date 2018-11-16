@@ -345,6 +345,7 @@ BoxLayout:
 
 <NoSY300Connected>
     title:'SY300 NOT CONNECTED'
+    auto_dismiss: False
     size_hint: (None, None)
     size: (400, 400)
     BoxLayout:
@@ -404,6 +405,7 @@ class PanelApp(App):
         Window.close()
 
     def build(self):
+        self.icon = 'SY300logo_icon.ico'
         r = Builder.load_string(kv)
         # rate/combo switch needs special dealings, as there is ONE address for TWO widgets.... don't drop them!
         for osc in r.children:    # these children should be the three strips
@@ -419,12 +421,12 @@ class PanelApp(App):
         boguskeys = [ (o,a) for o,a in self.adr2knob.keys() if a>400 ]
         for bogus in boguskeys: del self.adr2knob[ bogus ]
 
-        print('DEBUG: collected knobs for:')
-        for k in sorted(self.adr2knob.keys(),key=lambda x: x[0]*100+x[1]):
-            if hasattr(self.adr2knob[k], 'text'):
-                print('  ', k, ' text is ', self.adr2knob[k].text, self.adr2knob[k])
-            else:
-                print('  ', k , '(knob does not have text field)', self.adr2knob[k])
+        #print('DEBUG: collected knobs for:')
+        #for k in sorted(self.adr2knob.keys(),key=lambda x: x[0]*100+x[1]):
+        #    if hasattr(self.adr2knob[k], 'text'):
+        #        print('  ', k, ' text is ', self.adr2knob[k].text, self.adr2knob[k])
+        #    else:
+        #        print('  ', k , '(knob does not have text field)', self.adr2knob[k])
         return r
 
     def send2midi(self, osc, adr, val):
@@ -447,11 +449,11 @@ class PanelApp(App):
         global midi_ports
         midi_ports = get_midi_ports()
         if not midi_ports:
-            print("Connection Failure: SY300 not connected")
+            #print("Connection Failure: SY300 not connected")
             no_sy300_popup = NoSY300Connected()
             no_sy300_popup.open()
         else:
-            print(f"SYS300 input:{midi_ports['in']}  output: {midi_ports['out']}")
+            #print(f"SYS300 input:{midi_ports['in']}  output: {midi_ports['out']}")
             to_sy300 = mido.open_output(midi_ports['out'])
             from_sy300 = mido.open_input(midi_ports['in'])
             Clock.schedule_interval(self.callback_read_midi, .1) # read the midi port at a regular interval
@@ -469,9 +471,6 @@ class PanelApp(App):
             to_sy300.send(set_sy300([0x7F, 0x00, 0x00, 0x01], [0x00])) # set the SY300 to turn off verbose/editor mode
             to_sy300.close()
             from_sy300.close()
-
-    def on_hide(self):
-        Window.raise_window()
 
 
 PanelApp().run()
