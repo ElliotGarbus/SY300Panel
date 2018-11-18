@@ -15,7 +15,8 @@ from toggleknob import ToggleKnob
 from sy300midi import set_sy300, get_midi_ports, req_sy300
 import mido
 from kivy.clock import Clock
-from kivy.factory import Factory
+import os
+import ctypes
 
 kv = """
 
@@ -401,11 +402,20 @@ class PanelApp(App):
     Window.left = 185
     adr2knob = {}
 
+    def open_settings(self, *largs):  # prevents the kivy settings panel from opening
+        pass
+
     def close_it(self):
         Window.close()
 
     def build(self):
-        self.icon = 'SY300logo_icon.ico'
+        self.icon = 'SY300logo64.png'
+
+        if os.name == 'nt':
+            print(os.name)
+            myappid = 'sand_box.os_panel.py'  # arbitrary string
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+
         r = Builder.load_string(kv)
         # rate/combo switch needs special dealings, as there is ONE address for TWO widgets.... don't drop them!
         for osc in r.children:    # these children should be the three strips
