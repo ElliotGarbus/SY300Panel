@@ -1,3 +1,15 @@
+from kivy.config import Config
+Config.set('graphics', 'width', 1725)
+Config.set('graphics', 'height', 710)
+Config.set('graphics', 'position', 'custom')
+Config.set('graphics', 'top', 285)
+Config.set('graphics', 'left', 185)
+import kivy.utils
+import ctypes
+if kivy.utils.platform == 'win':
+    myappid = 'SY300 Panel'  # arbitrary string
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.gridlayout import GridLayout
@@ -5,7 +17,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy.properties import BooleanProperty, StringProperty, NumericProperty, ListProperty
-from kivy.core.window import Window
 from circleknob import CircleKnob
 from xyknob import XYKnob
 from adknob import ADKnob
@@ -15,8 +26,7 @@ from toggleknob import ToggleKnob
 from sy300midi import set_sy300, get_midi_ports, req_sy300
 import mido
 from kivy.clock import Clock
-import os
-import ctypes
+
 
 kv = """
 
@@ -397,24 +407,22 @@ class NoSY300Connected(Popup):
 
 class PanelApp(App):
     title = 'SY300 OSC Sound Generation Control Panel'
-    Window.size = (1725, 710)
-    Window.top = 285  # 0 is the top of the screen
-    Window.left = 185
+    # Window.size = (1725, 710)
+    # Window.top = 285  # 0 is the top of the screen
+    # Window.left = 185
     adr2knob = {}
 
     def open_settings(self, *largs):  # prevents the kivy settings panel from opening
         pass
 
     def close_it(self):
-        Window.close()
+        exit(0)
 
     def build(self):
         self.icon = 'SY300logo64.png'
-
-        if os.name == 'nt':
-            print(os.name)
-            myappid = 'sand_box.os_panel.py'  # arbitrary string
-            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+        # if kivy.utils.platform == 'win':
+        #     myappid = 'SY300 Panel'  # arbitrary string
+        #     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
         r = Builder.load_string(kv)
         # rate/combo switch needs special dealings, as there is ONE address for TWO widgets.... don't drop them!
@@ -481,6 +489,7 @@ class PanelApp(App):
             to_sy300.send(set_sy300([0x7F, 0x00, 0x00, 0x01], [0x00])) # set the SY300 to turn off verbose/editor mode
             to_sy300.close()
             from_sy300.close()
+
 
 
 PanelApp().run()
