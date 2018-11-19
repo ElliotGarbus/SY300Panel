@@ -1,15 +1,4 @@
-from kivy.config import Config
-Config.set('graphics', 'width', 1725)
-Config.set('graphics', 'height', 710)
-Config.set('graphics', 'position', 'custom')
-Config.set('graphics', 'top', 285)
-Config.set('graphics', 'left', 185)
-import kivy.utils
-import ctypes
-if kivy.utils.platform == 'win':
-    myappid = 'SY300 Panel'  # arbitrary string
-    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
-
+import configstartup
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.gridlayout import GridLayout
@@ -63,7 +52,7 @@ class NoSY300Connected(Popup):
 
 class PanelApp(App):
     title = 'SY300 OSC Sound Generation Control Panel'
-    # Window.size = (1725, 710)
+    # Window.size = (1725, 710)  # This code was replaced by Config.set code in configstartup.py
     # Window.top = 285  # 0 is the top of the screen
     # Window.left = 185
     adr2knob = {}
