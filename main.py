@@ -4,14 +4,8 @@ from kivy.lang import Builder
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
-from kivy.uix.label import Label
 from kivy.properties import BooleanProperty, StringProperty, NumericProperty, ListProperty
-from circleknob import CircleKnob
-from xyknob import XYKnob
-from adknob import ADKnob
 from spinnerknob import SpinnerKnob
-from switchknob import SwitchKnob
-from toggleknob import ToggleKnob
 from sy300midi import set_sy300, get_midi_ports, req_sy300
 import mido
 from kivy.clock import Clock
