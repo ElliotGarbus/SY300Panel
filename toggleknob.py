@@ -17,7 +17,7 @@ Builder.load_string('''
 
 
 class ToggleKnob(ToggleButton):
-    addresses    = ListProperty([])
+    addresses = ListProperty([])
     comaddresses = ListProperty([])
 
     def set_knob(self, adr, value):

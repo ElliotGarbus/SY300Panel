@@ -79,12 +79,12 @@ Builder.load_string('''
 
 class ADKnob(BoxLayout):
     value = NumericProperty(50)         # from 0 to 100
-    addresses  = ListProperty( [] )
+    addresses = ListProperty([])
     _scroll_direction = {'scrollup': 1, 'scrolldown': -1}
 
     def _touch_to_ndx(self, touch):
         sq_xy = self.ids.sq_pad.to_widget(*touch.pos, True)
-        self.value = sorted([0, int(sq_xy[0] * 100 / (self.ids.sq_pad.width)), 100])[1]
+        self.value = sorted([0, int(sq_xy[0] * 100 / self.ids.sq_pad.width), 100])[1]
 
     def on_touch_down(self, touch):
         if not self.disabled and self.collide_point(*touch.pos):
@@ -113,8 +113,6 @@ class ADKnob(BoxLayout):
         self.value = value
 
 
-
-
 if __name__ == '__main__':
     kv_test = '''
 GridLayout:
@@ -136,9 +134,7 @@ GridLayout:
 
     class ADKnobApp(App):
 
-
         def build(self):
             return Builder.load_string(kv_test)
 
     ADKnobApp().run()
-

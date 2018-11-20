@@ -1,1 +1,1 @@
-start /B "My Python App"  "C:\Users\Elliot and Sharon\AppData\Local\Programs\Python\Python37-32\pythonw.exe"  "C:\Users\Elliot and Sharon\PycharmProjects\sand_box\osc_panel.py" 1>stdout.txt 2>stderr.txt
+start /B "My Python App"  "C:\Users\Elliot and Sharon\AppData\Local\Programs\Python\Python37-32\pythonw.exe"  "C:\Users\Elliot and Sharon\PycharmProjects\sand_box\main.py" 1>stdout.txt 2>stderr.txt

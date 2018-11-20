@@ -1,6 +1,6 @@
 from kivy.app import App
 from kivy.uix.spinner import Spinner
-from kivy.properties import ListProperty, NumericProperty, StringProperty, DictProperty
+from kivy.properties import ListProperty
 from kivy.lang import Builder
 
 Builder.load_string('''
@@ -17,7 +17,7 @@ Builder.load_string('''
 
 
 class SpinnerKnob(Spinner):
-    addresses    = ListProperty([])
+    addresses = ListProperty([])
     comaddresses = ListProperty([])
 
     def set_knob(self, adr, value):

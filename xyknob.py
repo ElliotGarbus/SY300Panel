@@ -1,15 +1,11 @@
-
 import kivy
-from kivy.app                import App
-from kivy.uix.relativelayout import RelativeLayout
-from kivy.lang               import Builder
-from kivy.properties         import ListProperty
-from kivy.properties         import StringProperty
-from kivy.properties         import BooleanProperty
-from kivy.properties         import NumericProperty
-from kivy.uix.boxlayout      import BoxLayout
-from kivy.uix.floatlayout    import FloatLayout
-
+from kivy.app import App
+from kivy.lang import Builder
+from kivy.properties import ListProperty
+from kivy.properties import StringProperty
+from kivy.properties import BooleanProperty
+from kivy.properties import NumericProperty
+from kivy.uix.boxlayout import BoxLayout
 
 kivy.require('1.10.1')
 
@@ -111,60 +107,54 @@ xykivystring = '''
 #-----------------------
 '''
 
+
 class XYKnob(BoxLayout):
+    xy_knob_trackx = ListProperty([])
+    xy_knob_tracky = ListProperty([])
 
-    xy_knob_trackx    = ListProperty( [] )
-    xy_knob_tracky    = ListProperty( [] )
+    label_x = StringProperty('X-axis')
+    value_x = NumericProperty(50)
 
-    label_x      = StringProperty( 'X-axis' )
-    value_x      = NumericProperty( 50 )
+    label_y = StringProperty('Y-axis')
+    value_y = NumericProperty(50)
 
-    label_y      = StringProperty( 'Y-axis' )
-    value_y      = NumericProperty( 50 )
+    labeloffset = NumericProperty(-50)
+    text = StringProperty('Title')
+    crosshairs = BooleanProperty(False)
 
-    labeloffset  = NumericProperty( -50 )
-    text         = StringProperty( 'Title' )
-    crosshairs   = BooleanProperty( False )
+    addresses = ListProperty([])
 
-    addresses    = ListProperty( [] )
-  
+    def _compute_pos_and_val(self, touch):
+        # determine the touch position in a mypad coordinate space
+        # clamps that position to the size of mypad (overkill until until we move!)
+        # and converts the coordinates into x,y values
 
-    def _compute_pos_and_val(self,touch):
-    #
-    # determine the touch positionin a mypad cordinate space
-    # clamps that position tothe size of mypad (overkill until until we move!)
-    # and converts the cordinates into x,y values
-    #
-    #
-        relative_position = list ( self.ids.mypad.to_widget(*touch.pos, True ) )
+        relative_position = list(self.ids.mypad.to_widget(*touch.pos, True))
 
-        relative_position[0] = sorted([ relative_position[0], 0, self.ids.mypad.width  ] )[1]
-        relative_position[1] = sorted([ relative_position[1], 0, self.ids.mypad.height ] )[1]
+        relative_position[0] = sorted([relative_position[0], 0, self.ids.mypad.width])[1]
+        relative_position[1] = sorted([relative_position[1], 0, self.ids.mypad.height])[1]
 
-        self.value_x = int(  relative_position[0] / self.ids.mypad.width  * 100.0 )
-        self.value_y = int(  relative_position[1] / self.ids.mypad.height * 100.0 )
+        self.value_x = int(relative_position[0] / self.ids.mypad.width * 100.0)
+        self.value_y = int(relative_position[1] / self.ids.mypad.height * 100.0)
 
         return relative_position
 
-
-    def on_touch_down(self,touch):
+    def on_touch_down(self, touch):
         if self.collide_point(*touch.pos) and not self.disabled:
             touch.grab(self)
 
             rel_pos = self._compute_pos_and_val(touch)
 
             # draw tracking lines
-            self.xy_knob_tracky.extend( [rel_pos[0], 0,   rel_pos[0], self.ids.mypad.top   ] )
-            self.xy_knob_trackx.extend( [0, rel_pos[1],   self.ids.mypad.right, rel_pos[1] ] )
+            self.xy_knob_tracky.extend([rel_pos[0], 0, rel_pos[0], self.ids.mypad.top])
+            self.xy_knob_trackx.extend([0, rel_pos[1], self.ids.mypad.right, rel_pos[1]])
 
             return True
         return False
 
     def on_touch_move(self, touch):
         if touch.grab_current is self and not self.disabled:
-
             rel_pos = self._compute_pos_and_val(touch)
-
 
             # update tracking lines.
             self.xy_knob_tracky[0] = rel_pos[0]
@@ -181,15 +171,14 @@ class XYKnob(BoxLayout):
             touch.ungrab(self)
 
             # remove tracking lines
-            del(self.xy_knob_trackx[0:] )
-            del(self.xy_knob_tracky[0:] )
+            del(self.xy_knob_trackx[0:])
+            del(self.xy_knob_tracky[0:])
 
             # update values, ignore the relative position
             rel_pos = self._compute_pos_and_val(touch)
 
             return True
         return super().on_touch_up(touch)
-
 
     def set_knob(self, adr, value):
         if adr & 0x1:
@@ -198,13 +187,10 @@ class XYKnob(BoxLayout):
             self.value_y = value
 
 
-
-Builder.load_string( xykivystring )
-
+Builder.load_string(xykivystring)
 
 
 if __name__ == '__main__':
-
     kv = '''
 BoxLayout:
     orientation: 'vertical'
@@ -256,4 +242,3 @@ BoxLayout:
             return r
 
     XYKnobApp().run()
-

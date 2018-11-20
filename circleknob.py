@@ -1,6 +1,6 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import ListProperty, NumericProperty, StringProperty, BooleanProperty
+from kivy.properties import ListProperty, NumericProperty, StringProperty
 from kivy.lang import Builder
 
 Builder.load_string('''
@@ -45,11 +45,12 @@ Builder.load_string('''
 #-------------------------------
 ''')
 
+
 class CircleKnob(BoxLayout):
     text = StringProperty()
     values = ListProperty([str(i) for i in range(101)])
     value = NumericProperty(0)
-    addresses = ListProperty( [] )
+    addresses = ListProperty([])
     _scroll_direction = {'scrollup': 1, 'scrolldown': -1}
 
     def on_touch_down(self, touch):
@@ -64,7 +65,7 @@ class CircleKnob(BoxLayout):
         if self.disabled is True:
             return False
         elif touch.grab_current is self and touch.dy:
-            #sorted(min, val, max)[1] works to clamp val to floor or ceiling
+            #  sorted(min, val, max)[1] works to clamp val to floor or ceiling
             self.value = (sorted((0, self.value + int(touch.dy), len(self.values)-1))[1])
             return True
         return False
@@ -75,7 +76,7 @@ class CircleKnob(BoxLayout):
         elif touch.is_mouse_scrolling and touch.grab_current is self:
             # sorted(min, val, max)[1] works to clamp val to floor or ceiling
             self.value = (sorted((0, self.value + self._scroll_direction[touch.button],
-                                    len(self.values) - 1))[1])
+                                  len(self.values) - 1))[1])
             return True
         elif touch.grab_current is self:
             touch.ungrab(self)
