@@ -1,4 +1,5 @@
 import mido
+import mido.backends.rtmidi # required for pyinstaller to create an exe
 
 
 def checksum(data):
