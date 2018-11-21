@@ -70,7 +70,7 @@ class PanelApp(App):
     def build(self):
         if getattr(sys, 'frozen', False):    # required so data files can be packed by pyinstaller
             application_path = sys._MEIPASS
-        elif __file__:
+        else:
             application_path = os.path.dirname(__file__)
         iconfile = os.path.join(application_path, 'SY300logo64.png')
         kvfile = os.path.join(application_path, 'osc_panel.kv')
