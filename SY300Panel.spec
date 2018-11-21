@@ -4,7 +4,6 @@ from kivy.tools.packaging.pyinstaller_hooks import get_deps_minimal,get_deps_all
 
 block_cipher = None
 
-
 a = Analysis(['main.py'],
              pathex=['C:\\Users\\Elliot and Sharon\\PycharmProjects\\sand_box'],
              binaries=[],
