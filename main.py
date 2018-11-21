@@ -10,6 +10,7 @@ from spinnerknob import SpinnerKnob
 from sy300midi import set_sy300, get_midi_ports, req_sy300
 import mido
 from kivy.clock import Clock
+import os, sys
 
 kivy.require('1.10.1')
 
@@ -67,12 +68,15 @@ class PanelApp(App):
         exit(0)
 
     def build(self):
-        self.icon = 'SY300logo64.png'
-        # if kivy.utils.platform == 'win':
-        #     myappid = 'SY300 Panel'  # arbitrary string
-        #     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+        if getattr(sys, 'frozen', False):    # required so data files can be packed by pyinstaller
+            application_path = sys._MEIPASS
+        elif __file__:
+            application_path = os.path.dirname(__file__)
+        iconfile = os.path.join(application_path, 'SY300logo64.png')
+        kvfile = os.path.join(application_path, 'osc_panel.kv')
 
-        r = Builder.load_file('osc_panel.kv')
+        self.icon = iconfile
+        r = Builder.load_file(kvfile)
         # rate/combo switch needs special dealings, as there is ONE address for TWO widgets.... don't drop them!
         for osc in r.children:    # these children should be the three strips
             for c in osc.walk(restrict=True, loopback=False):
