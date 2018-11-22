@@ -26,7 +26,8 @@ exe = EXE(pyz,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=True )
+          console=False,
+          icon='C:\\Users\\Elliot and Sharon\\PycharmProjects\\sand_box\\SY300logo_icon.ico')
 coll = COLLECT(exe, Tree('C:\\Users\\Elliot and Sharon\\PycharmProjects\\sand_box\\'),
                a.binaries,
                a.zipfiles,

@@ -10,7 +10,6 @@ from spinnerknob import SpinnerKnob
 from sy300midi import set_sy300, get_midi_ports, req_sy300
 import mido
 from kivy.clock import Clock
-import os, sys
 
 kivy.require('1.10.1')
 
@@ -55,9 +54,6 @@ class NoSY300Connected(Popup):
 
 class PanelApp(App):
     title = 'SY300 OSC Sound Generation Control Panel'
-    # Window.size = (1725, 710)  # This code was replaced by Config.set code in configstartup.py
-    # Window.top = 285  # 0 is the top of the screen
-    # Window.left = 185
     adr2knob = {}
 
     def open_settings(self, *largs):  # prevents the kivy settings panel from opening
@@ -68,16 +64,9 @@ class PanelApp(App):
         exit(0)
 
     def build(self):
-        if getattr(sys, 'frozen', False):    # required so data files can be packed by pyinstaller
-            application_path = sys._MEIPASS
-        else:
-            application_path = os.path.dirname(__file__)
-        iconfile = os.path.join(application_path, 'SY300logo64.png')
-        kvfile = os.path.join(application_path, 'osc_panel.kv')
-
-        self.icon = iconfile
-        r = Builder.load_file(kvfile)
-        # rate/combo switch needs special dealings, as there is ONE address for TWO widgets.... don't drop them!
+        self.icon = 'SY300logo64.png'
+        r = Builder.load_file('osc_panel.kv')
+        # rate/combo switch needs special case, as there is ONE address for TWO widgets.... don't drop them!
         for osc in r.children:    # these children should be the three strips
             for c in osc.walk(restrict=True, loopback=False):
                 if hasattr(c, 'addresses'):
