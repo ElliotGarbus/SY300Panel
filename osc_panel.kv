@@ -115,7 +115,7 @@
     CircleKnob:
         text: 'PBEND CTL'
         addresses: [ 0xc ]
-        on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
+        #on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
         disabled: True if osc_wave.text == 'INPUT' else False
 
 
