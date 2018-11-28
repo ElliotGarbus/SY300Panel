@@ -80,11 +80,13 @@ Builder.load_string('''
 class ADKnob(BoxLayout):
     value = NumericProperty(50)         # from 0 to 100
     addresses = ListProperty([])
+    mouse_set_value = NumericProperty(0)
     _scroll_direction = {'scrollup': 1, 'scrolldown': -1}
 
     def _touch_to_ndx(self, touch):
         sq_xy = self.ids.sq_pad.to_widget(*touch.pos, True)
         self.value = sorted([0, int(sq_xy[0] * 100 / self.ids.sq_pad.width), 100])[1]
+        self.mouse_set_value += 1
 
     def on_touch_down(self, touch):
         if not self.disabled and self.collide_point(*touch.pos):
@@ -103,6 +105,7 @@ class ADKnob(BoxLayout):
     def on_touch_up(self, touch): 
         if not self.disabled and touch.is_mouse_scrolling and touch.grab_current is self:
             self.value = sorted((0, self.value + self._scroll_direction[touch.button], 100))[1]
+            self.mouse_set_value += 1
             return super().on_touch_up(touch)
         elif touch.grab_current is self:
             touch.ungrab(self)

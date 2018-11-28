@@ -51,6 +51,7 @@ class CircleKnob(BoxLayout):
     values = ListProperty([str(i) for i in range(101)])
     value = NumericProperty(0)
     addresses = ListProperty([])
+    mouse_set_value = NumericProperty(0)  # set when a mouse moves, triggers sending a midi msg
     _scroll_direction = {'scrollup': 1, 'scrolldown': -1}
 
     def on_touch_down(self, touch):
@@ -67,6 +68,7 @@ class CircleKnob(BoxLayout):
         elif touch.grab_current is self and touch.dy:
             #  sorted(min, val, max)[1] works to clamp val to floor or ceiling
             self.value = (sorted((0, self.value + int(touch.dy), len(self.values)-1))[1])
+            self.mouse_set_value += 1
             return True
         return False
 
@@ -77,6 +79,7 @@ class CircleKnob(BoxLayout):
             # sorted(min, val, max)[1] works to clamp val to floor or ceiling
             self.value = (sorted((0, self.value + self._scroll_direction[touch.button],
                                   len(self.values) - 1))[1])
+            self.mouse_set_value +=1
             return True
         elif touch.grab_current is self:
             touch.ungrab(self)

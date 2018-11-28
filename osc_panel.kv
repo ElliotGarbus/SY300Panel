@@ -33,7 +33,6 @@
             color: [144/255, 228/255 , 1, 1]
             values: ['SIN', 'SAW', 'TRI', 'SQR', 'PWM', 'DETUNE SAW', 'NOISE', 'INPUT']
         BoxLayout:
-
             ToggleKnob:
                 text: 'RING'
                 comaddresses: [ 0x01  + 2 * (root.parent.osc_text == "3") if root.parent.osc_text != "1" else 500 ]
@@ -57,7 +56,7 @@
         values: [str(x) for x in range(-24, 25)]
         value: 24
         addresses: [ 0x7 ]
-        on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
+        on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
         disabled: True if osc_wave.text == 'INPUT' else False
     CircleKnob:
         id: fine
@@ -65,27 +64,26 @@
         values: [str(x) for x in range(-50, 51)]
         value: 50
         addresses: [ 0x8 ]
-        on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
+        on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
         disabled: True if osc_wave.text == 'INPUT' else False
     CircleKnob:
         id:pulse_width
         text: 'PULSE WIDTH'
         addresses: [ 0x2 ]
-        on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
+        on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
         disabled: True if osc_wave.text != 'PWM'  else False
     CircleKnob:
         text: 'DETUNE'
         values: [str(x) for x in range(-50, 51)]
         value: 50
         addresses: [ 0x5 ]
-        on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
+        on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
         disabled: True if osc_wave.text != 'DETUNE SAW' else False
     CircleKnob:
         text: 'SHARPNESS'
         addresses: [ 0x6 ]
-        on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
+        on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
         disabled: True if osc_wave.text != 'NOISE' else False
-
 
     XYKnob:
         text:    'PWM ENV'
@@ -93,8 +91,8 @@
         label_x: 'ATTACK'
         label_y: 'DEPTH'
         addresses: [ 0x3, 0x4 ]
-        on_value_x: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value_x )
-        on_value_y: app.send2midi( root.parent.osc_adr, self.addresses[1], self.value_y )
+        on_mouse_set_value_x: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value_x )
+        on_mouse_set_value_y: app.send2midi( root.parent.osc_adr, self.addresses[1], self.value_y )
         disabled: True if osc_wave.text != 'PWM' else False
     XYKnob:
         text:    'PITCH ENV'
@@ -102,20 +100,20 @@
         label_x: 'ATTACK'
         label_y: 'DEPTH'
         addresses: [ 0x9, 0xa ]
-        on_value_x: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value_x )
-        on_value_y: app.send2midi( root.parent.osc_adr, self.addresses[1], self.value_y )
+        on_mouse_set_value_x: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value_x )
+        on_mouse_set_value_y: app.send2midi( root.parent.osc_adr, self.addresses[1], self.value_y )
         disabled: True if osc_wave.text == 'INPUT' else False
     CircleKnob:
         text: 'PBEND DEPTH'
         values: [str(x) for x in range(-24, 25)]
         value: 24
         addresses: [ 0xb ]
-        on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
+        on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
         disabled: True if osc_wave.text == 'INPUT' else False
     CircleKnob:
         text: 'PBEND CTL'
         addresses: [ 0xc ]
-        #on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
+        on_mouse_set_value: app.send2midi(root.parent.osc_adr, self.addresses[0], self.value)
         disabled: True if osc_wave.text == 'INPUT' else False
 
 
@@ -164,8 +162,8 @@
         value_y:     0
         disabled: True if filter_type.text == 'BYPASS' else False
         addresses: [ 0xf, 0x10 ]
-        on_value_x: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value_x )
-        on_value_y: app.send2midi( root.parent.osc_adr, self.addresses[1], self.value_y )
+        on_mouse_set_value_x: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value_x )
+        on_mouse_set_value_y: app.send2midi( root.parent.osc_adr, self.addresses[1], self.value_y )
 
     XYKnob:
         text:    'FILTER ENV'
@@ -174,12 +172,12 @@
         label_y: 'DEPTH'
         disabled: True if filter_type.text == 'BYPASS' else False
         addresses: [ 0x11, 0x12 ]
-        on_value_x: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value_x )
-        on_value_y: app.send2midi( root.parent.osc_adr, self.addresses[1], self.value_y )
+        on_mouse_set_value_x: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value_x )
+        on_mouse_set_value_y: app.send2midi( root.parent.osc_adr, self.addresses[1], self.value_y )
 
     ADKnob:
         addresses: [ 0x13 ]
-        on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value)
+        on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value)
         disabled: True if root.parent.ids.osc.ids.osc_wave.text == 'INPUT' else False
 
     CircleKnob:
@@ -187,13 +185,13 @@
         values: [str(x) for x in range(0,201,2)]
         value: 50
         addresses: [ 0x14 ]
-        on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
+        on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
     CircleKnob:
         text: 'PAN'
         values: ['L'+str(-x) for x in range(-50, 0)] + ['CTR'] + ['R'+ str(x) for x in range(1, 51)]
         value: 50
         addresses: [ 0x15 ]
-        on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
+        on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
 
 # --------------------------------------LFO ------------------------------
 <LFO>
@@ -242,7 +240,7 @@
         text: 'RATE'
         disabled: True if rate_spinner.text != '0-100' else False
         #addresses: [ 0x19 + 9 * root.lfo_num ]
-        on_value: app.send2midi( root.parent.osc_adr, 0x19 + 9 * root.lfo_num, self.value )
+        on_mouse_set_value: app.send2midi( root.parent.osc_adr, 0x19 + 9 * root.lfo_num, self.value )
 
     BoxLayout:
         orientation: 'vertical'
@@ -264,26 +262,25 @@
     CircleKnob:
         text: 'FADE TIME'
         addresses: [ 0x1f + 9 * root.lfo_num ]
-        on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
+        on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
         disabled: dyn_depth.state == 'normal'
     CircleKnob:
         text: 'PTCH DPTH'
         addresses: [ 0x1a + 9 * root.lfo_num ]
-        on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
+        on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
         disabled: True if root.parent.ids.osc.ids.osc_wave.text == 'INPUT' else False
-        #on_value: app.send2midi( root.osc_adr, self.addresses[0], self.value )
     CircleKnob:
         text: 'FLTR DPTH'
         addresses: [ 0x1b + 9 * root.lfo_num  ]
-        on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
+        on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
     CircleKnob:
         text: 'AMP DPTH'
         addresses: [ 0x1c + 9 * root.lfo_num ]
-        on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
+        on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
     CircleKnob:
         text: 'PWM DPTH'
         addresses: [ 0x1d + 9 * root.lfo_num ]
-        on_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
+        on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
         disabled: True if root.parent.ids.osc.ids.osc_wave.text != 'PWM' else False
 
 #------------END LFO DEFINITION

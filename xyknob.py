@@ -114,9 +114,11 @@ class XYKnob(BoxLayout):
 
     label_x = StringProperty('X-axis')
     value_x = NumericProperty(50)
+    mouse_set_value_x = NumericProperty(0)
 
     label_y = StringProperty('Y-axis')
     value_y = NumericProperty(50)
+    mouse_set_value_y = NumericProperty(0)
 
     labeloffset = NumericProperty(-50)
     text = StringProperty('Title')
@@ -136,6 +138,8 @@ class XYKnob(BoxLayout):
 
         self.value_x = int(relative_position[0] / self.ids.mypad.width * 100.0)
         self.value_y = int(relative_position[1] / self.ids.mypad.height * 100.0)
+        self.mouse_set_value_x += 1
+        self.mouse_set_value_y += 1
 
         return relative_position
 
