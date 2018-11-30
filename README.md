@@ -19,7 +19,7 @@ Below is a screenshot of the SY300Panel on top of BTS.
 <img src="screenshots/SY300andBTS.JPG" >
 
 <b>Windows Installation Directions:</b> 
-  Download and unzip the file try/SY300Panel.zip
+  Download and unzip the file try/Install_SY300_Panel.zip
   In the unzipped directory, open the dist directory, right click on the SY300Panel.exe file.
   Select Create Shortcut, and move the shortcut to the desktop or any location you like
   Connect your SY300 to your PC, Turn on your SY300 and Click the shortcut.
