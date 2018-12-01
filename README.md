@@ -26,7 +26,7 @@ Below is a screenshot of the SY300Panel on top of BTS.
 * click the download button
 * After the file is downloaded, unzip the file
 * In the unzipped directory, open the dist directory, then open the try directory
-* right click on the SY300Panel.exe file, select Create Shortcut, and move the shortcut to the desktop or any location you like.
+* Right click on the SY300Panel.exe file, select Create Shortcut, and move the shortcut to the desktop or any location you like.
 * Connect your SY300 to your PC, Turn on your SY300 and Click the shortcut.
   
   
