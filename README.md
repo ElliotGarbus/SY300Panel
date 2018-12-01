@@ -3,6 +3,8 @@ Control the sound creation for the Boss SY300 Guitar Synthesizer
 
 **Windows installation directions are at the bottom of this file.**
 
+NOTE: The current version works fine on Win7.  **Do not install on Win10 at this time.**  I hope to have this resolved in a few days. (Date of this statement is 12/1/2018)
+
 The SY300Panel is an application that puts all of the controls for the wave/pitch, filter/amp and LFO's on one screen.  The delay in switching between these 3 screens in the Boss Tone Studio was the key motivation for creating this application. 
 
 The application can operate stand-alone, but it is designed to work with the Tone Studio, not replace it.
