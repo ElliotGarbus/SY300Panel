@@ -55,6 +55,7 @@
         text: 'PITCH'
         values: [str(x) for x in range(-24, 25)]
         value: 24
+        right_click_value:24
         addresses: [ 0x7 ]
         on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
         disabled: True if osc_wave.text == 'INPUT' else False
@@ -63,6 +64,7 @@
         text: 'FINE'
         values: [str(x) for x in range(-50, 51)]
         value: 50
+        right_click_value: 50
         addresses: [ 0x8 ]
         on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
         disabled: True if osc_wave.text == 'INPUT' else False
@@ -76,6 +78,7 @@
         text: 'DETUNE'
         values: [str(x) for x in range(-50, 51)]
         value: 50
+        right_click_value: 50
         addresses: [ 0x5 ]
         on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
         disabled: True if osc_wave.text != 'DETUNE SAW' else False
@@ -107,6 +110,7 @@
         text: 'PBEND DEPTH'
         values: [str(x) for x in range(-24, 25)]
         value: 24
+        right_click_value: 24
         addresses: [ 0xb ]
         on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
         disabled: True if osc_wave.text == 'INPUT' else False
@@ -184,12 +188,14 @@
         text: 'LEVEL'
         values: [str(x) for x in range(0,201,2)]
         value: 50
+        right_click_value: 50
         addresses: [ 0x14 ]
         on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
     CircleKnob:
         text: 'PAN'
         values: ['L'+str(-x) for x in range(-50, 0)] + ['CTR'] + ['R'+ str(x) for x in range(1, 51)]
         value: 50
+        right_click_value: 50
         addresses: [ 0x15 ]
         on_mouse_set_value: app.send2midi( root.parent.osc_adr, self.addresses[0], self.value )
 

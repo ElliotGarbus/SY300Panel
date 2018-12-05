@@ -52,20 +52,20 @@ class CircleKnob(BoxLayout):
     value = NumericProperty(0)
     addresses = ListProperty([])
     mouse_set_value = NumericProperty(0)  # set when a mouse moves, triggers sending a midi msg
+    right_click_value = NumericProperty(0)
     _scroll_direction = {'scrollup': 1, 'scrolldown': -1}
 
     def on_touch_down(self, touch):
-        if self.disabled is True:
-            return False
-        elif self.collide_point(*touch.pos):
-            touch.grab(self)
+        if self.collide_point(*touch.pos) and self.disabled is False:
+            if touch.button == 'right':
+                self.value = self.right_click_value
+            else:
+                touch.grab(self)
             return True
         return False
 
     def on_touch_move(self, touch):
-        if self.disabled is True:
-            return False
-        elif touch.grab_current is self and touch.dy:
+        if touch.grab_current is self and touch.dy and self.disabled is False:
             #  sorted(min, val, max)[1] works to clamp val to floor or ceiling
             self.value = (sorted((0, self.value + int(touch.dy), len(self.values)-1))[1])
             self.mouse_set_value += 1
@@ -73,13 +73,11 @@ class CircleKnob(BoxLayout):
         return False
 
     def on_touch_up(self, touch):
-        if self.disabled is True:
-            return False
-        elif touch.is_mouse_scrolling and touch.grab_current is self:
+        if touch.is_mouse_scrolling and touch.grab_current is self and self.disabled is False:
             # sorted(min, val, max)[1] works to clamp val to floor or ceiling
             self.value = (sorted((0, self.value + self._scroll_direction[touch.button],
                                   len(self.values) - 1))[1])
-            self.mouse_set_value +=1
+            self.mouse_set_value += 1
             return True
         elif touch.grab_current is self:
             touch.ungrab(self)
@@ -146,13 +144,17 @@ BoxLayout:
             values: [str(x) for x in range(-24, 25)]
             value: 3
             text: 'Pitch'
+            right_click_value: 24
         CircleKnob:
             values: ['L'+str(-x) for x in range(-50, 0)] + ['CTR'] + ['R'+ str(x) for x in range(1, 51)]
             value: 1
+            right_click_value: 50
             text: 'Pan'
         CircleKnob:
             text: "Rate"
     '''
+    from kivy.config import Config
+    Config.set('input', 'mouse', 'mouse,disable_multitouch')
 
     class CircleKnobApp(App):
 

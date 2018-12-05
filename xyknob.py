@@ -145,14 +145,19 @@ class XYKnob(BoxLayout):
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos) and not self.disabled:
-            touch.grab(self)
-
-            rel_pos = self._compute_pos_and_val(touch)
-
-            # draw tracking lines
-            self.xy_knob_tracky.extend([rel_pos[0], 0, rel_pos[0], self.ids.mypad.top])
-            self.xy_knob_trackx.extend([0, rel_pos[1], self.ids.mypad.right, rel_pos[1]])
-
+            if touch.button == 'left':
+                touch.grab(self)
+                rel_pos = self._compute_pos_and_val(touch)
+                # draw tracking lines
+                self.xy_knob_tracky.extend([rel_pos[0], 0, rel_pos[0], self.ids.mypad.top])
+                self.xy_knob_trackx.extend([0, rel_pos[1], self.ids.mypad.right, rel_pos[1]])
+            elif touch.button == 'right':
+                self.value_x = 50 if self.crosshairs == True else 0
+                self.value_y = 50 if self.crosshairs == True else 0
+                self.mouse_set_value_x += 1
+                self.mouse_set_value_y += 1
+            else:
+                return False
             return True
         return False
 
@@ -238,7 +243,8 @@ BoxLayout:
         XYKnob:
         XYKnob:
 '''
-
+    from kivy.config import Config
+    Config.set('input', 'mouse', 'mouse,disable_multitouch')
     class XYKnobApp(App):
         def build(self):
             r = Builder.load_string(kv)

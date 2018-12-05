@@ -79,6 +79,7 @@ Builder.load_string('''
 
 class ADKnob(BoxLayout):
     value = NumericProperty(50)         # from 0 to 100
+    right_click_value = NumericProperty(50)
     addresses = ListProperty([])
     mouse_set_value = NumericProperty(0)
     _scroll_direction = {'scrollup': 1, 'scrolldown': -1}
@@ -89,10 +90,14 @@ class ADKnob(BoxLayout):
         self.mouse_set_value += 1
 
     def on_touch_down(self, touch):
-        if not self.disabled and self.collide_point(*touch.pos):
-            touch.grab(self)
-            if not touch.is_mouse_scrolling:
+        if self.collide_point(*touch.pos)and not self.disabled:
+            if touch.button == 'right':
+                self.value = self.right_click_value
+            elif touch.button == 'left':
                 self._touch_to_ndx(touch)
+                touch.grab(self)
+            else:
+                touch.grab(self)  # if not left or right, then mouse scrolling
             return super().on_touch_down(touch)
         return False
 
@@ -133,6 +138,8 @@ GridLayout:
     ADKnob:       
 
     '''
+    from kivy.config import Config
+    Config.set('input', 'mouse', 'mouse,disable_multitouch')
 
 
     class ADKnobApp(App):

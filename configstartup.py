@@ -12,6 +12,7 @@ Config.set('graphics', 'height', 710)
 Config.set('graphics', 'position', 'custom')
 Config.set('graphics', 'top', 285)
 Config.set('graphics', 'left', 185)
+Config.set('input', 'mouse', 'mouse,disable_multitouch')
 
 if platform == 'win':
     myappid = 'SY300 Panel'  # arbitrary string
