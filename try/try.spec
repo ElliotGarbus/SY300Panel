@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['..\\main.py'],
-             pathex=['C:\\Users\\Elliot and Sharon\\PycharmProjects\\sand_box\\try'],
+             pathex=['..\\try'],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -27,7 +27,7 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           console=False,
-          icon='C:\\Users\\Elliot and Sharon\\PycharmProjects\\sand_box\\SY300logo_icon.ico')
+          icon='..\\SY300logo_icon.ico')
 coll = COLLECT(exe, Tree('C:\\Users\\Elliot and Sharon\\PycharmProjects\\sand_box\\'),
                a.binaries,
                a.zipfiles,
