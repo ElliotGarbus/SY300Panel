@@ -10,7 +10,6 @@ from spinnerknob import SpinnerKnob
 from sy300midi import set_sy300, get_midi_ports, req_sy300
 import mido
 from kivy.clock import Clock
-from time import perf_counter_ns
 
 kivy.require('1.10.1')
 
@@ -56,7 +55,6 @@ class NoSY300Connected(Popup):
 class PanelApp(App):
     title = 'SY300 OSC Sound Generation Control Panel'
     adr2knob = {}
-    recv_time = {}  # to avoid a race condition, if data just recived from synth, do not transmit
 
     def open_settings(self, *largs):  # prevents the kivy settings panel from opening
         pass
