@@ -152,8 +152,8 @@ class XYKnob(BoxLayout):
                 self.xy_knob_tracky.extend([rel_pos[0], 0, rel_pos[0], self.ids.mypad.top])
                 self.xy_knob_trackx.extend([0, rel_pos[1], self.ids.mypad.right, rel_pos[1]])
             elif touch.button == 'right':
-                self.value_x = 50 if self.crosshairs == True else 0
-                self.value_y = 50 if self.crosshairs == True else 0
+                self.value_x = 50 if self.crosshairs == True else 70
+                self.value_y = 50 if self.crosshairs == True else 20
                 self.mouse_set_value_x += 1
                 self.mouse_set_value_y += 1
             else:
