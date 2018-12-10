@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['..\\main.py'],
-             pathex=['C:\\Users\\ellio\\PycharmProjects\\SY300Panel\\try', 'C:\\Windows\\SysWOW64\\downlevel\\'],
+             pathex=['..\\try', 'C:\\Windows\\SysWOW64\\downlevel\\'],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -28,11 +28,11 @@ exe = EXE(pyz,
           upx=True,
           console=False,
           icon='..\\sy300logo_icon.ico')
-coll = COLLECT(exe, Tree('C:\\Users\\ellio\\PycharmProjects\\SY300Panel\\'),
+coll = COLLECT(exe, Tree('..\\', excludes=['.git', 'screenshots', 'try','__pycache__','.idea','*.bat']),
                a.binaries,
                a.zipfiles,
                a.datas,
                *[Tree(p) for p in (sdl2.dep_bins + glew.dep_bins)],
                strip=False,
                upx=False,
-               name='tryw10')
+               name='SY300Panel')
