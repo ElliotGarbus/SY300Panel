@@ -28,7 +28,7 @@ exe = EXE(pyz,
           upx=True,
           console=False,
           icon='..\\SY300logo_icon.ico')
-coll = COLLECT(exe, Tree('C:\\Users\\Elliot and Sharon\\PycharmProjects\\sand_box\\'),
+coll = COLLECT(exe, Tree('..\\', excludes=['.git', 'screenshots', 'try','__pycache__','.idea','*.bat']),
                a.binaries,
                a.zipfiles,
                a.datas,
