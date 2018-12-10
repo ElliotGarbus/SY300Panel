@@ -12,7 +12,7 @@ PWM ENV, PITCH ENV & Filter ENV are all on XY pads that adjust the depth and att
 
 The AMP ENV is adjusted by a custom 'widget' that illustrates the impact of the env generator on attack or decay, slowing the attack or shortening the decay.  The boxes with a blue triangle in the image below are the attack/decay adjustment. 
 
-The circular knobs can be adjusted by clicking and draging the mouse up or down; the mouse scroll wheel can also adjust these knobs.
+The circular knobs can be adjusted by clicking and dragging the mouse up or down; the mouse scroll wheel can also adjust these knobs.
 
 A right click on the circular knobs, XY pads or AMP Env, will reset the knobs to a default value.
 
