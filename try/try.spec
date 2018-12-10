@@ -35,4 +35,4 @@ coll = COLLECT(exe, Tree('..\\', excludes=['.git', 'screenshots', 'try','__pycac
                *[Tree(p) for p in (sdl2.dep_bins + glew.dep_bins)],
                strip=False,
                upx=True,
-               name='try')
+               name='SY300Panel')

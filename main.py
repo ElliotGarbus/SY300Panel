@@ -53,7 +53,7 @@ class NoSY300Connected(Popup):
 
 
 class PanelApp(App):
-    title = 'SY300 OSC Sound Generation Control Panel'
+    title = 'SY300 Sound Generation Control Panel V1.0'
     adr2knob = {}
 
     def open_settings(self, *largs):  # prevents the kivy settings panel from opening
