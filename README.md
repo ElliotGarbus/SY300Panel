@@ -1,5 +1,5 @@
 # SY300Panel
-Control the sound creation for the Boss SY300 Guitar Synthesizer
+Control the sound creation for the Boss SY300 Guitar Synthesizer  **Updated 12/9/18 and released as V1.0**
 
 **Windows installation directions are at the bottom of this file.**
 
@@ -14,28 +14,24 @@ The AMP ENV is adjusted by a custom 'widget' that illustrates the impact of the 
 
 The circular knobs can be adjusted by clicking and draging the mouse up or down; the mouse scroll wheel can also adjust these knobs.
 
+A right click on the circular knobs, XY pads or AMP Env, will reset the knobs to a default value.
+
 <img src="screenshots/SY300_Panel.JPG" >
 
 Below is a screenshot of the SY300Panel on top of BTS.
 
 <img src="screenshots/SY300andBTS.JPG" >
 
-**Windows 7/8 Installation Directions:** 
+**Windows 7/8/10 Installation Directions:** 
 * click on the 'try' directory
-* click on the file 'Install_SY300_Panel.zip'
+* click on the file 'SY300Panel_install.zip'
 * click the download button
 * After the file is downloaded, unzip the file
-* In the unzipped directory, open the dist directory, then open the try directory
+* In the unzipped directory, open the dist directory, then open the SY300Panel directory
 * Right click on the SY300Panel.exe file, select Create Shortcut, and move the shortcut to the desktop or any location you like.
 * Connect your SY300 to your PC, Turn on your SY300 and Click the shortcut.
 
-**Windows 10Installation Directions:** 
-* click on the 'try' directory
-* click on the file 'W10_Install_SY300Panel.zip'
-* click the download button
-* After the file is downloaded, unzip the file
-* In the unzipped directory, open the dist directory, then open the tryw10 directory
-* Right click on the SY300Panel.exe file, select Create Shortcut, and move the shortcut to the desktop or any location you like.
-* Connect your SY300 to your PC, Turn on your SY300 and Click the shortcut.
+Known Issues:
+The program will not operate with touch.  If the app is touched, it will shut down.  If you would like this fixed let me know.
 
-  
+ 
