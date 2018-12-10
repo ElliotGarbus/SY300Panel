@@ -10,6 +10,7 @@ from spinnerknob import SpinnerKnob
 from sy300midi import set_sy300, get_midi_ports, req_sy300
 import mido
 from kivy.clock import Clock
+import sys
 
 kivy.require('1.10.1')
 
@@ -61,7 +62,7 @@ class PanelApp(App):
 
     @staticmethod
     def close_it():  # close the app if the SY300 is not connected and the quit button is pressed.
-        exit(0)
+        sys.exit(0)
 
     def build(self):
         self.icon = 'SY300logo64.png'
