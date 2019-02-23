@@ -27,7 +27,7 @@ Below is a screenshot of the SY300Panel on top of BTS.
 **Windows 7/8/10 Installation Directions:** 
 * In the file list above click on SY00_Panel_setup.exe, This will take you to a new screen on GitHub.
 * Click the download button, it is in the banner above the big gray box.
-* After the download is complete run SY300_Panel_setup.exe, it wil install shortcuts to the start menu and optionally the desktop.
+* After the download is complete run SY300_Panel_setup.exe, it will install shortcuts to the start menu and optionally the desktop.
 * **To uninstall**, go to settings, Apps, and find the app on the installed application list and select uninstall
 * **To run**: Connect your SY300 to your PC, Turn on your SY300 and Start the app.
 
