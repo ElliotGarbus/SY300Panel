@@ -1,7 +1,9 @@
 # SY300Panel
-Control the sound creation for the Boss SY300 Guitar Synthesizer  **Updated 12/9/18 and released as V1.0**
+Control the sound creation for the Boss SY300 Guitar Synthesizer  **Updated 2/23/2019 and released as V1.1, added a Windows installer**
 
-**Windows installation directions are at the bottom of this file.**
+**Download and run 'SY300_Panel_setup.exe' to install**
+
+**Detailed Windows installation directions are at the bottom of this file.**
 
 The SY300Panel is an application that puts all of the controls for the wave/pitch, filter/amp and LFO's on one screen.  The delay in switching between these 3 screens in the Boss Tone Studio was the key motivation for creating this application. 
 
@@ -23,13 +25,12 @@ Below is a screenshot of the SY300Panel on top of BTS.
 <img src="screenshots/SY300andBTS.JPG" >
 
 **Windows 7/8/10 Installation Directions:** 
-* click on the 'try' directory
-* click on the file 'SY300Panel_install.zip'
-* click the download button
-* After the file is downloaded, unzip the file
-* In the unzipped directory, open the dist directory, then open the SY300Panel directory
-* Right click on the SY300Panel.exe file, select Create Shortcut, and move the shortcut to the desktop or any location you like.
-* Connect your SY300 to your PC, Turn on your SY300 and Click the shortcut.
+* In the file list abouve click on SY00_Panel_setup.exe, This will take you to a new screen on GitHub.
+* Click the download button, it is in the banner above the big gray box.
+* After the download is complete run SY300_Panel_setup.exe, it wil install shortcuts to the start menu and optionally the desktop.
+* To uninstall, go to settings, Apps, and find the app on the installed application list and select uninstall
+
+* To run: Connect your SY300 to your PC, Turn on your SY300 and Start the app.
 
 Known Issues:
 The program will not operate with touch.  If the app is touched, it will shut down.  If you would like this fixed let me know.
